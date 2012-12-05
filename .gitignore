@@ -1,0 +1,9 @@
+.DS_STORE
+README.txt
+LICENSE.txt
+joomla.xml
+web.config.txt
+cache/*
+installation
+htaccess.txt
+configuration.php
