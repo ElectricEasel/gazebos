@@ -46,8 +46,15 @@ $this
 				</div>
 			</div>
 		</div>
-		<div id="hero">
-			<div class="wrap">
+		<div id="subhead">
+			<div id="image-banner">
+				<div id="banner-holder">
+					
+				</div>
+			</div>
+			<div id="green-banner">
+				<div id="green-holder">
+				</div>
 			</div>
 		</div>
 		<div id="main">

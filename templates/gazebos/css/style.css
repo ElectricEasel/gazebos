@@ -1,5 +1,32 @@
+.wrap {
+	margin: 0 auto;
+	width: 960px;
+}
+
 #header {
 	background:url(../images/bg_header.png) repeat 0 0 scroll #FFF;
+}
+#header ul {
+	margin: 0;
+	padding: 0;
+}
+
+#image-banner {
+	background:url(../images/bg_subhead.png) repeat 0 0 scroll #FFF;
+	padding: 10px 0;
+}
+#banner-holder {
+	background:url(../images/banners/cabana.jpg) no-repeat center top scroll transparent;
+	height: 434px;
+}
+
+#green-banner {
+	background:url(../images/bg_green.png) repeat 0 0 scroll #FFF;
+}
+
+#green-holder {
+	background:url(../images/green-home-bg.png) no-repeat center top scroll transparent;
+	height: 121px;
 }
 
 #main {
