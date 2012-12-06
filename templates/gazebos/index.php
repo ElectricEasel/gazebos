@@ -54,7 +54,7 @@ $this
 			<div class="wrap">
 				<jdoc:include type="message" />
 				<?php if ($this->countModules('position-7') || $this->countModules('position-4') || $this->countModules('position-5')) : ?>
-				<div id="sidebars">
+				<div id="sidebar">
 					<jdoc:include type="modules" name="position-7" />
 					<jdoc:include type="modules" name="position-4" />
 					<jdoc:include type="modules" name="position-5" />
