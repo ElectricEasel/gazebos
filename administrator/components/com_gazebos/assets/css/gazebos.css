@@ -1,0 +1,78 @@
+.icon-48-producttypes {
+      background-image: url(../images/l_producttypes.png);
+      padding-left:60px!important;
+}
+
+.icon-48-producttype {
+      background-image: url(../images/l_producttypes.png);
+      padding-left:60px!important;
+}
+
+.icon-48-products {
+      background-image: url(../images/l_products.png);
+      padding-left:60px!important;
+}
+
+.icon-48-product {
+      background-image: url(../images/l_products.png);
+      padding-left:60px!important;
+}
+
+.icon-48-productstyles {
+      background-image: url(../images/l_productstyles.png);
+      padding-left:60px!important;
+}
+
+.icon-48-productstyle {
+      background-image: url(../images/l_productstyles.png);
+      padding-left:60px!important;
+}
+
+.icon-48-productshapes {
+      background-image: url(../images/l_productshapes.png);
+      padding-left:60px!important;
+}
+
+.icon-48-productshape {
+      background-image: url(../images/l_productshapes.png);
+      padding-left:60px!important;
+}
+
+.icon-48-productmaterials {
+      background-image: url(../images/l_productmaterials.png);
+      padding-left:60px!important;
+}
+
+.icon-48-productmaterial {
+      background-image: url(../images/l_productmaterials.png);
+      padding-left:60px!important;
+}
+
+.icon-48-options {
+      background-image: url(../images/l_options.png);
+      padding-left:60px!important;
+}
+
+.icon-48-option {
+      background-image: url(../images/l_options.png);
+      padding-left:60px!important;
+}
+
+.icon-48-optioncategories {
+      background-image: url(../images/l_optioncategories.png);
+      padding-left:60px!important;
+}
+
+.icon-48-optioncategory {
+      background-image: url(../images/l_optioncategories.png);
+      padding-left:60px!important;
+}
+
+fieldset.fieldset_hidden,
+fieldset.fieldset_filters {
+	display:none;
+}
+
+.adminformlist li {
+    clear: both;
+}

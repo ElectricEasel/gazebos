@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.6.0" method="upgrade">
+    <name>com_gazebos</name>
+    <creationDate>2012-12-06</creationDate>
+    <copyright>Copyright (C) 2012. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <author>Don Gilbert</author>
+    <authorEmail>don@electriceasel.com</authorEmail>
+    <authorUrl>http://www.electriceasel.com</authorUrl>
+    <version>1.0.0</version>
+    <description>Custom product manager for Gazebos.com</description>
+    
+    <install> <!-- Runs on install -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall> <!-- Runs on uninstall -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <files folder="site">
+        <filename>index.html</filename>
+        <filename>gazebos.php</filename>
+        <filename>controller.php</filename>
+        <filename>router.php</filename>
+        <folder>views</folder>
+        <folder>models</folder>
+        <folder>controllers</folder>
+        <folder>helpers</folder>
+    </files>
+    <languages folder="site">
+        <language tag="en-GB">language/en-GB.com_gazebos.ini
+        </language>
+    </languages>
+    <administration>
+        <menu img="components/com_gazebos/assets/images/s_com_gazebos.png" >COM_GAZEBOS</menu>
+        <submenu>
+            
+			<menu link="option=com_gazebos&amp;view=producttypes" view="producttypes" img="components/com_gazebos/assets/images/s_producttypes.png" alt="Gazebos/Producttypes">COM_GAZEBOS_TITLE_PRODUCTTYPES</menu>
+
+			<menu link="option=com_gazebos&amp;view=products" view="products" img="components/com_gazebos/assets/images/s_products.png" alt="Gazebos/Products">COM_GAZEBOS_TITLE_PRODUCTS</menu>
+
+			<menu link="option=com_gazebos&amp;view=productstyles" view="productstyles" img="components/com_gazebos/assets/images/s_productstyles.png" alt="Gazebos/Productstyles">COM_GAZEBOS_TITLE_PRODUCTSTYLES</menu>
+
+			<menu link="option=com_gazebos&amp;view=productshapes" view="productshapes" img="components/com_gazebos/assets/images/s_productshapes.png" alt="Gazebos/Productshapes">COM_GAZEBOS_TITLE_PRODUCTSHAPES</menu>
+
+			<menu link="option=com_gazebos&amp;view=productmaterials" view="productmaterials" img="components/com_gazebos/assets/images/s_productmaterials.png" alt="Gazebos/Productmaterials">COM_GAZEBOS_TITLE_PRODUCTMATERIALS</menu>
+
+			<menu link="option=com_gazebos&amp;view=options" view="options" img="components/com_gazebos/assets/images/s_options.png" alt="Gazebos/Options">COM_GAZEBOS_TITLE_OPTIONS</menu>
+
+			<menu link="option=com_gazebos&amp;view=optioncategories" view="optioncategories" img="components/com_gazebos/assets/images/s_optioncategories.png" alt="Gazebos/Optioncategories">COM_GAZEBOS_TITLE_OPTIONCATEGORIES</menu>
+
+        </submenu>
+        <files folder="administrator">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
+            <filename>index.html</filename>
+            <filename>gazebos.php</filename>
+            <folder>controllers</folder>
+            <folder>assets</folder>
+            <folder>helpers</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+        </files>
+        <languages folder="administrator">
+            <language tag="en-GB">language/en-GB.com_gazebos.ini
+            </language>
+            <language tag="en-GB">language/en-GB.com_gazebos.sys.ini
+            </language>
+        </languages>
+    </administration>
+</extension>
+<!-- Component built by the Joomla Component Creator -->
+<!-- http://www.notwebdesign.com/joomla-component-creator/ -->
