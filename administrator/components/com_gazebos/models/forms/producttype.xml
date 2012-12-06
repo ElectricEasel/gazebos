@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset
+		name="general"
+		label="General">
+
+		<field
+			name="title"
+			type="text"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCTTYPE_TITLE"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCTTYPE_TITLE"
+			filter="raw" />
+
+		<field
+			name="state"
+			type="list"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC"
+			class="inputbox"
+			size="1"
+			default="1">
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+		</field>
+
+		<field
+			name="tagline"
+			type="text"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCTTYPE_TAGLINE"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCTTYPE_TAGLINE"
+			filter="raw" />
+
+		<field
+			name="description"
+			type="textarea"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCTTYPE_DESCRIPTION"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCTTYPE_DESCRIPTION"
+			cols="50"
+			rows="10"
+			filter="raw" />
+
+		<field
+			name="icon"
+			type="media"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCTTYPE_ICON"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCTTYPE_ICON"
+			filter="raw"
+			directory="com_gazebos" />
+
+		<field
+			name="image"
+			type="media"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCTTYPE_IMAGE"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCTTYPE_IMAGE"
+			filter="raw"
+			directory="com_gazebos" />
+
+	</fieldset>
+
+	<fieldset
+		name="hidden"
+		label="Hidden Fields">
+
+		<field
+			name="id"
+			type="text"
+			default="0"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCTTYPE_ID"
+			readonly="true"
+			class="readonly"
+			description="JGLOBAL_FIELD_ID_DESC" />
+
+		<field
+			name="created_by"
+			type="createdby"
+			default=""
+			label="COM_GAZEBOS_FORM_LBL_PRODUCTTYPE_CREATED_BY"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCTTYPE_CREATED_BY" />
+
+		<field
+			name="checked_out"
+			type="hidden"
+			filter="unset" />
+
+		<field
+			name="checked_out_time"
+			type="hidden"
+			filter="unset" />
+
+	</fieldset>
+
+</form>

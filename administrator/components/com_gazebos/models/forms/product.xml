@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset
+		name="general"
+		label="General">
+
+		<field
+			name="title"
+			type="text"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_TITLE"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_TITLE"
+			filter="raw" />
+
+		<field
+			name="state"
+			type="list"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC"
+			class="inputbox"
+			size="1"
+			default="1">
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+		</field> 
+
+		<field
+			name="type_id"
+			type="sql"
+			class="inputbox"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_TYPE_ID"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_TYPE_ID"
+			required="true"
+			query="SELECT 0 AS `id`, '- Please select -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_types`"
+			key_field="id"
+			value_field="title" />
+
+		<field
+			name="style_id"
+			type="sql"
+			class="inputbox"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_STYLE_ID"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_STYLE_ID"
+			required="true"
+			query="SELECT 0 AS `id`, '- Please select -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_styles`"
+			key_field="id"
+			value_field="title" />
+
+		<field
+			name="shape_id"
+			type="sql"
+			class="inputbox"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_SHAPE_ID"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_SHAPE_ID"
+			required="true"
+			query="SELECT 0 AS `id`, '- Please select -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_shapes`"
+			key_field="id"
+			value_field="title" />
+
+		<field
+			name="material_id"
+			type="sql"
+			class="inputbox"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_MATERIAL_ID"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_MATERIAL_ID"
+			required="true"
+			query="SELECT 0 AS `id`, '- Please select -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_materials`"
+			key_field="id"
+			value_field="title" />
+
+		<field
+			name="price_min"
+			type="text"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_PRICE_MIN"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_PRICE_MIN"
+			filter="int" />
+
+		<field
+			name="price_max"
+			type="text"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_PRICE_MAX"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_PRICE_MAX"
+			filter="int" />
+
+		<field
+			name="brochure"
+			type="file"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_BROCHURE"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_BROCHURE"
+			filter="raw" />
+
+		<field
+			name="short_description"
+			type="textarea"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_SHORT_DESCRIPTION"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_SHORT_DESCRIPTION"
+			cols="50"
+			rows="10"
+			filter="raw" />
+
+		<field
+			name="description"
+			type="textarea"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_DESCRIPTION"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_DESCRIPTION"
+			cols="50"
+			rows="10"
+			filter="raw" />
+
+	</fieldset>
+
+	<fieldset
+		name="options"
+		label="Options">
+
+		<field
+			name="options"
+			type="hidden"
+			class="inputbox"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_OPTIONS"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_OPTIONS" />
+
+	</fieldset>
+
+	<fieldset
+		name="hidden"
+		label="Hidden Fields">
+
+		<field
+			name="id"
+			type="text"
+			default="0"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_ID"
+			readonly="true"
+			class="readonly"
+			description="JGLOBAL_FIELD_ID_DESC" />
+
+		<field
+			name="created_by"
+			type="createdby"
+			default=""
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_CREATED_BY"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_CREATED_BY" />
+
+		<field
+			name="checked_out"
+			type="hidden"
+			filter="unset" />
+
+		<field
+			name="checked_out_time"
+			type="hidden"
+			filter="unset" />
+
+	</fieldset>
+
+	<fieldset
+		name="filters"
+		label="Product Filters">
+
+		<field
+			name="filter_type_id"
+			type="sql"
+			class="inputbox"
+			onchange="this.form.submit();"
+			query="SELECT 0 AS `id`, '- Filter by Type -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_types`"
+			key_field="id"
+			value_field="title" />
+
+		<field
+			name="filter_material_id"
+			type="sql"
+			class="inputbox"
+			onchange="this.form.submit();"
+			query="SELECT 0 AS `id`, '- Filter by Material -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_materials`"
+			key_field="id"
+			value_field="title" />
+
+		<field
+			name="filter_style_id"
+			type="sql"
+			class="inputbox"
+			onchange="this.form.submit();"
+			query="SELECT 0 AS `id`, '- Filter by Style -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_styles`"
+			key_field="id"
+			value_field="title" />
+
+		<field
+			name="filter_shape_id"
+			type="sql"
+			class="inputbox"
+			onchange="this.form.submit();"
+			query="SELECT 0 AS `id`, '- Filter by Shape -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_shapes`"
+			key_field="id"
+			value_field="title" />
+
+	</fieldset>
+
+</form>
