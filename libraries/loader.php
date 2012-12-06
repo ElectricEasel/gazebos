@@ -259,7 +259,7 @@ abstract class JLoader
 		// Otherwise we want to simply add the path to the prefix.
 		else
 		{
-			self::$prefixes[$prefix][] = $path;
+			array_unshift(self::$prefixes[$prefix], $path);
 		}
 	}
 
