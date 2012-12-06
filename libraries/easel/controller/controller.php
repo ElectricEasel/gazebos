@@ -1,6 +1,4 @@
-<?php
-
-defined('_EE') or die;
+<?php defined('EE_PATH') or die;
 
 class EEController extends JControllerLegacy
 {

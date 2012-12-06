@@ -113,6 +113,12 @@
 		label="Options">
 
 		<field
+			type="productoptions"
+			label="Product Options"
+			multiple="multiple" />
+			
+
+		<field
 			name="options"
 			type="hidden"
 			class="inputbox"
