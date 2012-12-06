@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Home Page" option="HomePage">
+		<help key="JHELP_MENUS_MENU_ITEM_ARTICLE_FEATURED" />
+		<message>
+			<![CDATA[Custom home page layout.]]>
+		</message>
+	</layout>
+</metadata>
