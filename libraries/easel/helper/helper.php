@@ -129,4 +129,17 @@ abstract class EEHelper
 
 		return $result;
 	}
+
+	/**
+	 * Method to generate an alias from a title.
+	 *
+	 * @param   string  $title  The title to turn into an alias.
+	 *
+	 * @return  string  Sanitized alias for given title.
+	 *
+	 */
+	public static function buildAlias($title)
+	{
+		return JFilterOutput::stringUrlSafe($title);
+	}
 }

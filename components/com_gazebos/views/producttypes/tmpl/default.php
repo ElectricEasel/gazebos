@@ -10,9 +10,8 @@
 
 // no direct access
 defined('_JEXEC') or die;
-?>
 
-<?php if($this->items) : ?>
+if($this->items) : ?>
 
     <div class="items">
 

@@ -12,6 +12,8 @@ defined('_JEXEC') or die;
 // Include dependancies
 JFactory::getLanguage()->load('com_gazebos', JPATH_ADMINISTRATOR);
 
+JLoader::import('helpers.gazebos', JPATH_COMPONENT);
+
 // Execute the task.
 $controller	= EEController::getInstance('Gazebos');
 $controller->execute(JFactory::getApplication()->input->get('task'));

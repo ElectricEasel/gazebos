@@ -10,29 +10,35 @@
 // No direct access
 defined('_JEXEC') or die;
 
+JLoader::import('components.com_gazebos.helpers.gazebos', JPATH_SITE);
+
 /**
- * @param	array	A named array
- * @return	array
+ * @param array A named array
+ * @return array
  */
 function GazebosBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (isset($query['task'])) {
-		$segments[] = $query['task'];
-		unset($query['task']);
+	if (isset($query['view']))
+	{
+		$segments[] = $query['view'];
 	}
-	if (isset($query['id'])) {
-		$segments[] = $query['id'];
-		unset($query['id']);
+
+	if (isset($query['id']))
+	{
+		$segments[] = GazebosHelper::getAliasFromId($query['id'], $query['view']);
 	}
+
+	unset($query['id']);
+	unset($query['view']);
 
 	return $segments;
 }
 
 /**
- * @param	array	A named array
- * @param	array
+ * @param array A named array
+ * @param array
  *
  * Formats:
  *
@@ -50,21 +56,15 @@ function GazebosParseRoute($segments)
 	if ($count)
 	{
 		$count--;
-		$segment = array_shift($segments);
-		if (is_numeric($segment)) {
-			$vars['id'] = $segment;
-		} else {
-			$vars['task'] = $segment;
-		}
+		$view = array_shift($segments);
+		$vars['view'] = $view;
 	}
 
 	if ($count)
 	{
 		$count--;
-		$segment = array_shift($segments) ;
-		if (is_numeric($segment)) {
-			$vars['id'] = $segment;
-		}
+		$alias = array_shift($segments) ;
+		$vars['id'] = GazebosHelper::getIdFromAlias($alias, $view);
 	}
 
 	return $vars;

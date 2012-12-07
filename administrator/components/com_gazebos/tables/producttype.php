@@ -54,6 +54,11 @@ class GazebosTableproducttype extends JTable {
 			$this->setRules($rules);
 		}
 
+		if (isset($array['title']))
+		{
+			$array['alias'] = EEHelper::buildAlias($array['title']);
+		}
+
         return parent::bind($array, $ignore);
     }
 

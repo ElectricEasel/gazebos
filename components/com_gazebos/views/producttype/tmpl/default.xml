@@ -9,7 +9,7 @@
 			name="request">
 
 			<field
-				name="producttype"
+				name="id"
 				type="sql"
 				label="Product Type"
 				description="The product type to display on this menu item."
