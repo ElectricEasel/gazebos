@@ -41,6 +41,8 @@ $this
 		<div id="header">
 			<div class="wrap">
 				<a href="/" id="logo"><?php echo $config->get('sitename'); ?></a>
+				<a href="/" id="bbb"></a>
+				<span id="tagline">Quality Gazebos Since 1982</span>
 				<div class="navbar">
 					<jdoc:include type="modules" name="nav" />
 				</div>
@@ -48,17 +50,24 @@ $this
 		</div>
 		<div id="subhead">
 			<div id="image-banner">
-				<div id="banner-holder">
-					
+				<div class="wrap">
+					<div id="banner-tagline">
+					<h1>Cabanas</h1>
+					<span>The Perfect Place to Get Away</span>
+					</div>
 				</div>
 			</div>
 			<div id="green-banner">
-				<div id="green-holder">
+				<div class="wrap">
+					<h2>Building <span>quality gazebos</span> in the U.S.A. for over 30 years</h2>
 				</div>
 			</div>
 		</div>
 		<div id="main">
 			<div class="wrap">
+				<?php if ($this->countModules('home-gazebos')): ?>
+					<jdoc:include type="modules" name="home-gazebos"   />
+				<?php endif; ?>
 				<jdoc:include type="message" />
 				<?php if ($this->countModules('position-7') || $this->countModules('position-4') || $this->countModules('position-5')) : ?>
 				<div id="sidebar">
