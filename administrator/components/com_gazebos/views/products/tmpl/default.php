@@ -13,9 +13,9 @@ defined('_JEXEC') or die;
 
 JHtml::_('behavior.tooltip');
 JHTML::_('script','system/multiselect.js',false,true);
-// Import CSS
-$document = JFactory::getDocument();
-$document->addStyleSheet('components/com_gazebos/assets/css/gazebos.css');
+
+jimport('joomla.form.form');
+JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
 
 $user	= JFactory::getUser();
 $userId	= $user->get('id');
@@ -23,8 +23,13 @@ $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
 $canOrder	= $user->authorise('core.edit.state', 'com_gazebos');
 $saveOrder	= $listOrder == 'a.ordering';
+$form = JForm::getInstance('com_gazebos.product', 'product');
+$ordering	= ($listOrder == 'a.ordering');
+$canCreate	= $user->authorise('core.create',		'com_gazebos');
+$canEdit	= $user->authorise('core.edit',			'com_gazebos');
+$canCheckin	= $user->authorise('core.manage',		'com_gazebos');
+$canChange	= $user->authorise('core.edit.state',	'com_gazebos');
 ?>
-
 <form action="<?php echo JRoute::_('index.php?option=com_gazebos&view=products'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
@@ -33,68 +38,32 @@ $saveOrder	= $listOrder == 'a.ordering';
 			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
 			<button type="button" onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
-		
-        
+
 		<div class='filter-select fltrt'>
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), "value", "text", $this->state->get('filter.state'), true);?>
 			</select>
 		</div>
-
 		<div class='filter-select fltrt'>
-			<?php //Filter for the field type_id
-			$selected_type_id = JRequest::getVar('filter_type_id');
-			jimport('joomla.form.form');
-			JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
-			$form = JForm::getInstance('com_gazebos.product', 'product');
-			echo $form->getInput('filter_type_id', null, $selected_type_id);
-			?>
+			<?php echo $form->getInput('filter_type_id', null, JRequest::getVar('filter_type_id')); ?>
 		</div>
-
 		<div class='filter-select fltrt'>
-			<?php //Filter for the field style_id
-			$selected_style_id = JRequest::getVar('filter_style_id');
-			jimport('joomla.form.form');
-			JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
-			$form = JForm::getInstance('com_gazebos.product', 'product');
-			echo $form->getInput('filter_style_id', null, $selected_style_id);
-			?>
+			<?php echo $form->getInput('filter_style_id', null, JRequest::getVar('filter_style_id')); ?>
 		</div>
-
 		<div class='filter-select fltrt'>
-			<?php //Filter for the field shape_id
-			$selected_shape_id = JRequest::getVar('filter_shape_id');
-			jimport('joomla.form.form');
-			JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
-			$form = JForm::getInstance('com_gazebos.product', 'product');
-			echo $form->getInput('filter_shape_id', null, $selected_shape_id);
-			?>
+			<?php echo $form->getInput('filter_shape_id', null, JRequest::getVar('filter_shape_id')); ?>
 		</div>
-
 		<div class='filter-select fltrt'>
-			<?php //Filter for the field material_id
-			$selected_material_id = JRequest::getVar('filter_material_id');
-			jimport('joomla.form.form');
-			JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
-			$form = JForm::getInstance('com_gazebos.product', 'product');
-			echo $form->getInput('filter_material_id', null, $selected_material_id);
-			?>
+			<?php echo $form->getInput('filter_material_id', null, JRequest::getVar('filter_material_id')); ?>
 		</div>
-
-
 	</fieldset>
 	<div class="clr"> </div>
-
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th width="1%">
 					<input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
-				</th>
-
-				<th class='left'>
-				<?php echo JHtml::_('grid.sort',  'COM_GAZEBOS_PRODUCTS_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>
 				</th>
 				<th class='left'>
 				<?php echo JHtml::_('grid.sort',  'COM_GAZEBOS_PRODUCTS_TITLE', 'a.title', $listDirn, $listOrder); ?>
@@ -111,8 +80,6 @@ $saveOrder	= $listOrder == 'a.ordering';
 				<th class='left'>
 				<?php echo JHtml::_('grid.sort',  'COM_GAZEBOS_PRODUCTS_MATERIAL_ID', 'a.material_id', $listDirn, $listOrder); ?>
 				</th>
-
-
                 <?php if (isset($this->items[0]->state)) { ?>
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort',  'JPUBLISHED', 'a.state', $listDirn, $listOrder); ?>
@@ -141,20 +108,10 @@ $saveOrder	= $listOrder == 'a.ordering';
 			</tr>
 		</tfoot>
 		<tbody>
-		<?php foreach ($this->items as $i => $item) :
-			$ordering	= ($listOrder == 'a.ordering');
-			$canCreate	= $user->authorise('core.create',		'com_gazebos');
-			$canEdit	= $user->authorise('core.edit',			'com_gazebos');
-			$canCheckin	= $user->authorise('core.manage',		'com_gazebos');
-			$canChange	= $user->authorise('core.edit.state',	'com_gazebos');
-			?>
+		<?php foreach ($this->items as $i => $item) : ?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
-				</td>
-
-				<td>
-					<?php echo $item->created_by; ?>
 				</td>
 				<td>
 				<?php if (isset($item->checked_out) && $item->checked_out) : ?>
@@ -179,8 +136,6 @@ $saveOrder	= $listOrder == 'a.ordering';
 				<td>
 					<?php echo $item->productmaterials_title_310224; ?>
 				</td>
-
-
                 <?php if (isset($this->items[0]->state)) { ?>
 				    <td class="center">
 					    <?php echo JHtml::_('jgrid.published', $item->state, $i, 'products.', $canChange, 'cb'); ?>

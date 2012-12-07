@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @version     1.0.0
  * @package     com_gazebos
@@ -7,14 +6,15 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      Don Gilbert <don@electriceasel.com> - http://www.electriceasel.com
  */
+
 // No direct access
 defined('_JEXEC') or die;
 
 /**
- * product Table class
+ * gallery Table class
  */
-class GazebosTableproduct extends JTable {
-
+class GazebosTableGallery extends JTable
+{
 	/**
 	 * Constructor
 	 *
@@ -22,7 +22,7 @@ class GazebosTableproduct extends JTable {
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__gazebos_products', 'id', $db);
+		parent::__construct('#__gazebos_gallery', 'id', $db);
 	}
 
 	/**
@@ -39,21 +39,14 @@ class GazebosTableproduct extends JTable {
 		{
 			$registry = new JRegistry();
 			$registry->loadArray($array['params']);
-			$array['params'] = (string) $registry;
+			$array['params'] = (string)$registry;
 		}
 
 		if (isset($array['metadata']) && is_array($array['metadata']))
 		{
 			$registry = new JRegistry();
 			$registry->loadArray($array['metadata']);
-			$array['metadata'] = (string) $registry;
-		}
-
-		//Bind the rules for ACL where supported.
-		if (isset($array['rules']) && is_array($array['rules']))
-		{
-			$rules = new JRules($array['rules']);
-			$this->setRules($rules);
+			$array['metadata'] = (string)$registry;
 		}
 
 		return parent::bind($array, $ignore);
@@ -93,7 +86,7 @@ class GazebosTableproduct extends JTable {
 		// Sanitize input.
 		JArrayHelper::toInteger($pks);
 		$userId = (int) $userId;
-		$state = (int) $state;
+		$state  = (int) $state;
 
 		// If there are no primary keys set check to see if the instance key is set.
 		if (empty($pks))
@@ -111,22 +104,23 @@ class GazebosTableproduct extends JTable {
 		}
 
 		// Build the WHERE clause for the primary keys.
-		$where = $k . '=' . implode(' OR ' . $k . '=', $pks);
+		$where = $k.'='.implode(' OR '.$k.'=', $pks);
 
 		// Determine if there is checkin support for the table.
 		if (!property_exists($this, 'checked_out') || !property_exists($this, 'checked_out_time'))
 		{
 			$checkin = '';
-		} else
+		}
+		else
 		{
-			$checkin = ' AND (checked_out = 0 OR checked_out = ' . (int) $userId . ')';
+			$checkin = ' AND (checked_out = 0 OR checked_out = '.(int) $userId.')';
 		}
 
 		// Update the publishing state for rows with the given primary keys.
 		$this->_db->setQuery(
-			'UPDATE `' . $this->_tbl . '`' .
-			' SET `state` = ' . (int) $state .
-			' WHERE (' . $where . ')' .
+			'UPDATE `'.$this->_tbl.'`' .
+			' SET `state` = '.(int) $state .
+			' WHERE ('.$where.')' .
 			$checkin
 		);
 		$this->_db->query();
@@ -141,8 +135,9 @@ class GazebosTableproduct extends JTable {
 		// If checkin is supported and all rows were adjusted, check them in.
 		if ($checkin && (count($pks) == $this->_db->getAffectedRows()))
 		{
-			// Checkin each row.
-			foreach ($pks as $pk)
+			// Checkin the rows.
+			foreach
+			($pks as $pk)
 			{
 				$this->checkin($pk);
 			}

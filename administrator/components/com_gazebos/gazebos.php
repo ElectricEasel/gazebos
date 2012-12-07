@@ -11,15 +11,24 @@
 // no direct access
 defined('_JEXEC') or die;
 
+define('JIMAGE_MAX_UPLOAD_WIDTH', 600);
+
 // Access check.
 if (!JFactory::getUser()->authorise('core.manage', 'com_gazebos')) 
 {
 	throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
-JFactory::getDocument()
-	->addStylesheet('/administrator/components/com_gazebos/assets/css/gazebos.css');
+JFactory::getDocument()->addStylesheet('/administrator/components/com_gazebos/assets/css/gazebos.css');
 
-$controller	= JControllerLegacy::getInstance('Gazebos');
+// Import required classes that don't properly autoload
+jimport('joomla.database.table');
+jimport('joomla.application.component.view');
+jimport('joomla.application.component.model');
+jimport('joomla.application.component.modelform');
+
+JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
+
+$controller	= EEController::getInstance('Gazebos');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();

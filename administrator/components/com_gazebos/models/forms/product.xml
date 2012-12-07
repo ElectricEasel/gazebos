@@ -21,7 +21,15 @@
 			default="1">
 			<option value="1">JPUBLISHED</option>
 			<option value="0">JUNPUBLISHED</option>
-		</field> 
+		</field>
+
+		<field
+			name="gallery"
+			type="gallery"
+			label="Gallery"
+			component="com_gazebos"
+			field="product_id"
+			description="Product Gallery. Will open in modal window." />
 
 		<field
 			name="type_id"
@@ -113,9 +121,7 @@
 		label="Options">
 
 		<field
-			type="productoptions"
-			label="Product Options"
-			multiple="multiple" />
+			type="productoptions" />
 			
 
 		<field

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @version     1.0.0
  * @package     com_gazebos
@@ -7,6 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      Don Gilbert <don@electriceasel.com> - http://www.electriceasel.com
  */
+ 
 // No direct access
 defined('_JEXEC') or die;
 
@@ -15,74 +15,65 @@ jimport('joomla.application.component.view');
 /**
  * View to edit
  */
-class GazebosViewProducttype extends JView {
+class GazebosViewProductType extends JView
+{
+	protected $state;
+	protected $item;
+	protected $form;
+	protected $params;
 
-    protected $state;
-    protected $item;
-    protected $form;
-    protected $params;
+	/**
+	 * Display the view
+	 */
+	public function display($tpl = null)
+	{
+		$this->state = $this->get('State');
+		$this->item = $this->get('Data');
+		$this->params = EEComponentHelper::getParams('com_gazebos');
 
-    /**
-     * Display the view
-     */
-    public function display($tpl = null) {
-        
-		$app	= JFactory::getApplication();
-        $user		= JFactory::getUser();
-        
-        $this->state = $this->get('State');
-        $this->item = $this->get('Data');
-        $this->params = $app->getParams('com_gazebos');
-   		
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			throw new Exception(implode("\n", $errors));
+		}
 
-        // Check for errors.
-        if (count($errors = $this->get('Errors'))) {
-            throw new Exception(implode("\n", $errors));
-        }
-        
-        
-        
-        if($this->_layout == 'edit') {
-            
-            $authorised = $user->authorise('core.create', 'com_gazebos');
+		$this->_prepareDocument();
 
-            if ($authorised !== true) {
-                throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
-            }
-        }
-        
-        $this->_prepareDocument();
-
-        parent::display($tpl);
-    }
-
+		parent::display($tpl);
+	}
 
 	/**
 	 * Prepares the document
 	 */
 	protected function _prepareDocument()
 	{
-		$app	= JFactory::getApplication();
-		$menus	= $app->getMenu();
-		$title	= null;
+		$app = JFactory::getApplication();
+		$menus = $app->getMenu();
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
-		if($menu)
+		if ($menu)
 		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
-		} else {
+		}
+		else
+		{
 			$this->params->def('page_heading', JText::_('com_gazebos_DEFAULT_PAGE_TITLE'));
 		}
 		$title = $this->params->get('page_title', '');
-		if (empty($title)) {
+
+		if (empty($title))
+		{
 			$title = $app->getCfg('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
+		{
 			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		{
 			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		$this->document->setTitle($title);
@@ -101,6 +92,5 @@ class GazebosViewProducttype extends JView {
 		{
 			$this->document->setMetadata('robots', $this->params->get('robots'));
 		}
-	}        
-    
+	}
 }

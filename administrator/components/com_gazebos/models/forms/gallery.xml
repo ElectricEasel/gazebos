@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset
+		name="general"
+		label="Gallery">
+
+		<field
+			name="id"
+			type="text"
+			default="0"
+			label="JGLOBAL_FIELD_ID_LABEL"
+			readonly="true"
+			class="readonly"
+			description="JGLOBAL_FIELD_ID_DESC" /> 
+
+		<field
+			name="product_id"
+			type="sql"
+			class="inputbox"
+			label="Product ID"
+			description="The id of the product to assign this to."
+			required="true"
+			query="SELECT 0 AS id, '- Please Select -' AS title UNION SELECT id, title FROM #__gazebos_products"
+			key_field="id"
+			value_field="title" /> 
+
+		<field
+			name="path"
+			type="file"
+			label="Upload Image"
+			description="Select an image to add to the gallery."
+			required="true"
+			filter="raw" />
+	
+	</fieldset>
+</form>

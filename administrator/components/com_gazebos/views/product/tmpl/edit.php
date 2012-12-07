@@ -35,8 +35,11 @@ JFactory::getDocument()
 		<fieldset class="adminform fieldset_<?php echo $fieldset->name; ?>">
 			<legend><?php echo JText::_($fieldset->label); ?></legend>
 			<ul class="adminformlist">
-			<?php foreach ($this->form->getFieldset($fieldset->name) as $field) : ?>
-				<li><?php echo $field->label, $field->input; ?></li>
+			<?php
+			foreach ($this->form->getFieldset($fieldset->name) as $field) :
+				$input = ($field->id === 'jform_gallery') ? str_replace('{{product_id}}', $this->item->id, $field->input) : $field->input;
+				?>
+				<li><?php echo $field->label, $input; ?></li>
 			<?php endforeach; ?>
             </ul>
 		</fieldset>

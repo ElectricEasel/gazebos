@@ -10,9 +10,9 @@
 defined('_JEXEC') or die;
 
 // Include dependancies
-jimport('joomla.application.component.controller');
+JFactory::getLanguage()->load('com_gazebos', JPATH_ADMINISTRATOR);
 
 // Execute the task.
-$controller	= JController::getInstance('Gazebos');
+$controller	= EEController::getInstance('Gazebos');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();
