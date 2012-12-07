@@ -1,32 +1,120 @@
 .wrap {
 	margin: 0 auto;
 	width: 960px;
+	position: relative;
 }
-
+#logo {
+	background:url(../images/h_logo.png) no-repeat 0 0 scroll transparent;
+	height: 92px;
+	width: 289px;
+	display: block;
+	position: absolute;
+	top:16px;
+	left: 3px;
+	text-indent: -9999px;
+}
 #header {
-	background:url(../images/bg_header.png) repeat 0 0 scroll #FFF;
+	background:url(../images/bg_header.png) repeat-x 0 0 scroll #422f25;
+	height: 164px;
+	font-family: Times, serif;
 }
 #header ul {
 	margin: 0;
 	padding: 0;
+	list-style: none outside none;
 }
-
+#header ul#nav {
+    position: absolute;
+    top: 120px;
+}
+#header ul#nav li {
+	float: left;	
+}
+#header ul#nav li a {
+	font-size: 15px;
+	color: #fff;
+	padding: 0 16px;
+	text-decoration: none;
+	text-transform: uppercase;	
+}
+#header ul#nav li:last-child a {
+	padding-right: 0;
+}
+#bbb {
+	background:url(../images/bbb_logo.png) no-repeat 0 0 scroll transparent;
+	height: 53px;
+	width: 155px;
+	position: absolute;
+	right: 0;
+	top:16px;
+}
+#tagline {
+    color: #9C8679;
+    font-size: 20px;
+    font-style: italic;
+    position: absolute;
+    right: 180px;
+    text-align: right;
+    top: 32px;
+}
+#subhead {
+	font-family: Times, serif;
+}
 #image-banner {
 	background:url(../images/bg_subhead.png) repeat 0 0 scroll #FFF;
-	padding: 10px 0;
+	padding: 5px 0;
 }
-#banner-holder {
+#image-banner .wrap {
 	background:url(../images/banners/cabana.jpg) no-repeat center top scroll transparent;
-	height: 434px;
+	height: 431px;
+	margin: 0 auto;
+	width: 1200px;
 }
-
+#banner-tagline {
+	width: 712px;
+	position: absolute;
+	top:152px;
+	height: 132px;
+	right: 0;
+	background:url(../images/tagline_gradient.png) repeat-y right top scroll transparent;
+	text-align: right;
+	padding-right: 145px;
+	color: #fff;
+}
+#banner-tagline h1 {
+    font-size: 60px;
+    font-weight: normal;
+    line-height: 60px;
+    margin: 17px 22px 2px 0;
+}
+#banner-tagline span {
+	font-size: 28px;
+	font-style: italic;
+}
 #green-banner {
-	background:url(../images/bg_green.png) repeat 0 0 scroll #FFF;
+	background:url(../images/bg_green2.png) repeat 0 0 scroll #FFF;
 }
 
-#green-holder {
+#green-banner .wrap {
 	background:url(../images/green-home-bg.png) no-repeat center top scroll transparent;
 	height: 121px;
+	width: 1200px;
+}
+#green-banner .wrap h2 {
+	background:url(../images/free-shipping.png) no-repeat 150px 50% scroll transparent;
+    color: #FFFFFF;
+    font-size: 28px;
+    font-weight: normal;
+    margin: 0;
+    padding: 44px 0 0 276px;
+    text-align: center;
+    width: 762px;
+    height: 77px;
+}
+#green-banner .wrap h2 span {
+	font-size: 31px;
+	text-transform: uppercase;
+	color: #acbd98;
 }
 
 #main {
@@ -36,3 +124,34 @@
 #footer {
 	background:url(../images/bg_header.png) repeat 0 0 scroll #FFF;
 }
+
+.home-product {
+	float: left;
+	width:240px;
+	background:url(../images/home_product_bg.png) no-repeat 0 0 scroll transparent;
+	height: 592px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
