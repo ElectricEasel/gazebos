@@ -65,9 +65,6 @@ $this
 		</div>
 		<div id="main">
 			<div class="wrap">
-				<?php if ($this->countModules('home-gazebos')): ?>
-					<jdoc:include type="modules" name="home-gazebos"   />
-				<?php endif; ?>
 				<jdoc:include type="message" />
 				<?php if ($this->countModules('position-7') || $this->countModules('position-4') || $this->countModules('position-5')) : ?>
 				<div id="sidebar">
@@ -78,22 +75,34 @@ $this
 				<?php endif; ?>
 				<div id="content">
 					<jdoc:include type="component" />
+					<?php if ($this->countModules('home-spot-marketing')): ?>
+						<div id="spot-marketing">
+							<jdoc:include type="modules" name="home-spot-marketing"   />
+						</div>
+						<div class="clear"></div>
+				<?php endif; ?>
 				</div>
 			</div>
 		</div>
 		<div id="footer">
 			<div class="wrap">
-				<div class="module">
-					<jdoc:include type="modules" name="position-10" />
+				<div id="footer-quote">
+					<jdoc:include type="modules" name="footer-quote" />
 				</div>
-				<div class="module">
-					<jdoc:include type="modules" name="position-11" />
-				</div>
-				<div class="module">
-					<jdoc:include type="modules" name="position-12" />
-				</div>
-				<div class="module">
-					<a href="/" id="footerlogo"><?php echo $config->get('sitename'); ?></a>
+				<div id="footer-widgets">
+					<div class="module">
+						<jdoc:include type="modules" name="position-10" />
+					</div>
+					<div class="module">
+						<jdoc:include type="modules" name="position-11" />
+					</div>
+					<div class="module">
+						<jdoc:include type="modules" name="position-12" />
+					</div>
+					<div class="module">
+						<a href="/" id="footerlogo"><?php echo $config->get('sitename'); ?></a>
+					</div>
+					<div class="clear"></div>
 				</div>
 			</div>
 		</div>
