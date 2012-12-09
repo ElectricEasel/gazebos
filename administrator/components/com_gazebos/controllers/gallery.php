@@ -134,17 +134,16 @@ class GazebosControllerGallery extends JControllerForm
 		$new_order = array_keys($order);
 		$status = $model->saveOrder($pks, $new_order);
 
-		if ($status->getError())
-		{
-			$result = 'fail';
-		}
-		else
+		if ($status === true)
 		{
 			$result = 'success';
 		}
+		else
+		{
+			$result = 'fail';
+		}
 
-		echo json_encode(array('result' => $result));
-		JFactory::getApplication()->close();
+		JFactory::getApplication()->close(json_encode(array('result' => $result)));
 	}
 
 }

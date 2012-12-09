@@ -26,11 +26,11 @@ abstract class modProductSearchHelper
 	public static function getFilters()
 	{
 		$html = array();
-		$filters = array('material', 'shape', 'style', 'price');
+		$filters = array('material', 'shape', 'style');
 
 		foreach ($filters as $type)
 		{
-			$label = ucfirst($type);
+			$label = '<h4>' . ucfirst($type) . '</h4>';
 			$select = self::getFilter($type);
 
 			$html[] = $label . $select;
@@ -44,7 +44,13 @@ abstract class modProductSearchHelper
 		$db = JFactory::getDbo();
 		$table = $db->qn(GazebosHelper::getTable($type));
 
-		$q = "SELECT id, title FROM {$table} WHERE state = 1";
+		$q =
+			'SELECT a.id, a.title ' .//, COUNT(b.id) AS count ' .
+			"FROM {$table} AS a ";// .
+//			"LEFT JOIN #__gazebos_products AS b ON b.{$type}_id = a.id " .
+//			'WHERE a.state = 1 ' .
+//			'AND (b.id IS NULL OR b.id != NULL)';
+
 		$results = $db->setQuery($q)->loadObjectList();
 
 		if ($results === null) return false;
@@ -53,7 +59,8 @@ abstract class modProductSearchHelper
 
 		foreach ($results as $row)
 		{
-			$options[] = JHtml::_('select.option', $row->id, $row->title);
+			$text = $row->title;// . ' (' . $row->count . ')';
+			$options[] = JHtml::_('select.option', $row->id, $text);
 		}
 
 		return $options;
@@ -65,24 +72,21 @@ abstract class modProductSearchHelper
 		$app = JFactory::getApplication();
 		$options = self::getOptions($type);
 
+		$html[] = '<ul>';
 		foreach ($options as $i => $option)
 		{
-			// Initialize some option attributes.
-			$checked = (in_array((string) $option->value, (array) $app->getUserState('filter.' . $type)) ? ' checked="checked"' : '');
-			$class = !empty($option->class) ? ' class="' . $option->class . '"' : '';
-			$disabled = !empty($option->disable) ? ' disabled="disabled"' : '';
-
-			// Initialize some JavaScript option attributes.
-			$onclick = ' onclick="this.form.submit();"';//!empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
+			$checked = in_array((string) $option->value, (array) $app->getUserState('filter.' . $type)) ? ' checked="checked"' : '';
+			$onclick = ' onclick="this.form.submit();"';
 
 			$html[] = '<li>';
 			$html[] = '<input type="checkbox" id="filter_' . $type . $i . '" name="filter_' . $type . '[]"' . ' value="';
-			$html[] = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '/>';
-			$html[] = '<label for="filter_' . $type . $i . '"' . $class . '>' . JText::_($option->text) . '</label>';
+			$html[] = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $onclick . '/>';
+			$html[] = '<label for="filter_' . $type . $i . '">' . JText::_($option->text) . '</label>';
 			$html[] = '</li>';
 		}
 
-		$html[] = '<input type="hidden" name="filter_' . $type . '[]" value="0" />';
+		$html[] = '</ul>';
+		$html[] = '<input type="hidden" name="filter_' . $type . '[]" value="0" checked="checked" />';
 
 		return implode($html);
 	}

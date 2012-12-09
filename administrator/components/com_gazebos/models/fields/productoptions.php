@@ -33,15 +33,25 @@ class JFormFieldProductOptions extends JFormField
 	 */
 	protected function getInput()
 	{
+		$registry = new JRegistry($this->value);
+		$selected = $registry->toArray();
+
 		$options = $this->getOptions();
-		$config = array();
+		$attribs = array();
+		$html = array();
 
 		if ($this->multiple)
 		{
-			$config['multiple'] = $this->multiple;
+			$attribs['multiple'] = 'multiple';
 		}
 
-		return JHtml::_('select.groupedlist', $options, $this->name, $config);
+		foreach ($options as $id => $keys)
+		{
+			$html[] = '<label>' . $keys['text'] . '</label>';
+			$html[] = JHtml::_('select.genericlist', $keys['items'], $this->getName($id), $attribs, 'value', 'text', $selected[$id]);
+		}
+
+		return implode($html);
 	}
 
 	protected function getOptions()
@@ -51,14 +61,15 @@ class JFormFieldProductOptions extends JFormField
 
 		$q
 			->select('a.id AS option_id, a.title AS option_title, b.id AS category_id, b.title AS category_title')
-			->from('FROM #__gazebos_options AS a')
-			->leftJoin('LEFT JOIN #__gazebos_option_categories AS b ON a.option_category_id = b.id');
+			->from('#__gazebos_options AS a')
+			->leftJoin('#__gazebos_option_categories AS b ON a.option_category_id = b.id');
 
 		$results = $db->setQuery($q)->loadObjectList();
 
 		if (is_null($results)) return false;
 
 		$options = array();
+
 		foreach ($results as $row)
 		{
 			if (!isset($options[$row->category_id]))
@@ -73,5 +84,78 @@ class JFormFieldProductOptions extends JFormField
 		}
 
 		return $options;
+	}
+
+	/**
+	 * Method to get the name used for the field input tag.
+	 * The main difference between this and the parent method is that
+	 * this method can set the group and uses the default $fieldname
+	 * property. Since we are pulling in multiple items and groups
+	 * from other tables, it's how it had to be done.
+	 *
+	 * @param   string  $fieldName  The field element name.
+	 *
+	 * @return  string  The name to be used for the field input tag.
+	 *
+	 * @see     parent::getName
+	 * @since   11.1
+	 */
+	protected function getName($group, $fieldName = null)
+	{
+		$this->group = $group;
+
+		if (is_null($fieldName))
+		{
+			$fieldName = $this->fieldname;
+		}
+
+		// Initialise variables.
+		$name = '';
+
+		// If there is a form control set for the attached form add it first.
+		if ($this->formControl)
+		{
+			$name .= $this->formControl;
+		}
+
+		// If we already have a name segment add the field name as another level.
+		if ($name)
+		{
+			$name .= '[' . $fieldName . ']';
+		}
+		else
+		{
+			$name .= $fieldName;
+		}
+
+		// If the field is in a group add the group control to the field name.
+		if ($this->group)
+		{
+			// If we already have a name segment add the group control as another level.
+			$groups = explode('.', $this->group);
+			if ($name)
+			{
+				foreach ($groups as $group)
+				{
+					$name .= '[' . $group . ']';
+				}
+			}
+			else
+			{
+				$name .= array_shift($groups);
+				foreach ($groups as $group)
+				{
+					$name .= '[' . $group . ']';
+				}
+			}
+		}
+
+		// If the field should support multiple values add the final array segment.
+		if ($this->multiple)
+		{
+			$name .= '[]';
+		}
+
+		return $name;
 	}
 }

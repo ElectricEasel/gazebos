@@ -38,24 +38,15 @@ $canChange	= $user->authorise('core.edit.state',	'com_gazebos');
 			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
 			<button type="button" onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
-
 		<div class='filter-select fltrt'>
+			<?php echo $form->getInput('filter_type_id', null, JRequest::getVar('filter_type_id')); ?>
+			<?php echo $form->getInput('filter_style_id', null, JRequest::getVar('filter_style_id')); ?>
+			<?php echo $form->getInput('filter_shape_id', null, JRequest::getVar('filter_shape_id')); ?>
+			<?php echo $form->getInput('filter_material_id', null, JRequest::getVar('filter_material_id')); ?>
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), "value", "text", $this->state->get('filter.state'), true);?>
 			</select>
-		</div>
-		<div class='filter-select fltrt'>
-			<?php echo $form->getInput('filter_type_id', null, JRequest::getVar('filter_type_id')); ?>
-		</div>
-		<div class='filter-select fltrt'>
-			<?php echo $form->getInput('filter_style_id', null, JRequest::getVar('filter_style_id')); ?>
-		</div>
-		<div class='filter-select fltrt'>
-			<?php echo $form->getInput('filter_shape_id', null, JRequest::getVar('filter_shape_id')); ?>
-		</div>
-		<div class='filter-select fltrt'>
-			<?php echo $form->getInput('filter_material_id', null, JRequest::getVar('filter_material_id')); ?>
 		</div>
 	</fieldset>
 	<div class="clr"> </div>
@@ -80,24 +71,18 @@ $canChange	= $user->authorise('core.edit.state',	'com_gazebos');
 				<th class='left'>
 				<?php echo JHtml::_('grid.sort',  'COM_GAZEBOS_PRODUCTS_MATERIAL_ID', 'a.material_id', $listDirn, $listOrder); ?>
 				</th>
-                <?php if (isset($this->items[0]->state)) { ?>
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort',  'JPUBLISHED', 'a.state', $listDirn, $listOrder); ?>
 				</th>
-                <?php } ?>
-                <?php if (isset($this->items[0]->ordering)) { ?>
 				<th width="10%">
 					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
 						<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'products.saveorder'); ?>
 					<?php endif; ?>
 				</th>
-                <?php } ?>
-                <?php if (isset($this->items[0]->id)) { ?>
                 <th width="1%" class="nowrap">
                     <?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
                 </th>
-                <?php } ?>
 			</tr>
 		</thead>
 		<tfoot>

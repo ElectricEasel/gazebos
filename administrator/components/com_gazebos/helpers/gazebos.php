@@ -23,14 +23,14 @@ class GazebosHelper extends EEHelper
 	public static function addSubmenu($vName = '')
 	{
 		JSubMenuHelper::addEntry(
-			JText::_('COM_GAZEBOS_TITLE_PRODUCTTYPES'),
-			'index.php?option=com_gazebos&view=producttypes',
-			$vName == 'producttypes'
-		);
-		JSubMenuHelper::addEntry(
 			JText::_('COM_GAZEBOS_TITLE_PRODUCTS'),
 			'index.php?option=com_gazebos&view=products',
 			$vName == 'products'
+		);
+		JSubMenuHelper::addEntry(
+			JText::_('COM_GAZEBOS_TITLE_PRODUCTTYPES'),
+			'index.php?option=com_gazebos&view=producttypes',
+			$vName == 'producttypes'
 		);
 		JSubMenuHelper::addEntry(
 			JText::_('COM_GAZEBOS_TITLE_PRODUCTSTYLES'),
@@ -57,6 +57,5 @@ class GazebosHelper extends EEHelper
 			'index.php?option=com_gazebos&view=optioncategories',
 			$vName == 'optioncategories'
 		);
-
 	}
 }

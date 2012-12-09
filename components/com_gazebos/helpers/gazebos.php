@@ -11,6 +11,8 @@ defined('_JEXEC') or die;
 
 abstract class GazebosHelper
 {
+	protected static $aliases = array();
+
 	/**
 	 * Get the alias for the specifed id
 	 * associated with the given view.
@@ -25,9 +27,16 @@ abstract class GazebosHelper
 	{
 		$db = JFactory::getDbo();
 		$table = $db->qn(self::getTable($view));
-		$row = $db->setQuery("SELECT alias FROM {$table} WHERE id = " . (int) $id)->loadObject();
 
-		return $row->alias;
+		isset(self::$aliases[$table]) or self::$aliases[$table] = array();
+		
+		if (!isset(self::$aliases[$table][$id]))
+		{
+			$row = $db->setQuery("SELECT alias FROM {$table} WHERE id = " . (int) $id)->loadObject();
+			self::$aliases[$table][$id] = $row->alias;
+		}
+
+		return self::$aliases[$table][$id];
 	}
 
 	/**

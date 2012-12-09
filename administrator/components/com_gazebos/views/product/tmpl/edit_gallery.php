@@ -7,20 +7,7 @@
  * @author      Don Gilbert <don@electriceasel.com> - http://www.electriceasel.com
  */
 
-// No direct access
+// no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.controllerform');
-
-/**
- * Product controller class.
- */
-class GazebosControllerProduct extends JControllerForm
-{
-	public function __construct()
-	{
-		$this->view_list = 'products';
-		parent::__construct();
-	}
-
-}
+?>
+<iframe width="100%" height="500px" src="index.php?option=com_gazebos&view=gallery&layout=edit&tmpl=component&product_id=<?php echo $this->item->id; ?>"></iframe>

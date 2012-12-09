@@ -13,8 +13,8 @@ defined('_JEXEC') or die;
 /**
  * product Table class
  */
-class GazebosTableproduct extends JTable {
-
+class GazebosTableProduct extends JTable
+{
 	/**
 	 * Constructor
 	 *
@@ -56,9 +56,16 @@ class GazebosTableproduct extends JTable {
 			$this->setRules($rules);
 		}
 
-		if (isset($array['title']))
+		if (isset($array['title']) && empty($array['alias']))
 		{
 			$array['alias'] = EEHelper::buildAlias($array['title']);
+		}
+
+		if (isset($array['options']) && is_array($array['options']))
+		{
+			$registry = new JRegistry();
+			$registry->loadArray($array['options']);
+			$array['options'] = (string) $registry;
 		}
 
 		return parent::bind($array, $ignore);

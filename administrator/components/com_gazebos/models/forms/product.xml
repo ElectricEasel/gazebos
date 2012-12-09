@@ -9,7 +9,8 @@
 			type="text"
 			label="COM_GAZEBOS_FORM_LBL_PRODUCT_TITLE"
 			description="COM_GAZEBOS_FORM_DESC_PRODUCT_TITLE"
-			filter="raw" />
+			filter="raw"
+			size="50" />
 
 		<field
 			name="state"
@@ -22,14 +23,6 @@
 			<option value="1">JPUBLISHED</option>
 			<option value="0">JUNPUBLISHED</option>
 		</field>
-
-		<field
-			name="gallery"
-			type="gallery"
-			label="Gallery"
-			component="com_gazebos"
-			field="product_id"
-			description="Product Gallery. Will open in modal window." />
 
 		<field
 			name="type_id"
@@ -80,14 +73,16 @@
 			type="text"
 			label="COM_GAZEBOS_FORM_LBL_PRODUCT_PRICE_MIN"
 			description="COM_GAZEBOS_FORM_DESC_PRODUCT_PRICE_MIN"
-			filter="int" />
+			filter="int"
+			size="10" />
 
 		<field
 			name="price_max"
 			type="text"
 			label="COM_GAZEBOS_FORM_LBL_PRODUCT_PRICE_MAX"
 			description="COM_GAZEBOS_FORM_DESC_PRODUCT_PRICE_MAX"
-			filter="int" />
+			filter="int"
+			size="10" />
 
 		<field
 			name="brochure"
@@ -101,17 +96,38 @@
 			type="textarea"
 			label="COM_GAZEBOS_FORM_LBL_PRODUCT_SHORT_DESCRIPTION"
 			description="COM_GAZEBOS_FORM_DESC_PRODUCT_SHORT_DESCRIPTION"
-			cols="50"
+			cols="75"
 			rows="10"
 			filter="raw" />
+
+	</fieldset>
+
+	<fieldset
+		name="description"
+		label="Description">
 
 		<field
 			name="description"
 			type="textarea"
 			label="COM_GAZEBOS_FORM_LBL_PRODUCT_DESCRIPTION"
 			description="COM_GAZEBOS_FORM_DESC_PRODUCT_DESCRIPTION"
-			cols="50"
-			rows="10"
+			cols="80"
+			rows="30"
+			filter="raw" />
+
+	</fieldset>
+
+	<fieldset
+		name="specs"
+		label="Specifications">
+
+		<field
+			name="specs"
+			type="textarea"
+			label="Speifications"
+			description="Specs."
+			cols="80"
+			rows="30"
 			filter="raw" />
 
 	</fieldset>
@@ -121,15 +137,9 @@
 		label="Options">
 
 		<field
-			type="productoptions" />
-			
-
-		<field
 			name="options"
-			type="hidden"
-			class="inputbox"
-			label="COM_GAZEBOS_FORM_LBL_PRODUCT_OPTIONS"
-			description="COM_GAZEBOS_FORM_DESC_PRODUCT_OPTIONS" />
+			type="productoptions"
+			multiple="true" />
 
 	</fieldset>
 

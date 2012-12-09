@@ -46,15 +46,9 @@ $saveOrder	= $listOrder == 'a.ordering';
 				<th width="1%">
 					<input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
 				</th>
-
-				<th class='left'>
-				<?php echo JHtml::_('grid.sort',  'COM_GAZEBOS_OPTIONCATEGORIES_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>
-				</th>
 				<th class='left'>
 				<?php echo JHtml::_('grid.sort',  'COM_GAZEBOS_OPTIONCATEGORIES_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-
-
                 <?php if (isset($this->items[0]->state)) { ?>
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort',  'JPUBLISHED', 'a.state', $listDirn, $listOrder); ?>
@@ -93,10 +87,6 @@ $saveOrder	= $listOrder == 'a.ordering';
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
-				</td>
-
-				<td>
-					<?php echo $item->created_by; ?>
 				</td>
 				<td>
 				<?php if (isset($item->checked_out) && $item->checked_out) : ?>
