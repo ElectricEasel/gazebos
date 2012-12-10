@@ -8,14 +8,12 @@
  */
 
 // no direct access
-defined('_JEXEC') or die;
-$fieldset = $this->fieldset; ?>
+defined('_JEXEC') or die; ?>
 <div class="width-100">
-	<fieldset class="adminform fieldset_<?php echo $fieldset->name; ?>">
+	<fieldset class="adminform fieldset_<?php echo $this->fieldset->name; ?>">
 		<ul class="adminformlist">
-		<?php foreach ($this->form->getFieldset($fieldset->name) as $field) :
-			$input = ($field->id === 'jform_gallery') ? str_replace('{{product_id}}', $this->item->id, $field->input) : $field->input; ?>
-			<li><?php echo $field->label, $input; ?></li>
+		<?php foreach ($this->form->getFieldset($this->fieldset->name) as $field) : ?>
+			<li><?php echo $field->label, $field->input; ?></li>
 		<?php endforeach; ?>
         </ul>
 	</fieldset>

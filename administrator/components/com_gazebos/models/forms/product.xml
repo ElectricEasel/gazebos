@@ -10,6 +10,7 @@
 			label="COM_GAZEBOS_FORM_LBL_PRODUCT_TITLE"
 			description="COM_GAZEBOS_FORM_DESC_PRODUCT_TITLE"
 			filter="raw"
+			required="true"
 			size="50" />
 
 		<field

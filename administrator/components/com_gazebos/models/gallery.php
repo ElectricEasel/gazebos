@@ -47,14 +47,7 @@ class GazebosModelGallery extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		// Get the form.
-		$form = $this->loadForm('com_gazebos.gallery', 'gallery', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form))
-		{
-			return false;
-		}
-
-		return $form;
+		return $this->loadForm('com_gazebos.gallery', 'gallery', array('control' => 'jform', 'load_data' => $loadData));
 	}
 
 	/**
@@ -65,15 +58,19 @@ class GazebosModelGallery extends JModelAdmin
 	 */
 	protected function loadFormData()
 	{
+		$app = JFactory::getApplication();
+
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_gazebos.edit.gallery.data', array());
+		$data = $app->getUserState('com_gazebos.edit.gallery.data', array());
 
 		if (empty($data))
 		{
 			$data = $this->getItem();
 		}
 
-		if ($product_id = JRequest::getInt('product_id'))
+		$product_id = $app->input->getInt('product_id');
+
+		if ($product_id)
 		{
 			$data->product_id = $product_id;
 		}
