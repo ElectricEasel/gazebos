@@ -218,11 +218,13 @@ body.gazebos #image-banner .wrap {
 .type .links {
 	margin: 30px 0 0 0;
 	font-family: Times, serif;
-	list-style-image: url(../images/list-arrow.png);
-	padding: 0 0 0 24px;
+	list-style: none outside none;
+	padding: 0 0 0 10px;
 }
 .type .links li {
 	margin-bottom: 5px;
+	background: url(../images/sprite-list-arrow.png) no-repeat scroll 0 2px transparent;
+	padding-left: 15px;
 }
 .type .links li a {
 	color: #3c2313;
@@ -335,7 +337,7 @@ body.gazebos #image-banner .wrap {
     width: 215px;
 }
 #footer .module h5 {
-	background: url(../images/list-arrow.png) no-repeat scroll 0 0 transparent;
+	background: url(../images/sprite-list-arrow.png) no-repeat scroll 0 0 transparent;
 	margin: 0 0 20px 0;
 	font-size: 15px;
 	text-indent: 15px;
@@ -596,24 +598,25 @@ body.home .pagination {
 	list-style: none outside none;
 }
 #tabs li {
-
-}
-#tabs li a {
-	color: #3c2313;
-	font-size: 18px;
-	font-style: italic;
-	font-weight: bold;
-	text-decoration: none;
 	width: 257px;
 	height: 36px;
-	display: block;
-	line-height: 36px;
-	text-indent: 20px;
 }
-#tabs li a:before {
-	content: url(../images/list-arrow.png) '\00a0 \00a0';
+#tabs li a {
+	background: url(../images/sprite-list-arrow.png) no-repeat scroll 20px 12px transparent;
+    color: #3C2313;
+    display: block;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: bold;
+    line-height: 36px;
+    text-decoration: none;
+    text-indent: 41px;
+}
+
+#tabs li:hover {
+	background: url(../images/bg_green-tab.png) no-repeat scroll 0 0 transparent;
 }
 #tabs li a:hover {
-	background: url(../images/bg_green-tab.png) repeat scroll 0 0 transparent;
 	color: #fff;
+	background-position: 20px -24px;
 }
