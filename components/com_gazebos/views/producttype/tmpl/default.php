@@ -14,15 +14,22 @@ $type = $this->item;
 
 if($type) : ?>
 <div class="producttype">
-	<h1><?php echo $type->title; ?></h1>
+	<h2><?php echo $type->title; ?></h2>
+	<?php if ($type->description) : ?>
+	<p><?php echo EEHelper::formatText($type->description, 1000); ?>
+	<?php endif; ?>
+	<div class="pagination">
+		<span class="search-term"><?php echo $type->title; ?></span>
+		<label class="search-item" for="mat1">Wood</label><input id="mat1" class="styled" type="checkbox" name="mat1" checked="checked" />
+		<label class="search-item" for="shape1">Octagon</label><input id="shape1" class="styled" type="checkbox" name="shape1" checked="checked" />
+	</div>
 	<?php if ($type->products !== null) : ?>
-	<ul class="product_list">
-		<?php foreach ($type->products as $product) : ?>
-		<li>
-			<a href="<?php echo $product->link; ?>"><?php echo $product->title; ?></a>
-			<p><?php echo $product->short_description; ?></p>
-		</li>
-		<?php endforeach; ?>
+	<ul class="product_listing">
+		<?php foreach ($type->products as $product)
+		{
+			$this->product = $product;
+			echo $this->loadTemplate('product');
+		} ?>
 	</ul>
 	<?php endif; ?>
 </div>

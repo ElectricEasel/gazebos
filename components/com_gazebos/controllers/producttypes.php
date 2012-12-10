@@ -15,13 +15,13 @@ require_once JPATH_COMPONENT.'/controller.php';
 /**
  * Producttypes list controller class.
  */
-class GazebosControllerProducttypes extends GazebosController
+class GazebosControllerProductTypes extends GazebosController
 {
 	/**
 	 * Proxy for getModel.
 	 * @since	1.6
 	 */
-	public function &getModel($name = 'Producttypes', $prefix = 'GazebosModel')
+	public function &getModel($name = 'ProductTypes', $prefix = 'GazebosModel')
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

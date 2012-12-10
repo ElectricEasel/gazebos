@@ -9,10 +9,13 @@
 // no direct access
 defined('_JEXEC') or die;
 ?>
-<form action="" method="post" name="searchForm" id="searchForm">
-	<h3><?php echo modProductSearchHelper::getActiveSearch(); ?></h3>
-	<div class="search<?php echo $moduleclass_sfx ?>">
-		<?php echo modProductSearchHelper::getFilters(); ?>
-		<input type="hidden" name="task" value="search" />
-	</div>
-</form>
+<div class="search-filter">
+	<form action="" method="post" name="searchForm" id="searchForm">
+		<h4><?php echo GazebosHelper::getProductTypeTitle(); ?></h4>
+		<div class="search">
+			<?php echo modProductSearchHelper::getFilters(); ?>
+			<input type="hidden" name="task" value="search" />
+		</div>
+		<input type="hidden" id="producttype" value="<?php echo GazebosHelper::getProductTypeId(); ?>" />
+	</form>
+</div>

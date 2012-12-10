@@ -40,6 +40,13 @@ class GazebosViewProductType extends JView
 		$this->_prepareDocument();
 
 		parent::display($tpl);
+
+		$app = JFactory::getApplication();
+
+		if ($app->input->getBool('ajax') === true)
+		{
+			$app->close();
+		}
 	}
 
 	/**

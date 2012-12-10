@@ -13,6 +13,23 @@ abstract class GazebosHelper
 {
 	protected static $aliases = array();
 
+	protected static $productTypes = array(
+		1 => 'Gazebos',
+		2 => 'Pergolas',
+		3 => 'Pavilions',
+		4 => 'Cabanas'
+	);
+
+	protected static $tableMap = array(
+		'producttypes' => '#__gazebos_types',
+		'producttype' => '#__gazebos_types',
+		'product' => '#__gazebos_products',
+		'style' => '#__gazebos_styles',
+		'type' => '#__gazebos_types',
+		'material' => '#__gazebos_materials',
+		'shape' => '#__gazebos_shapes',
+	);
+
 	/**
 	 * Get the alias for the specifed id
 	 * associated with the given view.
@@ -70,17 +87,57 @@ abstract class GazebosHelper
 	 */
 	public static function getTable($view)
 	{
-		$map = array(
-			'producttypes' => '#__gazebos_types',
-			'producttype' => '#__gazebos_types',
-			'product' => '#__gazebos_products',
-			'style' => '#__gazebos_styles',
-			'type' => '#__gazebos_types',
-			'material' => '#__gazebos_materials',
-			'shape' => '#__gazebos_shapes',
-		);
+		return self::$tableMap[$view];
+	}
 
-		return $map[$view];
+	/**
+	 * Get the title of the currently viewed product type.
+	 * If an id is passed, use that instead.
+	 *
+	 * @param   integer  $id  ID of the product type to retrieve.
+	 *
+	 * @return  string  Product type title.
+	 *
+	 */
+	public static function getProductTypeTitle($id = null)
+	{
+		if (is_null($id))
+		{
+			$id = self::getProductTypeId();
+		}
+
+		if (!isset(self::$productTypes[$id]))
+		{
+			$result = JFactory::getDbo()->setQuery('SELECT title FROM #__gazebos_producttypes WHERE id = ' . $id)->loadObject();
+			self::$productTypes[$id] = $result->title;
+		}
+
+		return self::$productTypes[$id];
+	}
+
+	/**
+	 * Get the id of the currently viewed product type.
+	 *
+	 * @return  integer  Product type id.
+	 *
+	 */
+	public static function getProductTypeId()
+	{
+		$input = JFactory::getApplication()->input;
+
+		switch ($input->getCmd('view'))
+		{
+			case 'product':
+				$id = JModel::getInstance('Product', 'GazebosModel')->getData()->type_id;
+				break;
+			case 'producttype':
+				$id = $input->getInt('id');
+				break;
+			default:
+				return false;
+				break;
+		}
+
+		return $id;
 	}
 }
-

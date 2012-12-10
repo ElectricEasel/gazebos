@@ -18,11 +18,6 @@ JLoader::import('components.com_gazebos.helpers.gazebos', JPATH_SITE);
  */
 abstract class modProductSearchHelper
 {
-	public static function getActiveSearch()
-	{
-		
-	}
-
 	public static function getFilters()
 	{
 		$html = array();
@@ -30,7 +25,7 @@ abstract class modProductSearchHelper
 
 		foreach ($filters as $type)
 		{
-			$label = '<h4>' . ucfirst($type) . '</h4>';
+			$label = '<h5>' . GazebosHelper::getProductTypeTitle() . ' By ' . ucfirst($type) . '</h5>';
 			$select = self::getFilter($type);
 
 			$html[] = $label . $select;
@@ -72,15 +67,14 @@ abstract class modProductSearchHelper
 		$app = JFactory::getApplication();
 		$options = self::getOptions($type);
 
-		$html[] = '<ul>';
+		$html[] = '<ul class="filter-menu">';
 		foreach ($options as $i => $option)
 		{
 			$checked = in_array((string) $option->value, (array) $app->getUserState('filter.' . $type)) ? ' checked="checked"' : '';
-			$onclick = ' onclick="this.form.submit();"';
 
 			$html[] = '<li>';
 			$html[] = '<input type="checkbox" id="filter_' . $type . $i . '" name="filter_' . $type . '[]"' . ' value="';
-			$html[] = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $onclick . '/>';
+			$html[] = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . '/>';
 			$html[] = '<label for="filter_' . $type . $i . '">' . JText::_($option->text) . '</label>';
 			$html[] = '</li>';
 		}
