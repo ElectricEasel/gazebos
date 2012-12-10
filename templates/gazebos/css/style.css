@@ -73,19 +73,19 @@
 	background:url(../images/bg_subhead.png) repeat 0 0 scroll #FFF;
 	padding: 5px 0;
 }
-#image-banner .wrap {
+#image-banner .banner-wrap {
 	margin: 0 auto;
-	width: 1200px;
 }
-body.home #image-banner .wrap {
+body.home #image-banner .banner-wrap {
 	background:url(../images/banners/cabana.jpg) no-repeat center top scroll transparent;
 	height: 431px;
+	min-width: 960px;
 }
 #banner-tagline {
 	width: 712px;
 	position: absolute;
 	height: 132px;
-	right: 0;
+	right: -120px;
 	background:url(../images/tagline_gradient.png) repeat-y right top scroll transparent;
 	text-align: right;
 	padding-right: 145px;
@@ -97,7 +97,7 @@ body.home #banner-tagline {
 body.gazebos #banner-tagline {
 	top:27px;
 }
-body.gazebos #image-banner .wrap {
+body.gazebos #image-banner .subhead-wrap {
 	background:url(../images/banners/gazebo.jpg) no-repeat center top scroll transparent;
 	height: 184px;
 }
@@ -118,15 +118,14 @@ body.gazebos #image-banner .wrap {
 #green-banner {
 	background:url(../images/bg_green_interior.png) repeat 0 0 scroll #365117;
 }
-.home #green-banner .wrap {
+.home #green-banner .subhead-wrap {
 	background:url(../images/green-home-bg.png) no-repeat center top scroll transparent;
 	height: 121px;
-	width: 1200px;
 }
 .home #green-banner .wrap h2 {
-	background:url(../images/free-shipping.png) no-repeat 150px 50% scroll transparent;
+	background:url(../images/free-shipping.png) no-repeat 30px 50% scroll transparent;
     color: #FFFFFF;
-    padding: 44px 0 0 276px;
+    padding: 44px 0 0 195px;
     text-align: center;
     width: 762px;
     height: 77px;
@@ -138,10 +137,9 @@ body.gazebos #image-banner .wrap {
 	text-transform: uppercase;
 	color: #acbd98;
 }
-#green-banner .wrap {
+#green-banner .subhead-wrap {
 	background:url(../images/green-interior-bg.png) no-repeat center top scroll transparent;
 	height: 85px;
-	width: 1200px;
 }
 #green-banner .wrap h2 {
     color: #BEC7AC;
