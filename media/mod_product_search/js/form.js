@@ -64,18 +64,10 @@ jQuery(document).ready(function ($) {
 					ajax: true
 				},
 				success: function (data) {
-					$('#ajaxLoader').show();
-					setTimeout(function () {
-						$('#content').html(data);
-						$('#ajaxLoader').hide();
-					}, 3000);
-					
+					$('#content').html(data);
 				}
 			});
 		});
-
-		var successCallback = function (data) {
-		};
 
 		var buildFilterVars = function () {
 			var arr = [];
@@ -95,6 +87,8 @@ jQuery(document).ready(function ($) {
 			arr.shape = shape;
 			arr.material = material;
 
+			// Push an empty var to the array
+			// so the form still get's submitted.
 			arr.style.push(0);
 			arr.shape.push(0);
 			arr.material.push(0);
