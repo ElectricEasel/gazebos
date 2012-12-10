@@ -16,6 +16,7 @@ $app = JFactory::getApplication();
 $menu = $app->getMenu();
 $config = JFactory::getConfig();
 $template = $this->baseurl . '/templates/' . $this->template;
+$bodyclass = EEHelper::getBodyClasses();
 
 // $this JDocument
 $this
@@ -27,6 +28,7 @@ $this
 	// Add Scripts
 	->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js')
 	->addScript($template . '/js/site.js')
+	->addScript($template . '/js/custom-form-elements.js')
 	// Other Settings
 	->setTab("\t")
 	->setBase(null)
@@ -52,14 +54,24 @@ $this
 			<div id="image-banner">
 				<div class="wrap">
 					<div id="banner-tagline">
-					<h1>Cabanas</h1>
-					<span>The Perfect Place to Get Away</span>
-					</div>
+					<?php if ($bodyclass == 'home'): ?>
+							<h1>Cabanas</h1>
+							<span>The Perfect Place to Get Away</span>
+					<?php elseif ($bodyclass = 'gazebos'): ?>
+							<h1>Wood Gazebos</h1>
+							<span>The Heart of American Charm</span>
+					<?php endif; ?>
+							</div>					
+					
 				</div>
 			</div>
 			<div id="green-banner">
 				<div class="wrap">
-					<h2>Building <span>quality gazebos</span> in the U.S.A. for over 30 years</h2>
+					<?php if ($bodyclass == 'home'): ?>
+						<h2>Building <span>quality gazebos</span> in the U.S.A. for over 30 years</h2>
+					<?php elseif ($bodyclass = 'gazebos'): ?>
+						<h2><span>“Wood Gazebos”</span> we found <span>200</span> items!</h2>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>
@@ -82,6 +94,7 @@ $this
 						<div class="clear"></div>
 				<?php endif; ?>
 				</div>
+				<div class="clear"></div>
 			</div>
 		</div>
 		<div id="footer">
@@ -101,6 +114,8 @@ $this
 					</div>
 					<div class="module">
 						<a href="/" id="footerlogo"><?php echo $config->get('sitename'); ?></a>
+						<h6>Liesure Woods, Inc.</h6>
+						<span id="address">710 W. Railroad St. Kingston, IL 60145</span>
 					</div>
 					<div class="clear"></div>
 				</div>
