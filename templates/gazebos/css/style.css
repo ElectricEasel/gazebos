@@ -6,6 +6,12 @@
 .clear {
 	clear: both;
 }
+.left {
+	float: left;
+}
+.right {
+	float: right;
+}
 #logo {
 	background:url(../images/h_logo.png) no-repeat 0 0 scroll transparent;
 	height: 92px;
@@ -339,6 +345,7 @@ body.gazebos #image-banner .wrap {
 }
 #footer-widgets {
 	margin-top:55px;
+	height: 320px;
 }
 #footer .module h6 {
 	color: #9c8679;
@@ -351,6 +358,17 @@ body.gazebos #image-banner .wrap {
 }
 #footer .module .custom.footer-links h5 {
 	margin-bottom: 15px;
+}
+#footer-bottom span {
+	margin: 0 1em;
+}
+#footer-bottom p {
+	color: #9c8679;
+    font-size: 14px;
+    margin: 20px 0;
+}
+#footer-bottom p.right {
+	font-size: 12px;
 }
 a.social {
 	background: url(../images/sprite-social.png) no-repeat scroll 0 -28px transparent;
@@ -411,13 +429,13 @@ a.flickr:hover {
 .home #content {
 	width: 960px;
 }
-#sidebar .search-filter {
+#sidebar > .search-filter {
 	background: url(../images/bg_sidebar.png) no-repeat scroll 0 bottom transparent;
 	box-shadow: 2px 2px 0 rgba(255, 255, 255, 0.75), 2px 2px 2px rgba(0, 0, 0, 0.13) inset;
 	padding: 20px;
 	margin: 20px 0 20px 0;
 }
-#sidebar .search-filter h4 {
+#sidebar > .search-filter h4 {
 	background: url(../images/bg_filter_heading.png) no-repeat scroll 0 bottom transparent;
 	font-family: Times, serif;
 	font-size: 30px;
@@ -426,18 +444,18 @@ a.flickr:hover {
 	text-align: center;
 	font-weight: normal;
 }
-#sidebar .search-filter h5 {
+#sidebar > .search-filter h5 {
     color: #355A06;
     font-size: 18px;
     font-style: italic;
     margin: 0;
 }
-#sidebar .search-filter ul.filter-menu {
+#sidebar > .search-filter ul.filter-menu {
 	list-style: none outside none;
 	margin: 15px 0;
 	padding: 0;
 }
-#sidebar .search-filter ul.filter-menu li {
+#sidebar > .search-filter ul.filter-menu li {
     font-size: 15px;
     line-height: 25px;
     text-indent: 5px;
@@ -459,7 +477,7 @@ a.flickr:hover {
 	font-size: 29px;
 }
 .pagination {
-	background: url(../images/bg_pagination.png) no-repeat scroll 0 0 transparent;
+	background: url(../images/bg_pagination2.png) repeat-x scroll 0 0 transparent;
 	font-size: 15px;
     height: 17px;
     padding: 13px 0;

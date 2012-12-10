@@ -80,9 +80,9 @@ $this
 				<jdoc:include type="message" />
 				<?php if ($this->countModules('position-7') || $this->countModules('position-4') || $this->countModules('position-5')) : ?>
 				<div id="sidebar">
-					<jdoc:include type="modules" name="position-7" />
-					<jdoc:include type="modules" name="position-4" />
-					<jdoc:include type="modules" name="position-5" />
+					<jdoc:include type="modules" name="position-7" style="basic" />
+					<jdoc:include type="modules" name="position-4" style="basic" />
+					<jdoc:include type="modules" name="position-5" style="basic" />
 				</div>
 				<?php endif; ?>
 				<div id="content">
@@ -118,6 +118,11 @@ $this
 						<span id="address">710 W. Railroad St. Kingston, IL 60145</span>
 					</div>
 					<div class="clear"></div>
+				</div>
+				<div id="footer-bottom">
+				<p class="left"><a href="#">Home</a><span>/</span><a href="#">FAQs</a><span>/</span><a href="#">Blog</a><span>/</span><a href="#">About Us</a><span>/</span><a href="#">Contact Us</a></p>
+				<p class="right">&copy;<?php echo date('Y')?> gazebos.com.  All Rights Reserved.</p>
+				<br class="clear"/>
 				</div>
 			</div>
 		</div>
