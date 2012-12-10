@@ -218,11 +218,13 @@ body.gazebos #image-banner .wrap {
 .type .links {
 	margin: 30px 0 0 0;
 	font-family: Times, serif;
-	list-style-image: url(../images/list-arrow.png);
-	padding: 0 0 0 24px;
+	list-style: none outside none;
+	padding: 0 0 0 10px;
 }
 .type .links li {
 	margin-bottom: 5px;
+	background: url(../images/sprite-list-arrow.png) no-repeat scroll 0 2px transparent;
+	padding-left: 15px;
 }
 .type .links li a {
 	color: #3c2313;
@@ -335,7 +337,7 @@ body.gazebos #image-banner .wrap {
     width: 215px;
 }
 #footer .module h5 {
-	background: url(../images/list-arrow.png) no-repeat scroll 0 0 transparent;
+	background: url(../images/sprite-list-arrow.png) no-repeat scroll 0 0 transparent;
 	margin: 0 0 20px 0;
 	font-size: 15px;
 	text-indent: 15px;
@@ -426,8 +428,16 @@ a.flickr:hover {
 	width: 695px;
 	float: left;
 }
+.product #content,
 .home #content {
 	width: 960px;
+}
+#sidebar .sidebar-market-gazebos {
+	background: url(../images/sidebar-market.png) no-repeat scroll 0 0 transparent;
+	box-shadow: 2px 2px 0 rgba(255, 255, 255, 0.75), 2px 2px 2px rgba(0, 0, 0, 0.13) inset;
+	height: 158px;
+	width: 240px;
+	margin-bottom: 20px;
 }
 #sidebar > .search-filter {
 	background: url(../images/bg_sidebar.png) no-repeat scroll 0 bottom transparent;
@@ -475,6 +485,9 @@ a.flickr:hover {
 	color: #355a06;
 	font-weight: normal;
 	font-size: 29px;
+}
+body.home .pagination {
+	display: none;
 }
 .pagination {
 	background: url(../images/bg_pagination2.png) repeat-x scroll 0 0 transparent;
@@ -534,4 +547,76 @@ a.flickr:hover {
 	font-size: 14px;
 	display: block;
 	text-transform: uppercase;
+}
+/*** Individual Product View ***/
+.panel h2 {
+	margin:0 0 15px 0;
+}
+#panels {
+	background: url(../images/bg_gradient.png) repeat scroll right bottom transparent;
+	width: 200px;
+	float: left;
+	min-height: 750px;
+	box-shadow: 2px 2px 0 rgba(255, 255, 255, 0.75), 2px 2px 2px rgba(0, 0, 0, 0.13) inset;
+	padding: 20px;
+}
+#panels hr {
+	border: medium none;
+	background: url(../images/product-hr.png) no-repeat scroll center bottom transparent;
+	height: 9px;
+	margin: 15px 0;
+}
+#panels h5 {
+	color: #a19086;
+	text-transform: uppercase;
+	margin: 0;
+	font-family: sans-serif;
+	font-style: italic;
+	font-size: 15px;
+	font-weight: normal;
+}
+#panels .price-range {
+	font-family: sans-serif;
+	color: #344e16;
+	font-size: 26px;
+	font-weight: normal;
+}
+.panel {
+	background: url(../images/bg_gradient.png) repeat scroll right bottom transparent;
+	float: right;
+	width: 670px;
+	min-height: 770px;
+	padding: 10px 25px;
+	box-shadow: 2px 2px 0 rgba(255, 255, 255, 0.75), 0 2px 2px rgba(0, 0, 0, 0.13) inset;
+}
+.panel input[type="checkbox"] {
+	display: none;
+}
+#tabs {
+	margin: 0 0 0 -20px;
+	padding: 0;
+	list-style: none outside none;
+}
+#tabs li {
+	width: 257px;
+	height: 36px;
+}
+#tabs li a {
+	background: url(../images/sprite-list-arrow.png) no-repeat scroll 20px 12px transparent;
+    color: #3C2313;
+    display: block;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: bold;
+    line-height: 36px;
+    text-decoration: none;
+    text-indent: 41px;
+}
+
+#tabs li:hover {
+	background: url(../images/bg_green-tab.png) no-repeat scroll 0 0 transparent;
+}
+#tabs li a:hover {
+	color: #fff;
+	background-position: 20px -24px;
 }

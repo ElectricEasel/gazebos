@@ -78,7 +78,7 @@ $this
 		<div id="main">
 			<div class="wrap">
 				<jdoc:include type="message" />
-				<?php if ($this->countModules('position-7') || $this->countModules('position-4') || $this->countModules('position-5')) : ?>
+				<?php if (JRequest::getCmd('view') !== 'product' && ($this->countModules('position-7') || $this->countModules('position-4') || $this->countModules('position-5'))) : ?>
 				<div id="sidebar">
 					<jdoc:include type="modules" name="position-7" style="basic" />
 					<jdoc:include type="modules" name="position-4" style="basic" />
