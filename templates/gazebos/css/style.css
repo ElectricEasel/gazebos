@@ -97,7 +97,7 @@ body.home #banner-tagline {
 body.gazebos #banner-tagline {
 	top:27px;
 }
-body.gazebos #image-banner .subhead-wrap {
+body.gazebos #image-banner .banner-wrap {
 	background:url(../images/banners/gazebo.jpg) no-repeat center top scroll transparent;
 	height: 184px;
 }
