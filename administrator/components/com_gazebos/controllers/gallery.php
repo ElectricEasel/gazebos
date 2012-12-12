@@ -31,8 +31,8 @@ class GazebosControllerGallery extends JControllerForm
 		$model = $this->getModel();
 		$data  = JRequest::getVar('jform', array(), 'post', 'array');
 
-		$this->dir = '/media/com_gazebos/gallery/products/'.$data['product_id'].'/';
-		$this->full_dir = JPATH_SITE.$this->dir;
+		$this->dir = '/media/com_gazebos/gallery/products/' . $data['product_id'] . '/';
+		$this->full_dir = JPATH_SITE . $this->dir;
 
 		if (!is_dir($this->full_dir))
 		{
@@ -98,17 +98,14 @@ class GazebosControllerGallery extends JControllerForm
 		if ($model->delete($pk))
 		{
 			$dir = '/media/com_gazebos/gallery/products/'.$data['product_id'].'/';
-			$full_dir = JPATH_SITE.$dir;
 
-			$to_delete = array($full_dir.$obj->path);
+			$to_delete = array(JPATH_SITE . $dir . $obj->path);
 
-			foreach (EEImageHelper::getImageSizes() as $type => $sizes)
+			foreach (EEImageHelper::getImageSizes() as $method => $sizes)
 			{
 				foreach ($sizes as $size)
 				{
-					list($width, $height) = $size;
-					$prefix = str_replace('__', '_', "{$width}_{$height}_");
-					$to_delete[] = $full_dir.$prefix.$obj->path;
+					$to_delete[] = JPATH_SITE . EEImageHelper::getThumbPath($dir . 'thumbs/' . $obj->path, $size);
 				}
 			}
 
