@@ -14,16 +14,6 @@ defined('_JEXEC') or die;
 $lang = JFactory::getLanguage();
 $lang->load('com_gazebos', JPATH_ADMINISTRATOR);
 
-$spec = (object) array(
-	'title' => 'Double 2 X 4 Rafters',
-	'desc' => 'Give the roof of your gazebo a heavy-duty load capacity and help prevent beam warping.'
-);
-$spec1 = (object) array(
-	'title' => 'Reinforced Connecting Plates (Stainless Steel)',
-	'desc' => 'These brackets give your gazebo a greater snow load capacity and higher wind resistance.'
-);
-
-$this->item->specs = array($spec,$spec1,$spec,$spec1,$spec,$spec1,$spec,$spec1,$spec,$spec1);
 $spec_img_path = '/templates/gazebos/images/dummy-gazebo2.jpg';
 ?>
 
@@ -69,14 +59,18 @@ $spec_img_path = '/templates/gazebos/images/dummy-gazebo2.jpg';
 		</div>
 		
 		<div id="specs" class="panel">
-			<img src="<?php echo $spec_img_path; ?>" alt=""/>
+			
+			<?php echo EEImageHelper::getThumb('com_gazebos/gallery/products/' . $this->item->id . '/' . $this->item->gallery[0]->path, '296x242'); ?>
 			<ul>
-		 		<?php foreach ($this->item->specs as $spec) :?>
+		 		<?php
+			 	$total = count($this->item->specifications['title']);
+		 		for ($i = 0; $i < $total; $i++) :
+		 		?>
 		 		<li>
-		 			<h4><?php echo $spec->title; ?></h4>
-		 			<p><?php echo $spec->desc;?></p>
+		 			<h4><?php echo $this->item->specifications['title'][$i]; ?></h4>
+		 			<p><?php echo $this->item->specifications['value'][$i];?></p>
 		 		</li>
-			 	<?php endforeach; ?>
+			 	<?php endfor; ?>
 			</ul>
 		</div>
 		

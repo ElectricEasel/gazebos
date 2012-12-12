@@ -665,6 +665,7 @@ body.home .pagination {
 #tabs li.active a {
 	color: #fff;
 	background-position: 20px -24px;
+	outline: none;
 }
 #specs h4 {
 	color: #3c2313;
@@ -735,6 +736,7 @@ body.home .pagination {
 	cursor: pointer;
 	top:60px;
 	text-indent: -9999px;
+	outline: none;
 }
 #nav-container #prev {
 	left: 25px;

@@ -8,8 +8,13 @@ abstract class EEImageHelper
 	 * An array of image sizes for the JImage::createThumbs method.
 	 */
 	protected static $thumbSizes = array(
-		JImage::CROP_RESIZE => array('199x160', '64x64'),
-		JImage::SCALE_INSIDE => array('300x300')
+		JImage::CROP_RESIZE => array(
+			'660x450',
+			'296x242',
+			'199x160',
+			'165x130',
+			'150x150'
+		)
 	);
 
 	/**
@@ -53,6 +58,38 @@ abstract class EEImageHelper
 		{
 			self::$thumbSizes[$method] = $sizes;
 		}
+	}
+
+	/**
+	 * Get a thumbnail of the specified size
+	 *
+	 * @param   string  $path  The path to the image
+	 * @param   string  $size  The size of the thumbnail to get
+	 *
+	 * @return  string  <img> tag
+	 *
+	 */
+	public static function getThumb($path, $size)
+	{
+		$src = self::getThumbPath($path, $size);
+
+		return '<img src="' . $src . '" />';
+	}
+
+	/**
+	 * Get the src path to an image thumbnail
+	 *
+	 * @param   string  $path  The path to the image
+	 * @param   string  $size  The size of the thumbnail to get
+	 *
+	 * @return  string  Source to image path.
+	 *
+	 */
+	public static function getThumbPath($path, $size)
+	{
+		$info = pathinfo(JPATH_SITE . '/media/' . $path);
+
+		return substr($info['dirname'], strlen(JPATH_SITE)) . '/thumbs/' . $info['filename'] . '_' . $size . '.' . $info['extension'];
 	}
 
 	/**

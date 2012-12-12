@@ -40,15 +40,16 @@ JHtml::_('behavior.formvalidation');
 			<legend>Gallery</legend>
 			<ul class="adminformlist" id="sortable">
 			<?php foreach($this->getGallery() as $photo) {
-				$img = '/media/com_gazebos/gallery/products/'.JRequest::getInt('product_id').'/150_'.$photo->path;
-				if (is_file(JPATH_SITE.$img))
+				$img = '/media/com_gazebos/gallery/products/' . JRequest::getInt('product_id') . '/thumbs/' . $photo->path;
+				$img = EEImageHelper::getThumbPath($img, '150x150');
+				if (is_file(JPATH_SITE . $img))
 				{
 					echo '
 					<li data-pk="'.$photo->id.'" id="deleteImage'.$photo->id.'">
 						<span title="Delete this image." onclick="delImage('.$photo->id.')">
 							Delete
 						</span>
-						<img src="'.$img.'" />
+						<img src="' . $img . '" />
 					</li>';
 				}
 			} ?>
