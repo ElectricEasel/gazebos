@@ -109,33 +109,34 @@ class GazebosModelProductType extends JModel
 	 */
 	public function getProducts()
 	{
-		$q = 'SELECT * FROM #__gazebos_products WHERE state = 1 AND type_id = ' . $this->getState('producttype.id');
+		$q  = 'SELECT a.*, (SELECT b.path FROM #__gazebos_gallery AS b WHERE b.product_id = a.id LIMIT 1) AS image FROM #__gazebos_products AS a';
+		$q .= ' WHERE a.state = 1 AND a.type_id = ' . $this->getState('producttype.id');
 
 		$filter_material = $this->getState('filter.material');
 		if (is_array($filter_material) && !empty($filter_material) && !empty($filter_material[0]))
 		{
-			$q .= ' AND material_id IN (' . implode(',', $filter_material) . ')';
+			$q .= ' AND a.material_id IN (' . implode(',', $filter_material) . ')';
 		}
 
 		$filter_price = $this->getState('filter.price');
 		if (is_array($filter_price) && !empty($filter_price) && !empty($filter_price[0]))
 		{
-			$q .= ' AND price_id IN (' . implode(',', $filter_price) . ')';
+			$q .= ' AND a.price_id IN (' . implode(',', $filter_price) . ')';
 		}
 
 		$filter_shape = $this->getState('filter.shape');
 		if (is_array($filter_shape) && !empty($filter_shape) && !empty($filter_shape[0]))
 		{
-			$q .= ' AND shape_id IN (' . implode(',', $filter_shape) . ')';
+			$q .= ' AND a.shape_id IN (' . implode(',', $filter_shape) . ')';
 		}
 
 		$filter_style = $this->getState('filter.style');
 		if (is_array($filter_style) && !empty($filter_style) && !empty($filter_style[0]))
 		{
-			$q .= ' AND style_id IN (' . implode(',', $filter_style) . ')';
+			$q .= ' AND a.style_id IN (' . implode(',', $filter_style) . ')';
 		}
 
-		$results = $this->getDbo()->setQuery($q)->loadObjectList();
+		$results = $this->getDbo()->setQuery($q)->loadObjectList('id');
 
 		if ($results !== null)
 		{
@@ -146,5 +147,17 @@ class GazebosModelProductType extends JModel
 		}
 
 		return $results;
+	}
+
+	/**
+	 * Method to get images based on the passed in keys.
+	 *
+	 * @param   array  $ids  The ids for which to find images.
+	 *
+	 * @return  array  Array of image objects keyed to their product_id
+	 */
+	private function getImages(array $ids)
+	{
+		$q = 'SELECT * FROM #__gazebos_gallery WHERE product_id';
 	}
 }

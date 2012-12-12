@@ -1,6 +1,26 @@
 jQuery.noConflict();
 jQuery(document).ready(function ($) {
 	(function ($) {
+		var loadingContainer = $('#loading');
+		var spinOpts = {
+			lines: 13, // The number of lines to draw
+			length: 19, // The length of each line
+			width: 6, // The line thickness
+			radius: 20, // The radius of the inner circle
+			corners: 1, // Corner roundness (0..1)
+			rotate: 57, // The rotation offset
+			color: '#fff', // #rgb or #rrggbb
+			speed: 1, // Rounds per second
+			trail: 60, // Afterglow percentage
+			shadow: false, // Whether to render a shadow
+			hwaccel: false, // Whether to use hardware acceleration
+			className: 'spinner', // The CSS class to assign to the spinner
+			zIndex: 2e9, // The z-index (defaults to 2000000000)
+			top: 150, // Top position relative to parent in px
+			left: 80 // Left position relative to parent in px
+		};
+		loadingContainer.spin(spinOpts);
+
 		var span = [];
 		var checkboxHeight = 25;
 		var filterForm = $('#searchForm');
@@ -46,6 +66,7 @@ jQuery(document).ready(function ($) {
 
 		filterForm.on('submit', function (e) {
 			e.preventDefault();
+			loadingContainer.fadeIn(100);
 
 			var filterVars = buildFilterVars();
 
@@ -64,7 +85,10 @@ jQuery(document).ready(function ($) {
 					ajax: true
 				},
 				success: function (data) {
-					$('#content').html(data);
+					setTimeout(function () {
+						$('#content').html(data);
+						loadingContainer.fadeOut(100);
+					}, 1000);
 				}
 			});
 		});
@@ -98,3 +122,22 @@ jQuery(document).ready(function ($) {
 
 	})(jQuery);
 });
+
+(function ($) {
+	$('#content .producttype .removeFilter').live('click', function (e) {
+		e.preventDefault();
+	
+		var base = $(this);
+		var filterId = base.attr('rel');
+		var el = $(filterId);
+	
+		if (el.is(':checked')) {
+			el.attr('checked', false);
+		} else {
+			el.attr('checked', true);
+		}
+	
+		el.trigger('change');
+		base.hide();
+	});
+})(jQuery);
