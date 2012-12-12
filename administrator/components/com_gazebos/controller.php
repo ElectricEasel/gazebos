@@ -24,9 +24,7 @@ class GazebosController extends JController
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		require_once JPATH_COMPONENT.'/helpers/gazebos.php';
-
-		$view		= JFactory::getApplication()->input->getCmd('view', 'producttypes');
+		$view = JFactory::getApplication()->input->getCmd('view', 'products');
         JFactory::getApplication()->input->set('view', $view);
 
 		parent::display($cachable, $urlparams);

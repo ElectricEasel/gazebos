@@ -27,6 +27,8 @@ jimport('joomla.application.component.view');
 jimport('joomla.application.component.model');
 jimport('joomla.application.component.modelform');
 
+JLoader::import('helpers.gazebos', JPATH_COMPONENT_ADMINISTRATOR);
+
 JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
 
 $controller	= EEController::getInstance('Gazebos');

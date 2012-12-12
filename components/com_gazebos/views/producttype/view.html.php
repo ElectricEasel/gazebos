@@ -30,6 +30,7 @@ class GazebosViewProductType extends JView
 		$this->state = $this->get('State');
 		$this->item = $this->get('Data');
 		$this->params = EEComponentHelper::getParams('com_gazebos');
+		$this->queryItems = $this->getQueryItems();
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -99,5 +100,39 @@ class GazebosViewProductType extends JView
 		{
 			$this->document->setMetadata('robots', $this->params->get('robots'));
 		}
+	}
+
+	private function getQueryItems()
+	{
+		JLoader::register('modProductSearchHelper', JPATH_SITE . '/modules/mod_product_search/helper.php');
+
+		$html = array();
+		$filters = array(
+			'material' => $this->state->get('filter.material', array()),
+			'shape' => $this->state->get('filter.shape', array()),
+			'style' => $this->state->get('filter.style', array()),
+			'price' => $this->state->get('filter.price', array())
+		);
+
+		$html[] = '<ul>';
+
+		foreach ($filters as $type => $selected)
+		{
+			foreach ($selected as $item)
+			{
+				if ($item === '0') continue;
+
+				$html[] = '<li class="removeFilter" title="Remove Filter" rel="#filter_';
+				$html[] = $type . $item;
+				$html[] = '">';
+				$html[] = '<span class="checkbox" style="background-position:0 -75px"></span>';
+				$html[] = modProductSearchHelper::getFilterName($item, $type);
+				$html[] = '</li>';
+			}
+		}
+
+		$html[] = '</ul>';
+
+		return implode($html);
 	}
 }

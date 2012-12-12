@@ -63,9 +63,12 @@ class GazebosModelProduct extends JModel
 			$result = $this->getDbo()->setQuery($q)->loadObject();
 
 			if ($result !== null)
-			{
+			{	
 				$this->_item = $result;
 				$this->_item->gallery = $this->getGallery();
+
+				$registry = new JRegistry($result->specifications);
+				$this->_item->specifications = $registry->toArray();
 			}
 			else
 			{

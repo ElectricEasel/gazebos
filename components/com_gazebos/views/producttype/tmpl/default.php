@@ -14,14 +14,10 @@ $type = $this->item;
 
 if($type) : ?>
 <div class="producttype">
-	<h2><?php echo $type->title; ?></h2>
-	<?php if ($type->description) : ?>
-	<p><?php echo EEHelper::formatText($type->description, 1000); ?>
-	<?php endif; ?>
+	<h2><?php echo $type->title; ?>: <span><?php echo count($type->products); ?> matching products</span></h2>
 	<div class="pagination">
-		<span class="search-term"><?php echo $type->title; ?></span>
-		<label class="search-item" for="mat1">Wood</label><input id="mat1" class="styled" type="checkbox" name="mat1" checked="checked" />
-		<label class="search-item" for="shape1">Octagon</label><input id="shape1" class="styled" type="checkbox" name="shape1" checked="checked" />
+		<span class="search-term">Your Selections:&nbsp;</span>
+		<?php echo $this->queryItems; ?>
 	</div>
 	<?php if ($type->products !== null) : ?>
 	<ul class="product_listing">

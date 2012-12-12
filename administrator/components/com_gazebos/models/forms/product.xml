@@ -123,13 +123,10 @@
 		label="Specifications">
 
 		<field
-			name="specs"
-			type="textarea"
-			label="Speifications"
-			description="Specs."
-			cols="80"
-			rows="30"
-			filter="raw" />
+			name="specifications"
+			type="specifications"
+			label="Specifications"
+			multiple="true" />
 
 	</fieldset>
 
