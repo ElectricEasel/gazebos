@@ -27,6 +27,7 @@ $this
 	->addStyleSheet($template . '/css/print.css', $type = 'text/css', $media = 'print')
 	// Add Scripts
 	->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js')
+	->addScript('//cdnjs.cloudflare.com/ajax/libs/jquery.cycle/2.9999.8/jquery.cycle.all.min.js ')
 	->addScript($template . '/js/site.js')
 	->addScript($template . '/js/custom-form-elements.js')
 	// Other Settings
