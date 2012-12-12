@@ -18,6 +18,35 @@ JLoader::import('components.com_gazebos.helpers.gazebos', JPATH_SITE);
  */
 abstract class modProductSearchHelper
 {
+	/**
+	 * Holds the options as fetched from the DB
+	 */
+	protected static $optionCache = array();
+
+	/**
+	 * Get the text for the filter option
+	 *
+	 * @param   integer  $id    The id of the option to retrieve
+	 * @param   string   $type  The filter type
+	 *
+	 * @return  string  Name of specified option
+	 */
+	public static function getFilterName($id, $type)
+	{
+		if (!isset(self::$optionCache[$type]))
+		{
+			self::$optionCache[$type] = self::getOptions($type);
+		}
+
+		return self::$optionCache[$type][$id]->text;
+	}
+
+	/**
+	 * Get the filter types  and the options for the module
+	 *
+	 * @return  string
+	 *
+	 */
 	public static function getFilters()
 	{
 		$html = array();
@@ -34,33 +63,6 @@ abstract class modProductSearchHelper
 		return implode($html);
 	}
 
-	public static function getOptions($type)
-	{
-		$db = JFactory::getDbo();
-		$table = $db->qn(GazebosHelper::getTable($type));
-
-		$q =
-			'SELECT a.id, a.title ' .//, COUNT(b.id) AS count ' .
-			"FROM {$table} AS a ";// .
-//			"LEFT JOIN #__gazebos_products AS b ON b.{$type}_id = a.id " .
-//			'WHERE a.state = 1 ' .
-//			'AND (b.id IS NULL OR b.id != NULL)';
-
-		$results = $db->setQuery($q)->loadObjectList();
-
-		if ($results === null) return false;
-		
-		$options = array();
-
-		foreach ($results as $row)
-		{
-			$text = $row->title;// . ' (' . $row->count . ')';
-			$options[] = JHtml::_('select.option', $row->id, $text);
-		}
-
-		return $options;
-	}
-
 	public static function getFilter($type)
 	{
 		$html = array();
@@ -73,9 +75,9 @@ abstract class modProductSearchHelper
 			$checked = in_array((string) $option->value, (array) $app->getUserState('filter.' . $type)) ? ' checked="checked"' : '';
 
 			$html[] = '<li>';
-			$html[] = '<input type="checkbox" id="filter_' . $type . $i . '" name="filter_' . $type . '[]"' . ' value="';
-			$html[] = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . '/>';
-			$html[] = '<label for="filter_' . $type . $i . '">' . JText::_($option->text) . '</label>';
+			$html[] = '<input type="checkbox" id="filter_' . $type . $option->value . '" name="filter_' . $type . '[]"' . ' value="';
+			$html[] = $option->value . '"' . $checked . '/>';
+			$html[] = '<label for="filter_' . $type . $option->value . '">' . JText::_($option->text) . '</label>';
 			$html[] = '</li>';
 		}
 
@@ -83,5 +85,37 @@ abstract class modProductSearchHelper
 		$html[] = '<input type="hidden" name="filter_' . $type . '[]" value="0" checked="checked" />';
 
 		return implode($html);
+	}
+
+	public static function getOptions($type)
+	{
+		if (!isset(self::$optionCache[$type]))
+		{
+			$db = JFactory::getDbo();
+			$table = $db->qn(GazebosHelper::getTable($type));
+	
+			$q =
+				'SELECT a.id, a.title ' .//, COUNT(b.id) AS count ' .
+				"FROM {$table} AS a ";// .
+	//			"LEFT JOIN #__gazebos_products AS b ON b.{$type}_id = a.id " .
+	//			'WHERE a.state = 1 ' .
+	//			'AND (b.id IS NULL OR b.id != NULL)';
+	
+			$results = $db->setQuery($q)->loadObjectList('id');
+	
+			if ($results === null) return false;
+			
+			$options = array();
+	
+			foreach ($results as $row)
+			{
+				$text = $row->title;// . ' (' . $row->count . ')';
+				$options[$row->id] = JHtml::_('select.option', $row->id, $text);
+			}
+	
+			self::$optionCache[$type] = $options;
+		}
+
+		return self::$optionCache[$type];
 	}
 }

@@ -1,24 +1,58 @@
 <?php defined('EE_PATH') or die;
 
+defined('JIMAGE_MAX_UPLOAD_WIDTH') or define('JIMAGE_MAX_UPLOAD_WIDTH', 600);
+
 abstract class EEImageHelper
 {
 	/**
-	 * Image sizes for resizing
+	 * An array of image sizes for the JImage::createThumbs method.
+	 */
+	protected static $thumbSizes = array(
+		JImage::CROP_RESIZE => array('199x160', '64x64'),
+		JImage::SCALE_INSIDE => array('300x300')
+	);
+
+	/**
+	 * Create a JImage resource 
+	 *
+	 * @param   mixed  $source  A valid GD image resource link, or a file path to an image.
+	 *
+	 * @return  object  JImage instance for easy method chaining.
+	 *
+	 */
+	public static function getInstance($source = null)
+	{
+		return new JImage($source);
+	}
+
+	/**
+	 * Get mage sizes for resizeImage method
 	 *
 	 * @return  array  Resize and crop sizes to use with self::resizeImages
 	 *
 	 */
-	public static function getImageSizes()
+	public static function getThumbSizes()
 	{
-		return array(
-			'resize' => array(
-				array(300, null),
-				array(150, null),
-			),
-			'crop' => array(
-				array(64, 64, 270, 200),
-			),
-		);
+		return self::$thumbSizes;
+	}
+
+	/**
+	 * Set image sizes for resizeImage method
+	 *
+	 * @param   array  $sizes  A multi dimensional array of image resize types and sizes.
+	 *                         Can include one or more arrays with keys that match sizing
+	 *                         method names in the {@link JImage} class.
+	 *
+	 * @return  void
+	 *
+	 * @see     self::$imageSizes
+	 */
+	public static function setThumbSizes(array $sizes)
+	{
+		foreach ($sizes as $method => $sizes)
+		{
+			self::$thumbSizes[$method] = $sizes;
+		}
 	}
 
 	/**
@@ -33,34 +67,15 @@ abstract class EEImageHelper
 	 */
 	public static function resizeImage($full_dir, $name, $info)
 	{
-		$image = new JImage;
-		$image->loadFile($full_dir.$name);
-
-		// Check if it's wider than 600 pixels
+		// If the image is too wide, size it down.
 		if ($info->width > JIMAGE_MAX_UPLOAD_WIDTH)
 		{
-			$image->resize(JIMAGE_MAX_UPLOAD_WIDTH, null)->toFile($full_dir.$name);
-			$image = new JImage;
-			$image->loadFile($full_dir.$name);
+			self::getInstance($full_dir.$name)->resize(JIMAGE_MAX_UPLOAD_WIDTH, null)->toFile($full_dir.$name);
 		}
 
-		foreach (self::getImageSizes() as $type => $sizes)
+		foreach (self::getThumbSizes() as $method => $sizes)
 		{
-			foreach ($sizes as $size)
-			{
-				list($width, $height, $left, $top) = $size;
-
-				if ($type = 'resize')
-				{
-					// fix the resize method arguments.
-					// $left is actually $createNew and $top is scale method
-					// check libraries/joomla/image/image.php
-					$left = true;
-					$top = 2;
-				}
-				$prefix = str_replace('__', '_', "{$width}_{$height}_");
-				$image->$type($width, $height, $left, $top)->toFile($full_dir.$prefix.$name);
-			}
+			self::getInstance($full_dir.$name)->createThumbs($sizes, $method);
 		}
 	}
 
@@ -73,11 +88,11 @@ abstract class EEImageHelper
 	 * @param   bool    $resize    Whether or not to resize after upload
 	 *
 	 * @return  void
+	 *
 	 */
 	public static function saveImages(&$full_dir, &$files, &$data, $resize = true)
 	{
-		foreach
-		($files['name'] as $field => $val)
+		foreach ($files['name'] as $field => $val)
 		{
 			if (empty($val))
 			{
