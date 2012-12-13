@@ -11,7 +11,7 @@
 defined('_JEXEC') or die; ?>
 <li>
 	<a href="<?php echo $this->product->link; ?>">
-		<img src="templates/gazebos/images/dummy-gazebo.jpg" border="0" />
+		<img src="<?php echo $this->product->image; ?>" />
 	</a>
 	<h5><?php echo $this->product->title; ?></h5>
 	<span class="price">Starting at $<?php echo number_format($this->product->price_min); ?></span>

@@ -142,7 +142,13 @@ class GazebosModelProductType extends JModel
 		{
 			foreach ($results as $product)
 			{
-				$product->link = JRoute::_('index.php?option=com_gazebos&view=product&id=' . $product->id);
+				$Itemid = GazebosHelper::getProductTypeMenuItem($this->getState('producttype.id'));
+				$product->link = JRoute::_('index.php?option=com_gazebos&view=product&id=' . $product->id . '&Itemid=' . $Itemid);
+
+				if (!empty($product->image))
+				{
+					$product->image = '/media/com_gazebos/gallery/products/' . $product->id . '/thumbs/199x160_' . $product->image;
+				}
 			}
 		}
 

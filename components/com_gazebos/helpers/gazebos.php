@@ -30,6 +30,8 @@ abstract class GazebosHelper
 		'shape' => '#__gazebos_shapes',
 	);
 
+	protected static $productTypeMenuMap = array();
+
 	/**
 	 * Get the alias for the specifed id
 	 * associated with the given view.
@@ -75,6 +77,33 @@ abstract class GazebosHelper
 		$row = $db->setQuery("SELECT id FROM {$table} WHERE alias = {$alias}")->loadObject();
 
 		return $row->id;
+	}
+
+	/**
+	 * Get the menu item id for the given type.
+	 * 
+	 */
+	public static function getProductTypeMenuItem($type)
+	{
+		if (!isset(self::$productTypeMenuMap[$type]))
+		{
+			$db = JFactory::getDbo();
+
+			$results = $db->setQuery('SELECT id, link FROM #__menu WHERE link LIKE "%option=com_gazebos&view=producttype%"')->loadObjectList();
+
+			if ($results === null) return false;
+
+			foreach ($results as $row)
+			{
+				$productId = substr($row->link, (strpos($row->link, '&id=') + 4));
+
+				if (!is_numeric($productId)) continue;
+
+				self::$productTypeMenuMap[$productId] = $row->id;
+			}
+		}
+
+		return self::$productTypeMenuMap[$type];
 	}
 
 	/**
