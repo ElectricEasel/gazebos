@@ -64,9 +64,17 @@ class EEView extends JViewLegacy
 			$this->addTemplatePath(EE_PATH . '/layouts/component/views');
 		}
 		
-
+		$this->prepareDocument();
 		$this->addToolbar();
 		parent::display($tpl);
+	}
+
+	/**
+	 * This can be overridden by the implementing classes.
+	 */
+	public function prepareDocument()
+	{
+		return;
 	}
 
 	/**

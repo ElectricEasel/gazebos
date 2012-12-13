@@ -31,28 +31,7 @@ JFactory::getDocument()
 		}
 	}
 	// ]]>
-	")
-	->addStyleDeclaration('
-    .adminformlist li {
-        clear: both;
-    }
-    #element-box {
-    	padding-top:0;
-    }
-    #element-box .current {
-    	background-color:#F4F4F4
-    }
-    #element-box .m,
-    #gazeboProductTabs .hiddenTab,
-    #gazeboProductTabs .filtersTab,
-    #jform_options_options-lbl {
-    	display:none;
-    }
-    select[multiple="multiple"]
-    {
-    	width:400px;
-    	height:110px;
-    }');
+	");
 
 $options = array(
 	'startOffset' => 0,
