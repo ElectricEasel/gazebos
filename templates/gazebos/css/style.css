@@ -157,7 +157,7 @@ body.gazebos #image-banner .banner-wrap {
 	background:url(../images/bg_content.png) repeat 0 0 scroll #FFF;
 }
 #content {
-	padding: 20px 0;
+	padding: 15px 0;
 }
 
 #footer {
@@ -814,10 +814,91 @@ form#brochure-download label {
 	clear: both;
 }
 #quote-form .field-contain select {
-	width: 200px;
+	width: 206px;
 	margin-right: 20px;
-	margin-bottom: 20px;
+	margin-bottom: 40px;
 }
 #quote-form .field-contain.last select {
 	margin-right: 0;
+}
+#quote-form .field-contain input[type="radio"],
+#quote-form .field-contain input[type="radio"] ~ label {
+	display: inline-block;
+	margin-right: 7px;
+	margin-bottom: 30px;
+}
+#quote-form .field-contain span {
+    display: block;
+    margin-bottom: 5px;
+    margin-right: 30px;
+    width: 200px;
+}
+#quote-form .field-contain.last span {
+	margin-right: 0;
+}
+#quote-form .field-contain input[type="radio"] ~ label {
+	margin-right: 15px;
+}
+#quote-form input[type="submit"] {
+	display: block;
+}
+#related-products h3 {
+	background:url(../images/bg_content.png) repeat scroll 0 0 transparent;
+	color: #355a06;
+	font-size: 24px;
+	font-weight: normal;
+	display: inline-block;
+	margin: 0 0 15px 0;
+	padding-right: 20px;
+}
+#related-products {
+	background:url(../images/bg_pagination2.png) repeat-x scroll 0 13px transparent;
+	margin-top: 30px;
+}
+#related-products ul li img {
+    background: url(../images/bg_darkpattern.png) repeat scroll 0 0 transparent;
+    box-shadow: 1px 1px 0 #FFFFFF;
+    height: 130px;
+    padding: 6px;
+    width: 165px;
+}
+#related-products ul li {
+    float: left;
+    margin-right: 18px;
+    width: 177px;
+}
+#related-products ul li:last-child {
+	margin-right: 0;
+}
+#related-products ul {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+}
+.top-nav {
+	position: relative;
+}
+.top-nav:after {
+	content: '';
+	clear:both;
+	display: block;
+}
+.top-nav p {
+	margin: 0 0 20px 0;
+	font-size: 12px;
+}
+.top-nav p a.back {
+	font-size: 16px;
+	color: #3c2313;
+	font-style: italic;
+	text-decoration: none;
+}
+.top-nav p a.back:hover {
+	text-decoration: underline;
+}
+.top-nav p.left {
+	text-transform: uppercase;
+	color: #968479;
+	font-family: sans-serif;
+	font-weight: bold;
 }
