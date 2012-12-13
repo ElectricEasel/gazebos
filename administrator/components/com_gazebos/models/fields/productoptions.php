@@ -45,10 +45,16 @@ class JFormFieldProductOptions extends JFormField
 			$attribs['multiple'] = 'multiple';
 		}
 
+		$html[] = '<p>To apply options, click into the field and select from the options in the dropdown. To remove an option, click the x next to the option text.</p>';
+
 		foreach ($options as $id => $keys)
 		{
+			$attribs['data-placeholder'] = "Select {$keys['text']} Options";
+			$html[] = '<div class="option_container" style="margin-bottom:20px;">';
 			$html[] = '<label>' . $keys['text'] . '</label>';
 			$html[] = JHtml::_('select.genericlist', $keys['items'], $this->getName($id), $attribs, 'value', 'text', $selected[$id]);
+			$html[] = '<input type="hidden" name="' . $this->getName($id) . '" value="0" />';
+			$html[] = '</div>';
 		}
 
 		return implode($html);
