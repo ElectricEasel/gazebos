@@ -154,46 +154,6 @@ class JImage
 	}
 
 	/**
-	 * Method to retrieve width and height of the given image
-	 * if $source is not null. If null, the method retrieves
-	 * the width and height of the loaded image handle.
-	 *
-	 * @param   mixed  $source  Valid GD image resource or valid image path.
-	 *
-	 * @return  object  stdClass object containing width and height information
-	 *
-	 * @throws  InvalidArgumentException
-	 */
-	public function getImageSizes($source = null)
-	{
-		if (is_resource($source) && get_resource_type($source) === 'gd')
-		{
-			$width  = imagesx($source);
-			$height = imagesy($source);
-		}
-		elseif ($this->isLoaded())
-		{
-			$width  = imagesx($this->handle);
-			$height = imagesy($this->handle);
-		}
-		elseif (file_exists($source))
-		{
-			list($width, $height) = getimagesize($source);
-		}
-		else
-		{
-			throw new InvalidArgumentException('No valid image loaded.');
-		}
-
-		$sizes = (object) array(
-			'width' => $width,
-			'height' => $height
-		);
-
-		return $sizes;
-	}
-
-	/**
 	 * Method to generate thumbnails from the current image. It allows creation by resizing
 	 * or croppping the original image.
 	 *
@@ -745,11 +705,10 @@ class JImage
 	 */
 	public function cropResize($width, $height, $createNew = true)
 	{
-		$sizes   = $this->getImageSizes();
 		$width   = $this->sanitizeWidth($width, $height);
 		$height  = $this->sanitizeHeight($height, $width);
 
-		if (($sizes->width / $width) < ($sizes->height / $height))
+		if (($this->getWidth() / $width) < ($this->getHeight() / $height))
 		{
 			$this->resize($width, 0, false);
 		}
