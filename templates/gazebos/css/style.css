@@ -592,7 +592,7 @@ body.home .pagination {
 
 /*** Individual Product View ***/
 #panel-container h2 {
-	margin:0 0 15px 0;
+    margin: 0 0 15px;
 }
 #panels {
 	background: url(../images/bg_gradient.png) repeat scroll right bottom transparent;
@@ -675,11 +675,13 @@ body.home .pagination {
 	font-family: sans-serif;
 	font-weight: normal;
 }
-#specs p {
-	margin: 0 0 10px 0;
-	font-family: sans-serif;
-	font-size: 14px;
+.panel p {
+    font-size: 15px;
+    line-height: 20px;
+    margin: 0 0 20px;
+    color: #3c2313;
 }
+
 #specs ul {
 	margin: 0;
 	padding: 0;
@@ -690,12 +692,13 @@ body.home .pagination {
     margin: 0 10px 0 0;
     width: 325px;
 }
+#description img,
 #specs img {
 	float: right;
 	background: url(../images/bg_darkpattern.png) repeat scroll 0 0 transparent;
 	padding: 10px;
 	box-shadow: 1px 1px 0 #fff;
-	margin-bottom: 20px;
+	margin:0 0 20px 20px;
 }
 #product-gallery img {
 	background: url(../images/bg_darkpattern.png) repeat scroll 0 0 transparent;
@@ -752,4 +755,69 @@ body.home .pagination {
 #nav-container #next:hover,
 #nav-container #next:active {
 	background-position: 0 -108px;
+}
+#brochure-img {
+    float: right;
+    margin: 0 0 0 50px;
+}
+.panel input[type="text"],
+.panel textarea {
+	border: 1px solid #c5bfb6;
+	border-radius: 5px;
+	box-shadow: 1px 1px 3px rgba(0,0,0,0.35) inset;
+	font-size: 14px;
+	font-family: serif;
+	padding: 10px;
+}
+form#brochure-download label,
+form#brochure-download input,
+form#catalog-request label,
+form#catalog-request input {
+	display: block;
+}
+form#brochure-download input[type="text"],
+form#catalog-request input[type="text"] {
+	width: 310px;
+	margin-bottom: 25px;
+}
+form#catalog-request label,
+form#brochure-download label {
+	margin-bottom: 5px;
+}
+.panel input[type="submit"] {
+    border: medium none;
+    margin: 0 auto;
+    padding: 8px 35px;
+}
+#quote-form input[type="text"],
+#quote-form label {
+	display: block;
+}
+.field-contain {
+	float: left;
+}
+.field-contain label {
+	margin-bottom: 5px;
+}
+#quote-form input[type="text"] {
+    margin-bottom: 25px;
+    width: 290px;
+}
+#quote-form .field-contain:nth-child(2n+1) input[type="text"] {
+    margin-right: 25px;
+}
+#quote-form h3 {
+	font-size: 20px;
+	margin: 20px 0;
+	font-style: italic;
+	font-weight: normal;
+	clear: both;
+}
+#quote-form .field-contain select {
+	width: 200px;
+	margin-right: 20px;
+	margin-bottom: 20px;
+}
+#quote-form .field-contain.last select {
+	margin-right: 0;
 }

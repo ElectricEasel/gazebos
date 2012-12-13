@@ -15,6 +15,7 @@ $lang = JFactory::getLanguage();
 $lang->load('com_gazebos', JPATH_ADMINISTRATOR);
 
 $spec_img_path = '/templates/gazebos/images/dummy-gazebo2.jpg';
+$brochure_img = '/templates/gazebos/images/gazebo-brochure-th.png';
 ?>
 
 	<div id="panels">
@@ -55,11 +56,12 @@ $spec_img_path = '/templates/gazebos/images/dummy-gazebo2.jpg';
 		
 		<div id="description" class="panel">
 			<h2><?php echo $this->item->title; ?></h2>
+			<?php echo EEImageHelper::getThumb('com_gazebos/gallery/products/' . $this->item->id . '/' . $this->item->gallery[0]->path, '296x242'); ?>
 	 		<p><?php echo $this->item->description; ?></p>
 		</div>
 		
 		<div id="specs" class="panel">
-			
+			<h2>Specifications</h2>
 			<?php echo EEImageHelper::getThumb('com_gazebos/gallery/products/' . $this->item->id . '/' . $this->item->gallery[0]->path, '296x242'); ?>
 			<ul>
 		 		<?php
@@ -75,18 +77,82 @@ $spec_img_path = '/templates/gazebos/images/dummy-gazebo2.jpg';
 		</div>
 		
 		<div id="brochure" class="panel">
-			<h2><?php echo $this->item->title; ?></h2>
-	 		<p><?php echo $this->item->description; ?></p>
+			<img id="brochure-img" src="<?php echo $brochure_img; ?>"/>
+			<h2>Download Brochure</h2>
+	 		<p><em>Submit your name and email address to download our gazebo brochure.</em></p>
+	 		<form id="brochure-download" action="" method="post">
+	 			<label for="b-name">Name</label>
+	 			<input type="text" id="b-name"/>
+	 			<label for="b-email">Email Address</label>
+	 			<input type="text" id="b-email"/>
+	 			<input type="submit" class="green-button" value="Download &gt;"/>
+	 		</form>
 		</div>
 		
 		<div id="catalog" class="panel">
-			<h2><?php echo $this->item->title; ?></h2>
-	 		<p><?php echo $this->item->description; ?></p>
+			<img id="brochure-img" src="<?php echo $brochure_img; ?>"/>
+			<h2>Request Catalog</h2>
+	 		<p><em>Submit your name and email address to receive our gazebo catalog.</em></p>
+	 		<form id="catalog-request" action="" method="post">
+	 			<label for="c-name">Name</label>
+	 			<input type="text" id="c-name"/>
+	 			<label for="c-email">Email Address</label>
+	 			<input type="text" id="c-email"/>
+	 			<input type="submit" class="green-button" value="Submit Request &gt;"/>
+	 		</form>
 		</div>
 		
 		<div id="quote" class="panel">
-			<h2><?php echo $this->item->title; ?></h2>
-	 		<p><?php echo $this->item->description; ?></p>
+			<h2>Get A Quote</h2>
+	 		<p><em>Fill out the form below and one of our representatives will contact you to discuss your gazebo options and provide you with a detailed quote.</em></p>
+	 		<form id="quote-form" action="" method="post">
+	 			<div class="field-contain">
+	 				<label for="q-fname">First Name</label>
+	 				<input type="text" id="q-fname"/>
+	 			</div>
+	 			<div class="field-contain">
+	 				<label for="q-lname">Last Name</label>
+	 				<input type="text" id="q-lname"/>
+	 			</div>
+	 			<div class="field-contain">
+	 				<label for="q-email">Email Address</label>
+	 				<input type="text" id="q-email"/>
+	 			</div>
+	 			<div class="field-contain">
+	 				<label for="q-phone">Phone Number</label>
+	 				<input type="text" id="q-phone"/>
+	 			</div>
+	 			
+	 			<h3><?php echo $this->item->title; ?> Options</h3>
+	 			
+	 			<div class="field-contain">
+	 				<label>Gazebo Size</label>
+	 				<select>
+	 					<option id="">Option 1</option>
+	 					<option id="">Option 2</option>
+	 					<option id="">Option 3</option>
+	 				</select>
+	 			</div>
+	 			<div class="field-contain">
+	 				<label>Roof Type</label>
+	 				<select>
+	 					<option id="">Option 1</option>
+	 					<option id="">Option 2</option>
+	 					<option id="">Option 3</option>
+	 				</select>
+	 			</div>
+	 			<div class="field-contain last">
+	 				<label>Gazebo Size</label>
+	 				<select>
+	 					<option id="">Option 1</option>
+	 					<option id="">Option 2</option>
+	 					<option id="">Option 3</option>
+	 				</select>
+	 			</div>
+	 			
+	 			<input type="submit" class="green-button" value="Submit Request &gt;"/>
+	 		</form>
+	 		
 		</div>
 
 	<!--
