@@ -700,62 +700,6 @@ body.home .pagination {
 	box-shadow: 1px 1px 0 #fff;
 	margin:0 0 20px 20px;
 }
-#product-gallery img {
-	background: url(../images/bg_darkpattern.png) repeat scroll 0 0 transparent;
-	padding: 6px;
-	box-shadow: 1px 1px 0 #fff;
-	margin-bottom: 20px;	
-}
-#product-gallery {
-	height: 470px;
-	margin-bottom: 20px;
-}
-#product-gallery-nav {
-    list-style: none outside none;
-    margin: 0 0 0 55px;
-    padding: 0;
-}
-#product-gallery-nav li {
-	float: left;
-	margin-right: 15px;
-}
-#product-gallery-nav li img {
-	background: url(../images/bg_darkpattern.png) repeat scroll 0 0 transparent;
-	padding: 6px;
-	box-shadow: 1px 1px 0 #fff;
-	width: 165px;
-	height: 130px;
-}
-#nav-container {
-	position: relative;
-}
-#nav-container #prev,
-#nav-container #next {
-	background: url(../images/sprite-arrow-nav.png) no-repeat scroll 0 0 transparent;
-	position: absolute;
-	display: block;
-	width: 13px;
-	height: 20px;
-	cursor: pointer;
-	top:60px;
-	text-indent: -9999px;
-	outline: none;
-}
-#nav-container #prev {
-	left: 25px;
-}
-#nav-container #prev:hover,
-#nav-container #prev:active {
-	background-position: 0 -36px;
-}
-#nav-container #next {
-	background-position: 0 -72px;
-	right: 25px;
-}
-#nav-container #next:hover,
-#nav-container #next:active {
-	background-position: 0 -108px;
-}
 #brochure-img {
     float: right;
     margin: 0 0 0 50px;
@@ -901,4 +845,71 @@ form#brochure-download label {
 	color: #968479;
 	font-family: sans-serif;
 	font-weight: bold;
+}
+
+
+
+.jcarousel-clip {
+    margin: 25px 0 0 55px;
+    overflow: hidden;
+    width: 565px;
+}
+#carousel li {
+    display: block;
+    height: 142px;
+    margin-right: 10px;
+    text-align: center;
+    width: 177px;
+    float: left;
+}
+#carousel li img {
+	background: url(../images/bg_darkpattern.png) repeat scroll 0 0 transparent;
+	padding: 6px;
+	box-shadow: 1px 1px 0 #fff;
+	width: 165px;
+	height: 130px;
+}
+#carousel {
+    left: 0;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    top: 0;
+    width: 565px;
+    height: 145px;
+}
+#photos #slides img {
+	background: url(../images/bg_darkpattern.png) repeat scroll 0 0 transparent;
+	padding: 6px;
+	box-shadow: 1px 1px 0 #fff;
+	width: 660px;
+	height: 450px;
+}
+#carousel-container .jcarousel-prev,
+#carousel-container .jcarousel-next {
+	background: url(../images/sprite-arrow-nav.png) no-repeat scroll 0 0 transparent;
+	position: absolute;
+	display: block;
+	width: 13px;
+	height: 20px;
+	cursor: pointer;
+	top:60px;
+	text-indent: -9999px;
+	outline: none;
+}
+#carousel-container .jcarousel-prev {
+	left: 25px;
+}
+#carousel-container .jcarousel-prev:hover,
+#carousel-container .jcarousel-prev:active {
+	background-position: 0 -36px;
+}
+#carousel-container .jcarousel-next {
+	background-position: 0 -72px;
+	right: 25px;
+}
+#carousel-container .jcarousel-next:hover,
+#carousel-container .jcarousel-next:active {
+	background-position: 0 -108px;
 }

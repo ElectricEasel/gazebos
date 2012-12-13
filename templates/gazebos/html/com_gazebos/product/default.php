@@ -36,24 +36,28 @@ $brochure_img = '/templates/gazebos/images/gazebo-brochure-th.png';
 <div id="panel-container">
 <?php if( $this->item ) : ?>
 	<div id="photos" class="panel">
-	<h2><?php echo $this->item->title; ?></h2>
-		<div id="product-gallery">
-			<img src="templates/gazebos/images/dummy-gazebo3.jpg">
-			<img src="templates/gazebos/images/dummy-gazebo3.jpg">
-			<img src="templates/gazebos/images/dummy-gazebo3.jpg">
-			
-		</div>
-		<div id="nav-container">
-	 		<ul id="product-gallery-nav">
-	 			<li><a href="#"><img src="templates/gazebos/images/dummy-gazebo.jpg"></a></li>
-	 			<li><a href="#"><img src="templates/gazebos/images/dummy-gazebo.jpg"></a></li>
-	 			<li><a href="#"><img src="templates/gazebos/images/dummy-gazebo.jpg"></a></li>
-	 		</ul>
-	 		<a id="prev" href="#"></a>
-	 		<a id="next" href="#"></a>
-		</div>
+		<h2><?php echo $this->item->title; ?></h2>
+	    <div id="slides">
+	    	<?php foreach ($this->item->gallery as $photo)
+	    	{
+		    	echo '<img src="/media/com_gazebos/gallery/products/' . $this->item->id . '/thumbs/660x450_' . $photo->path . '" />';
+	    	} ?>
+	    </div>
+        <div id="carousel-container">
+	        <ul id="carousel">
+	    	<?php $i=0; foreach ($this->item->gallery as $photo)
+	    	{
+	    		$html = array();
+	    		$html[] = '<li data-slide="' . $i . '">';
+	    		$html[] = '<img src="/media/com_gazebos/gallery/products/' . $this->item->id . '/thumbs/165x130_';
+	    		$html[] = $photo->path . '" /></li>';
+
+	    		echo implode($html);
+		    	$i++;
+	    	} ?>
+			</ul>
+        </div>
 	</div>
-	
 	<div id="description" class="panel">
 		<h2><?php echo $this->item->title; ?></h2>
 		<img src="/media/com_gazebos/gallery/products/<?php echo  $this->item->id . '/thumbs/296x242_' . $this->item->gallery[0]->path ?>" />
