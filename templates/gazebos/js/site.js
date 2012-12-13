@@ -1,5 +1,5 @@
 jQuery.noConflict();
-jQuery(document).ready(function($){
+jQuery(document).ready(function ($) {
 	
 	$(".panel").hide();
 	$("ul#tabs li:first").addClass("active").show();
@@ -12,16 +12,29 @@ jQuery(document).ready(function($){
 		$(activeTab).fadeIn();
 		return false;
 	});
-	$('#product-gallery').cycle({ 
-    fx:     'fade', 
-    speed:  'slow',
-    prev:   '#prev', 
-    next:   '#next', 
-    timeout: 0, 
-    pager:  '#product-gallery-nav', 
-    pagerAnchorBuilder: function(idx, slide) { 
-        // return selector string for existing anchor 
-        return '#product-gallery-nav li:eq(' + idx + ') a'; 
-    } 
+
+	var advSlide = $('#slides');
+	// Setup for Cycle Plugin
+    advSlide.cycle({
+    	timeout: 0,
+    	pager: '#carousel',
+    	pagerAnchorBuilder: function () {
+	    	return '';
+    	}
     });
+
+	$('#carousel').jcarousel({
+		scroll: 1,
+        visible: 3,
+        auto:3,
+        wrap: 'circular',
+        itemFallbackDimension: 177,
+        buttonNextHTML: '<div>NEXT</div>',
+        buttonPrevHTML: '<div>PREV</div>',
+        itemVisibleInCallback: function (carousel, el, idx, state) {
+        	slideNum = parseInt($(el).attr('data-slide'));
+        	advSlide.cycle(slideNum);
+        }
+    });
+
 });
