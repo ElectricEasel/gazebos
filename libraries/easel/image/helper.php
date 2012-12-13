@@ -18,6 +18,11 @@ abstract class EEImageHelper
 	);
 
 	/**
+	 * Filename format to save the generated thumbnails as.
+	 */
+	protected static $thumbFilenameFormat = '{width}x{height}_{filename}';
+
+	/**
 	 * Create a JImage resource 
 	 *
 	 * @param   mixed  $source  A valid GD image resource link, or a file path to an image.
@@ -112,7 +117,7 @@ abstract class EEImageHelper
 
 		foreach (self::getThumbSizes() as $method => $sizes)
 		{
-			self::getInstance($full_dir.$name)->createThumbs($sizes, $method);
+			self::getInstance($full_dir.$name)->createThumbs($sizes, $method, null, self::$thumbFilenameFormat);
 		}
 	}
 

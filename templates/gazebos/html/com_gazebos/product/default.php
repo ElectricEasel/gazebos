@@ -11,12 +11,8 @@
 defined('_JEXEC') or die;
 
 //Load admin language file
-$lang = JFactory::getLanguage();
-$lang->load('com_gazebos', JPATH_ADMINISTRATOR);
-
-$spec_img_path = '/templates/gazebos/images/dummy-gazebo2.jpg';
+JFactory::getLanguage()->load('com_gazebos', JPATH_ADMINISTRATOR);
 ?>
-
 	<div id="panels">
 		<ul id="tabs">
 			<li><a href="#photos">Gazebo Photos</a></li>
@@ -60,7 +56,7 @@ $spec_img_path = '/templates/gazebos/images/dummy-gazebo2.jpg';
 		
 		<div id="specs" class="panel">
 			
-			<?php echo EEImageHelper::getThumb('com_gazebos/gallery/products/' . $this->item->id . '/' . $this->item->gallery[0]->path, '296x242'); ?>
+			<img src="<?php echo '/media/com_gazebos/gallery/products/' . $this->item->id . '/296x242_' . $this->item->gallery[0]->path; ?>" />
 			<ul>
 		 		<?php
 			 	$total = count($this->item->specifications['title']);

@@ -40,8 +40,7 @@ JHtml::_('behavior.formvalidation');
 			<legend>Gallery</legend>
 			<ul class="adminformlist" id="sortable">
 			<?php foreach($this->getGallery() as $photo) {
-				$img = 'com_gazebos/gallery/products/' . JRequest::getInt('product_id') . '/' . $photo->path;
-				$img = EEImageHelper::getThumbPath($img, '150x150');
+				$img = '/media/com_gazebos/gallery/products/' . JRequest::getInt('product_id') . '/thumbs/150x150_' . $photo->path;
 				if (is_file(JPATH_SITE . $img))
 				{
 					echo '
