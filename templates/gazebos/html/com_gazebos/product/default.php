@@ -11,13 +11,9 @@
 defined('_JEXEC') or die;
 
 //Load admin language file
-$lang = JFactory::getLanguage();
-$lang->load('com_gazebos', JPATH_ADMINISTRATOR);
-
-$spec_img_path = '/templates/gazebos/images/dummy-gazebo2.jpg';
+JFactory::getLanguage()->load('com_gazebos', JPATH_ADMINISTRATOR);
 $brochure_img = '/templates/gazebos/images/gazebo-brochure-th.png';
 ?>
-
 	<div id="panels">
 		<ul id="tabs">
 			<li><a href="#photos">Gazebo Photos</a></li>
@@ -56,13 +52,13 @@ $brochure_img = '/templates/gazebos/images/gazebo-brochure-th.png';
 		
 		<div id="description" class="panel">
 			<h2><?php echo $this->item->title; ?></h2>
-			<?php echo EEImageHelper::getThumb('com_gazebos/gallery/products/' . $this->item->id . '/' . $this->item->gallery[0]->path, '296x242'); ?>
+			<img src="<?php echo '/media/com_gazebos/gallery/products/' . $this->item->id . '/296x242_' . $this->item->gallery[0]->path; ?>" />
 	 		<p><?php echo $this->item->description; ?></p>
 		</div>
 		
 		<div id="specs" class="panel">
 			<h2>Specifications</h2>
-			<?php echo EEImageHelper::getThumb('com_gazebos/gallery/products/' . $this->item->id . '/' . $this->item->gallery[0]->path, '296x242'); ?>
+			<img src="<?php echo '/media/com_gazebos/gallery/products/' . $this->item->id . '/296x242_' . $this->item->gallery[0]->path; ?>" />
 			<ul>
 		 		<?php
 			 	$total = count($this->item->specifications['title']);
