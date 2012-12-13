@@ -60,6 +60,6 @@ JFactory::getDocument()->addStyleDeclaration('
 			<?php echo modProductSearchHelper::getFilters(); ?>
 			<input type="hidden" name="task" value="search" />
 		</div>
-		<input type="hidden" id="producttype" value="<?php echo GazebosHelper::getProductTypeId(); ?>" />
+		<input type="hidden" name="producttype" id="producttype" value="<?php echo GazebosHelper::getProductTypeId(); ?>" />
 	</form>
 </div>

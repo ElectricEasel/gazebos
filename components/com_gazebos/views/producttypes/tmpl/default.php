@@ -7,36 +7,32 @@
  * @author      Don Gilbert <don@electriceasel.com> - http://www.electriceasel.com
  */
 
-
 // no direct access
 defined('_JEXEC') or die;
 
-if($this->items) : ?>
+$items = $this->items;
 
-    <div class="items">
-
-        <ul class="items_list">
-
-            <?php foreach ($this->items as $item) :?>
-
-                
-				<li><a href="<?php echo JRoute::_('index.php?option=com_gazebos&view=producttype&id=' . (int)$item->id); ?>"><?php echo $item->title; ?></a></li>
-
-            <?php endforeach; ?>
-
-        </ul>
-
-    </div>
-
+if($items) : ?>
      <div class="pagination">
         <p class="counter">
             <?php echo $this->pagination->getPagesCounter(); ?>
         </p>
         <?php echo $this->pagination->getPagesLinks(); ?>
     </div>
-    
-<?php else: ?>
-    
-    There are no items in the list
-
-<?php endif; ?>
+    <div class="items home_products">
+        <ul class="items_list">
+            <?php foreach ($items as $item)
+            {
+            	$this->item = $item;
+            	echo $this->loadTemplate('item');
+            } ?>
+        </ul>
+        <div class="clear"></div>
+    </div>
+     <div class="pagination">
+        <p class="counter">
+            <?php echo $this->pagination->getPagesCounter(); ?>
+        </p>
+        <?php echo $this->pagination->getPagesLinks(); ?>
+    </div>
+<?php endif;

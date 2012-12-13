@@ -2,8 +2,7 @@
 <config>
 	<fieldset name="component"
 		label="COM_GAZEBOS_COMPONENT_LABEL"
-		description="COM_GAZEBOS_COMPONENT_DESC"
-	>
+		description="COM_GAZEBOS_COMPONENT_DESC">
 
         <field name="test"
              type="radio"
@@ -18,8 +17,7 @@
 
 	<fieldset name="permissions"
 		description="JCONFIG_PERMISSIONS_DESC"
-		label="JCONFIG_PERMISSIONS_LABEL"
-	>
+		label="JCONFIG_PERMISSIONS_LABEL">>
 
 		<field name="rules" type="rules"
 			component="com_gazebos"
