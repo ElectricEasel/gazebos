@@ -58,4 +58,9 @@ class GazebosHelper extends EEHelper
 			$vName == 'optioncategories'
 		);
 	}
+
+	public static function getProductTypes()
+	{
+		return JFactory::getDbo()->setQuery('SELECT * FROM #__gazebos_types WHERE state = 1')->loadObjectList();
+	}
 }
