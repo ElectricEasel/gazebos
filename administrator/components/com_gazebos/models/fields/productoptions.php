@@ -49,10 +49,11 @@ class JFormFieldProductOptions extends JFormField
 
 		foreach ($options as $id => $keys)
 		{
+			$sel = isset($selected[$id]);
 			$attribs['data-placeholder'] = "Select {$keys['text']} Options";
 			$html[] = '<div class="option_container" style="margin-bottom:20px;">';
 			$html[] = '<label>' . $keys['text'] . '</label>';
-			$html[] = JHtml::_('select.genericlist', $keys['items'], $this->getName($id), $attribs, 'value', 'text', $selected[$id]);
+			$html[] = JHtml::_('select.genericlist', $keys['items'], $this->getName($id), $attribs, 'value', 'text', $sel);
 			$html[] = '<input type="hidden" name="' . $this->getName($id) . '" value="0" />';
 			$html[] = '</div>';
 		}

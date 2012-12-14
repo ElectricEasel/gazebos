@@ -38,34 +38,34 @@
 
 		<field
 			name="style_id"
-			type="sql"
+			type="attributes"
 			class="inputbox"
 			label="COM_GAZEBOS_FORM_LBL_PRODUCT_STYLE_ID"
 			description="COM_GAZEBOS_FORM_DESC_PRODUCT_STYLE_ID"
 			required="true"
-			query="SELECT 0 AS `id`, '- Please select -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_styles`"
+			table="#__gazebos_styles"
 			key_field="id"
 			value_field="title" />
 
 		<field
 			name="shape_id"
-			type="sql"
+			type="attributes"
 			class="inputbox"
 			label="COM_GAZEBOS_FORM_LBL_PRODUCT_SHAPE_ID"
 			description="COM_GAZEBOS_FORM_DESC_PRODUCT_SHAPE_ID"
 			required="true"
-			query="SELECT 0 AS `id`, '- Please select -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_shapes`"
+			table="#__gazebos_shapes"
 			key_field="id"
 			value_field="title" />
 
 		<field
 			name="material_id"
-			type="sql"
+			type="attributes"
 			class="inputbox"
 			label="COM_GAZEBOS_FORM_LBL_PRODUCT_MATERIAL_ID"
 			description="COM_GAZEBOS_FORM_DESC_PRODUCT_MATERIAL_ID"
 			required="true"
-			query="SELECT 0 AS `id`, '- Please select -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_materials`"
+			table="#__gazebos_materials"
 			key_field="id"
 			value_field="title" />
 
