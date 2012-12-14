@@ -54,6 +54,21 @@ class GazebosTableproductshape extends JTable {
 			$this->setRules($rules);
 		}
 
+		if (isset($array['sizes']) && is_array($array['sizes']))
+		{
+			foreach ($array['sizes'] as $key => $value)
+			{
+				if (empty($value))
+				{
+					unset($array['sizes'][$key]);
+				}
+			}
+
+			$registry = new JRegistry();
+			$registry->loadArray($array['sizes']);
+			$array['sizes'] = (string) $registry;
+		}
+
         return parent::bind($array, $ignore);
     }
 

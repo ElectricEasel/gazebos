@@ -56,6 +56,9 @@ $saveOrder	= $listOrder == 'a.ordering';
 				<?php echo JHtml::_('grid.sort',  'COM_GAZEBOS_PRODUCTMATERIALS_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
 
+				<th class='center'>
+				<?php echo JHtml::_('grid.sort',  'Type', 'a.type_id', $listDirn, $listOrder); ?>
+				</th>
 
                 <?php if (isset($this->items[0]->state)) { ?>
 				<th width="5%">
@@ -108,6 +111,9 @@ $saveOrder	= $listOrder == 'a.ordering';
 				<?php endif; ?>
 				</td>
 
+				<td class="center">
+					<?php echo $item->type; ?>
+				</td>
 
                 <?php if (isset($this->items[0]->state)) { ?>
 				    <td class="center">

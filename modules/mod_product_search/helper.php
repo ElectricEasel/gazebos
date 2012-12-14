@@ -133,14 +133,13 @@ abstract class modProductSearchHelper
 	public static function getAvailableOptions($type)
 	{
 		$db = JFactory::getDbo();
+		$id = JFactory::getApplication()->input->getInt('id');
 		$table = $db->qn(GazebosHelper::getTable($type));
 
 		$q =
-			'SELECT a.id, a.title ' .//, COUNT(b.id) AS count ' .
-			"FROM {$table} AS a ";// .
-//			"LEFT JOIN #__gazebos_products AS b ON b.{$type}_id = a.id " .
-//			'WHERE a.state = 1 ' .
-//			'AND (b.id IS NULL OR b.id != NULL)';
+			'SELECT a.id, a.title ' .
+			"FROM {$table} AS a " . 
+			'WHERE a.type_id = ' . $id;
 
 		return $db->setQuery($q)->loadObjectList('id');
 	}
