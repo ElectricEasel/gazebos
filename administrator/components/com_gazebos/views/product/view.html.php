@@ -28,6 +28,24 @@ class GazebosViewProduct extends EEView
 					$(this).chosen();
 				});
 			});
+			
+			Joomla.autoSave = function () {
+				jQuery.ajax({
+					url: "index.php",
+					type: "POST",
+					data: {
+						option: "com_gazebos",
+						task: "product.apply",
+						tmpl: "component"
+					},
+					success: function (data) {
+						console.log("autosaved");
+					}
+				});
+			}
+
+			// Auto save every minute.
+			// setInterval("Joomla.autoSave();", 60000);
 			// ]]>
 			')
 			->addStyleDeclaration('
