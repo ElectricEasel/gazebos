@@ -68,9 +68,10 @@
 }
 #subhead {
 	font-family: Times, serif;
+	overflow: hidden;
 }
 #image-banner {
-	background:url(../images/bg_subhead.png) repeat 0 0 scroll #FFF;
+	background:url(../images/bg_subhead.png) repeat 0 0 scroll #AA9D8A;
 	padding: 5px 0;
 }
 #image-banner .banner-wrap {
@@ -80,6 +81,7 @@ body.home #image-banner .banner-wrap {
 	background:url(../images/banners/cabana.jpg) no-repeat center top scroll transparent;
 	height: 431px;
 	min-width: 960px;
+	overflow: hidden;
 }
 #banner-tagline {
 	width: 712px;
@@ -100,6 +102,7 @@ body.gazebos #banner-tagline {
 body.gazebos #image-banner .banner-wrap {
 	background:url(../images/banners/gazebo.jpg) no-repeat center top scroll transparent;
 	height: 184px;
+	overflow: hidden;
 }
 
 #banner-tagline h1 {
@@ -154,7 +157,7 @@ body.gazebos #image-banner .banner-wrap {
 	color: #fff;
 }
 #main {
-	background:url(../images/bg_content.png) repeat 0 0 scroll #FFF;
+	background:url(../images/bg_content.png) repeat 0 0 scroll #DBD6CF;
 }
 #content {
 	padding: 15px 0;
@@ -323,6 +326,7 @@ body.gazebos #image-banner .banner-wrap {
 }
 .green-button:hover {
 	background: #345806;
+	text-decoration: none !important;
 }
 #footer-quote .green-button {
 	float: right;
