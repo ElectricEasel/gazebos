@@ -60,7 +60,7 @@ $this
 						<?php if ($bodyclass == 'home'): ?>
 								<h1>Cabanas</h1>
 								<span>The Perfect Place to Get Away</span>
-						<?php elseif ($bodyclass = 'gazebos'): ?>
+						<?php elseif ($bodyclass == 'gazebos'): ?>
 								<h1>Wood Gazebos</h1>
 								<span>The Heart of American Charm</span>
 						<?php endif; ?>
@@ -73,7 +73,7 @@ $this
 					<div class="wrap">
 						<?php if ($bodyclass == 'home'): ?>
 							<h2>Building <span>quality gazebos</span> in the U.S.A. for over 30 years</h2>
-						<?php elseif ($bodyclass = 'gazebos'): ?>
+						<?php elseif ($bodyclass == 'gazebos'): ?>
 							<h2><span>“Wood Gazebos”</span> we found <span>200</span> items!</h2>
 						<?php endif; ?>
 					</div>
