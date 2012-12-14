@@ -23,6 +23,8 @@ abstract class modProductSearchHelper
 	 */
 	protected static $optionCache = array();
 
+	protected static $filters = array('material', 'shape', 'style', 'price');
+
 	/**
 	 * Get the text for the filter option
 	 *
@@ -50,9 +52,8 @@ abstract class modProductSearchHelper
 	public static function getFilters()
 	{
 		$html = array();
-		$filters = array('material', 'shape', 'style');
 
-		foreach ($filters as $type)
+		foreach (self::$filters as $type)
 		{
 			$label = '<h5>' . GazebosHelper::getProductTypeTitle() . ' By ' . ucfirst($type) . '</h5>';
 			$select = self::getFilter($type);
@@ -82,6 +83,7 @@ abstract class modProductSearchHelper
 		}
 
 		$html[] = '</ul>';
+		// Add a hidden field with same name with 0 value
 		$html[] = '<input type="hidden" name="filter_' . $type . '[]" value="0" checked="checked" />';
 
 		return implode($html);
@@ -91,25 +93,23 @@ abstract class modProductSearchHelper
 	{
 		if (!isset(self::$optionCache[$type]))
 		{
-			$db = JFactory::getDbo();
-			$table = $db->qn(GazebosHelper::getTable($type));
-	
-			$q =
-				'SELECT a.id, a.title ' .//, COUNT(b.id) AS count ' .
-				"FROM {$table} AS a ";// .
-	//			"LEFT JOIN #__gazebos_products AS b ON b.{$type}_id = a.id " .
-	//			'WHERE a.state = 1 ' .
-	//			'AND (b.id IS NULL OR b.id != NULL)';
-	
-			$results = $db->setQuery($q)->loadObjectList('id');
-	
+			switch ($type)
+			{
+				case 'price':
+					$results = self::getAvailablePrices();
+					break;
+				default:
+					$results = self::getAvailableOptions($type);
+					break;
+			}
+
 			if ($results === null) return false;
 			
 			$options = array();
 	
 			foreach ($results as $row)
 			{
-				$text = $row->title;// . ' (' . $row->count . ')';
+				$text = htmlspecialchars($row->title);// . ' (' . $row->count . ')';
 				$options[$row->id] = JHtml::_('select.option', $row->id, $text);
 			}
 	
@@ -117,5 +117,31 @@ abstract class modProductSearchHelper
 		}
 
 		return self::$optionCache[$type];
+	}
+
+	public static function getAvailablePrices()
+	{
+		return array(
+			(object) array('title' => '$4,000 & under', 'id' => '4000'),
+			(object) array('title' => '$8,000 & under', 'id' => '8000'),
+			(object) array('title' => '$10,000 & under', 'id' => '10000'),
+			(object) array('title' => '$15,000 & under', 'id' => '15000'),
+			(object) array('title' => '$15,001 & over', 'id' => '15001')
+		);
+	}
+
+	public static function getAvailableOptions($type)
+	{
+		$db = JFactory::getDbo();
+		$table = $db->qn(GazebosHelper::getTable($type));
+
+		$q =
+			'SELECT a.id, a.title ' .//, COUNT(b.id) AS count ' .
+			"FROM {$table} AS a ";// .
+//			"LEFT JOIN #__gazebos_products AS b ON b.{$type}_id = a.id " .
+//			'WHERE a.state = 1 ' .
+//			'AND (b.id IS NULL OR b.id != NULL)';
+
+		return $db->setQuery($q)->loadObjectList('id');
 	}
 }

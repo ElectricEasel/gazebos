@@ -82,6 +82,7 @@ jQuery(document).ready(function ($) {
 					filter_style: filterVars.style,
 					filter_shape: filterVars.shape,
 					filter_material: filterVars.material,
+					filter_price: filterVars.price,
 					ajax: true
 				},
 				success: function (data) {
@@ -97,6 +98,7 @@ jQuery(document).ready(function ($) {
 			var arr = [];
 			var style = [];
 			var shape = [];
+			var price = [];
 			var material = [];
 
 			filterInputs.each(function (idx, el) {
@@ -109,12 +111,14 @@ jQuery(document).ready(function ($) {
 
 			arr.style = style;
 			arr.shape = shape;
+			arr.price = price;
 			arr.material = material;
 
 			// Push an empty var to the array
 			// so the form still get's submitted.
 			arr.style.push(0);
-			arr.shape.push(0);
+			arr.style.push(0);
+			arr.price.push(0);
 			arr.material.push(0);
 
 			return arr;
