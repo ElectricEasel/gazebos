@@ -122,7 +122,12 @@ class GazebosModelProductType extends JModel
 		$filter_price = $this->getState('filter.price');
 		if (is_array($filter_price) && !empty($filter_price) && !empty($filter_price[0]))
 		{
-			$q .= ' AND a.price_id IN (' . implode(',', $filter_price) . ')';
+			// Remove the 0 placeholder
+			array_pop($filter_price);
+			$filter_price = array_pop($filter_price);
+			$comparison = ($filter_price > 15000) ? '>=' : '<=';
+
+			$q .= ' AND a.price_min ' . $comparison . $filter_price;
 		}
 
 		$filter_shape = $this->getState('filter.shape');
