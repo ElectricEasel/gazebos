@@ -109,7 +109,8 @@ class GazebosModelProductType extends JModel
 	 */
 	public function getProducts()
 	{
-		$q  = 'SELECT a.*, (SELECT b.path FROM #__gazebos_gallery AS b WHERE b.product_id = a.id LIMIT 1) AS image FROM #__gazebos_products AS a';
+		$q  = 'SELECT a.*, (SELECT b.path FROM #__gazebos_gallery AS b WHERE b.product_id = a.id';
+		$q .= ' ORDER BY b.ordering ASC LIMIT 1) AS image FROM #__gazebos_products AS a';
 		$q .= ' WHERE a.state = 1 AND a.type_id = ' . $this->getState('producttype.id');
 
 		$filter_material = $this->getState('filter.material');
@@ -153,17 +154,5 @@ class GazebosModelProductType extends JModel
 		}
 
 		return $results;
-	}
-
-	/**
-	 * Method to get images based on the passed in keys.
-	 *
-	 * @param   array  $ids  The ids for which to find images.
-	 *
-	 * @return  array  Array of image objects keyed to their product_id
-	 */
-	private function getImages(array $ids)
-	{
-		$q = 'SELECT * FROM #__gazebos_gallery WHERE product_id';
 	}
 }

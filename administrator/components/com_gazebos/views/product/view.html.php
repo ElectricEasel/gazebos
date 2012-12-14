@@ -30,7 +30,10 @@ class GazebosViewProduct extends EEView
 			});
 			// ]]>
 			')
-			->addStyleDeclaration('			
+			->addStyleDeclaration('
+				.tabs fieldset.adminform {
+					overflow:visible
+				}	
 			    .adminformlist li {
 			        clear: both;
 			    }

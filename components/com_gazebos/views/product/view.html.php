@@ -15,92 +15,43 @@ jimport('joomla.application.component.view');
 /**
  * View to edit
  */
-class GazebosViewProduct extends JView {
+class GazebosViewProduct extends JView
+{
+	protected $state;
+	protected $item;
+	protected $form;
+	protected $params;
 
-    protected $state;
-    protected $item;
-    protected $form;
-    protected $params;
+	/**
+	 * Display the view
+	 */
+	public function display($tpl = null)
+	{
+		$app = JFactory::getApplication();
+		$user  = JFactory::getUser();
 
-    /**
-     * Display the view
-     */
-    public function display($tpl = null) {
-        
-		$app	= JFactory::getApplication();
-        $user		= JFactory::getUser();
-        
-        $this->state = $this->get('State');
-        $this->item = $this->get('Data');
-        $this->params = $app->getParams('com_gazebos');
-   		
+		$this->state = $this->get('State');
+		$this->item = $this->get('Data');
+		$this->params = $app->getParams('com_gazebos');
 
-        // Check for errors.
-        if (count($errors = $this->get('Errors'))) {
-            throw new Exception(implode("\n", $errors));
-        }
-        
-        
-        
-        if($this->_layout == 'edit') {
-            
-            $authorised = $user->authorise('core.create', 'com_gazebos');
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			throw new Exception(implode("\n", $errors));
+		}
 
-            if ($authorised !== true) {
-                throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
-            }
-        }
-        
-        $this->_prepareDocument();
-
-        parent::display($tpl);
-    }
-
+		$this->prepareDocument();
+		parent::display($tpl);
+	}
 
 	/**
 	 * Prepares the document
 	 */
-	protected function _prepareDocument()
+	protected function prepareDocument()
 	{
-		$app	= JFactory::getApplication();
-		$menus	= $app->getMenu();
-		$title	= null;
-
-		// Because the application sets a default page title,
-		// we need to get it from the menu item itself
-		$menu = $menus->getActive();
-		if($menu)
-		{
-			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
-		} else {
-			$this->params->def('page_heading', JText::_('com_gazebos_DEFAULT_PAGE_TITLE'));
-		}
-		$title = $this->params->get('page_title', '');
-		if (empty($title)) {
-			$title = $app->getCfg('sitename');
-		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
-		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
-		}
+		$title = !empty($this->item->seo_title) ? $this->item->seo_title : $this->item->title;
 		$this->document->setTitle($title);
+		$this->document->setDescription($this->item->seo_description);
+	}
 
-		if ($this->params->get('menu-meta_description'))
-		{
-			$this->document->setDescription($this->params->get('menu-meta_description'));
-		}
-
-		if ($this->params->get('menu-meta_keywords'))
-		{
-			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
-		}
-
-		if ($this->params->get('robots'))
-		{
-			$this->document->setMetadata('robots', $this->params->get('robots'));
-		}
-	}        
-    
 }

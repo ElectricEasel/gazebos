@@ -68,6 +68,13 @@ class GazebosTableProduct extends JTable
 			$array['options'] = (string) $registry;
 		}
 
+		if (isset($array['features']) && is_array($array['features']))
+		{
+			$registry = new JRegistry();
+			$registry->loadArray($array['features']);
+			$array['features'] = (string) $registry;
+		}
+
 		if (isset($array['specifications']) && is_array($array['specifications']))
 		{
 			foreach ($array['specifications']['title'] as $key => $value)

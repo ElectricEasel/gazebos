@@ -119,6 +119,17 @@
 	</fieldset>
 
 	<fieldset
+		name="features"
+		label="Features">
+
+		<field
+			name="features"
+			type="Features"
+			multiple="true" />
+
+	</fieldset>
+
+	<fieldset
 		name="specs"
 		label="Specifications">
 
@@ -138,6 +149,27 @@
 			name="options"
 			type="productoptions"
 			multiple="true" />
+
+	</fieldset>
+
+	<fieldset
+		name="seo"
+		label="SEO">
+
+		<field
+			name="seo_title"
+			type="text"
+			label="SEO Title"
+			description="The SEO title tag for this product"
+			size="55" />
+
+		<field
+			name="seo_description"
+			type="textarea"
+			label="SEO Description"
+			description="The SEO description for this product"
+			rows="10"
+			cols="50" />
 
 	</fieldset>
 
