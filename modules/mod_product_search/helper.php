@@ -84,7 +84,7 @@ abstract class modProductSearchHelper
 
 		$html[] = '</ul>';
 		// Add a hidden field with same name with 0 value
-		$html[] = '<input type="hidden" name="filter_' . $type . '[]" value="0" checked="checked" />';
+		$html[] = '<input type="hidden" name="filter_' . $type . '[]" value="0" />';
 
 		return implode($html);
 	}
