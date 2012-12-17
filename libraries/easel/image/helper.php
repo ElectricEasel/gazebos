@@ -32,7 +32,9 @@ abstract class EEImageHelper
 	 */
 	public static function getInstance($source = null)
 	{
-		return new JImage($source);
+		$new = new JImage($source);
+
+		return $new;
 	}
 
 	/**
@@ -112,7 +114,7 @@ abstract class EEImageHelper
 		// If the image is too wide, size it down.
 		if ($info->width > JIMAGE_MAX_UPLOAD_WIDTH)
 		{
-			self::getInstance($full_dir.$name)->resize(JIMAGE_MAX_UPLOAD_WIDTH, null)->toFile($full_dir.$name);
+			self::getInstance($full_dir.$name)->resize(JIMAGE_MAX_UPLOAD_WIDTH, null)->toFile($full_dir.$name, $info->type);
 		}
 
 		foreach (self::getThumbSizes() as $method => $sizes)
