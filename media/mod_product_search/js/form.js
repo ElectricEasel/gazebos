@@ -117,7 +117,7 @@ jQuery(document).ready(function ($) {
 			// Push an empty var to the array
 			// so the form still get's submitted.
 			arr.style.push(0);
-			arr.style.push(0);
+			arr.shape.push(0);
 			arr.price.push(0);
 			arr.material.push(0);
 
