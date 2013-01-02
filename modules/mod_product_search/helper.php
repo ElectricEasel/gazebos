@@ -70,10 +70,12 @@ abstract class modProductSearchHelper
 		$app = JFactory::getApplication();
 		$options = self::getOptions($type);
 
+		$context = 'product' . JFactory::getApplication()->input->getInt('id');
+
 		$html[] = '<ul class="filter-menu">';
 		foreach ($options as $i => $option)
 		{
-			$checked = in_array((string) $option->value, (array) $app->getUserState('filter.' . $type)) ? ' checked="checked"' : '';
+			$checked = in_array((string) $option->value, (array) $app->getUserState($context . 'filter.' . $type)) ? ' checked="checked"' : '';
 
 			$html[] = '<li>';
 			$html[] = '<input type="checkbox" id="filter_' . $type . $option->value . '" name="filter_' . $type . '[]"' . ' value="';

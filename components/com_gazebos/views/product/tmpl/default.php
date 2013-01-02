@@ -14,7 +14,6 @@ $type = GazebosHelper::getProductTypeTitle();
 $brochure_img = '/templates/gazebos/images/gazebo-brochure-th.png';
 ?>
 <div class="top-nav">
-	<p class="left">Gazebos  &gt;  Vinyl  &gt;  Octagon  &gt;  Country Style</p>
 	<p class="right"><a class="back" href="#">&laquo; back to search results</a></p>
 </div>
 <div id="panels">
@@ -61,23 +60,39 @@ $brochure_img = '/templates/gazebos/images/gazebo-brochure-th.png';
 	<div id="description" class="panel">
 		<h2><?php echo $this->item->title; ?></h2>
 		<img src="/media/com_gazebos/gallery/products/<?php echo  $this->item->id . '/thumbs/296x242_' . $this->item->gallery[0]->path ?>" />
- 		<p><?php echo $this->item->description; ?></p>
+ 		<p><?php echo nl2br($this->item->description); ?></p>
 	</div>
 	
 	<div id="specs" class="panel">
 		<h2>Specifications</h2>
 		<img src="/media/com_gazebos/gallery/products/<?php echo  $this->item->id . '/thumbs/296x242_' . $this->item->gallery[0]->path ?>" />
-		<ul>
-	 		<?php
-		 	$total = count($this->item->specifications['title']);
-	 		for ($i = 0; $i < $total; $i++) :
-	 		?>
-	 		<li>
-	 			<h4><?php echo $this->item->specifications['title'][$i]; ?></h4>
-	 			<p><?php echo $this->item->specifications['value'][$i];?></p>
-	 		</li>
-		 	<?php endfor; ?>
-		</ul>
+ 		<?php
+	 	$total = count($this->item->specifications['title']);
+ 		for ($i = 0; $i < $total; $i++) :
+ 		?>
+ 		<div class="spec">
+ 			<h4><?php echo $this->item->specifications['title'][$i]; ?></h4>
+ 			<p><?php echo $this->item->specifications['value'][$i];?></p>
+ 		</div>
+	 	<?php endfor; ?>
+ 		<?php
+	 	$total = count($this->item->specifications['title']);
+ 		for ($i = 0; $i < $total; $i++) :
+ 		?>
+ 		<div class="spec">
+ 			<h4><?php echo $this->item->specifications['title'][$i]; ?></h4>
+ 			<p><?php echo $this->item->specifications['value'][$i];?></p>
+ 		</div>
+	 	<?php endfor; ?>
+ 		<?php
+	 	$total = count($this->item->specifications['title']);
+ 		for ($i = 0; $i < $total; $i++) :
+ 		?>
+ 		<div class="spec">
+ 			<h4><?php echo $this->item->specifications['title'][$i]; ?></h4>
+ 			<p><?php echo $this->item->specifications['value'][$i];?></p>
+ 		</div>
+	 	<?php endfor; ?>
 	</div>
 	
 	<div id="brochure" class="panel">

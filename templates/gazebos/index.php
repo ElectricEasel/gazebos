@@ -23,12 +23,13 @@ $this
 	// Add Stylesheets
 	->addStyleSheet('/templates/system/css/system.css')
 	->addStyleSheet($template . '/css/normalize.css')
+	->addStyleSheet($template . '/css/fullwidth.css')
 	->addStyleSheet($template . '/css/style.css')
 	->addStyleSheet($template . '/css/print.css', $type = 'text/css', $media = 'print')
 	// Add Scripts
 	->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js')
 	->addScript('//cdnjs.cloudflare.com/ajax/libs/jquery.cycle/2.9999.8/jquery.cycle.all.min.js ')
-	->addScript($template . '/js/jquery.jcarousel.js')
+	->addScript($template . '/js/jquery.pikachoose.js')
 	->addScript($template . '/js/site.js')
 	->addScript($template . '/js/custom-form-elements.js')
 	// Other Settings
@@ -54,19 +55,42 @@ $this
 		</div>
 		<div id="subhead">
 			<div id="image-banner">
-				<div class="banner-wrap">
-					<div class="wrap">
-						<div id="banner-tagline">
-						<?php if ($bodyclass == 'home'): ?>
-								<h1>Cabanas</h1>
-								<span>The Perfect Place to Get Away</span>
-						<?php elseif ($bodyclass == 'gazebos'): ?>
-								<h1>Wood Gazebos</h1>
-								<span>The Heart of American Charm</span>
-						<?php endif; ?>
-						</div>
-					</div>					
+				<?php if ($menu->getDefault() == $menu->getActive()) : ?>
+				<div id="fullwidth">
+					<ul id="fullwidth_slider">
+						<li>
+							<a href="javascript:void(0)">
+								<img src="/templates/gazebos/images/banners/home.jpg" />
+								<span><span>Gazebos.com<span>The Best Prices for Fine Quality</span></span></span>
+							</a>
+						</li>
+						<li>
+							<a href="/gazebos">
+								<img src="/templates/gazebos/images/banners/gazebo.jpg" />
+								<span><span>Gazebos<span>The Heart of American Charm</span></span></span>
+							</a>
+						</li>
+						<li>
+							<a href="/pergolas">
+								<img src="/templates/gazebos/images/banners/pergola.jpg" />
+								<span><span>Pergolas<span>Your Dream Getaway</span></span></span>
+							</a>
+						</li>
+						<li>
+							<a href="/pavilions">
+								<img src="/templates/gazebos/images/banners/pavilion.jpg" />
+								<span><span>Pavilions<span>Outdoor Living at it's Best</span></span></span>
+							</a>
+						</li>
+						<li>
+							<a href="/three-season-gazebos">
+								<img src="/templates/gazebos/images/banners/threeseasongazebo.jpg" />
+								<span><span>Three Season<span>The Perfect Place to Get Away</span></span></span>
+							</a>
+						</li>
+					</ul>
 				</div>
+				<?php endif; ?>
 			</div>
 			<div id="green-banner">
 				<div class="subhead-wrap">
@@ -74,7 +98,7 @@ $this
 						<?php if ($bodyclass == 'home'): ?>
 							<h2>Building <span>quality gazebos</span> in the U.S.A. for over 30 years</h2>
 						<?php elseif ($bodyclass == 'gazebos'): ?>
-							<h2><span>“Wood Gazebos”</span> we found <span>200</span> items!</h2>
+							<h2><span>"Wood Gazebos"</span> we found <span>200</span> items!</h2>
 						<?php endif; ?>
 					</div>
 				</div>

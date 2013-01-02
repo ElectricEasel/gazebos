@@ -15,26 +15,52 @@ jQuery(document).ready(function ($) {
 
 	var advSlide = $('#slides');
 	// Setup for Cycle Plugin
-    advSlide.cycle({
-    	timeout: 0,
-    	pager: '#carousel',
-    	pagerAnchorBuilder: function () {
-	    	return '';
-    	}
-    });
+	if (advSlide.length > 0)
+	{
+	    advSlide.cycle({
+	    	timeout: 0,
+	    	pager: '#carousel',
+	    	pagerAnchorBuilder: function () {
+		    	return '';
+	    	}
+	    });
 
-	$('#carousel').jcarousel({
-		scroll: 1,
-        visible: 3,
-        auto:3,
-        wrap: 'circular',
-        itemFallbackDimension: 177,
-        buttonNextHTML: '<div>NEXT</div>',
-        buttonPrevHTML: '<div>PREV</div>',
-        itemVisibleInCallback: function (carousel, el, idx, state) {
-        	slideNum = parseInt($(el).attr('data-slide'));
-        	advSlide.cycle(slideNum);
-        }
-    });
+	    var carousel = $('#carousel');
+	    var carouselImgs = carousel.find('img');
 
+    	carouselImgs.each(function (el) {
+    		$(el).click(function (e) {
+    			e.preventDefault();
+		        slideNum = parseInt($(el).attr('data-slide'));
+		        advSlide.cycle(slideNum);
+    		});
+    	});
+
+	    if (carouselImgs.length > 3)
+	    {
+			carousel.jcarousel({
+				scroll: 1,
+		        visible: 3,
+		        auto:3,
+		        wrap: 'circular',
+		        itemFallbackDimension: 177,
+		        buttonNextHTML: '<div>NEXT</div>',
+		        buttonPrevHTML: '<div>PREV</div>',
+		        itemVisibleInCallback: function (carousel, el, idx, state) {
+		        	slideNum = parseInt($(el).attr('data-slide'));
+		        	advSlide.cycle(slideNum);
+		        }
+		    });
+		}
+	}
+
+	var fullwidth = $('#fullwidth_slider');
+
+	if (fullwidth.length > 0)
+	{
+		fullwidth.PikaChoose({
+			transition: [0],
+			carousel: false
+		});
+	}
 });

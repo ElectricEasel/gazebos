@@ -83,6 +83,11 @@ body.home #image-banner .banner-wrap {
 	min-width: 960px;
 	overflow: hidden;
 }
+#fullwidth .pika-thumbs,
+#fullwidth .pika-imgnav,
+#fullwidth .pika-textnav {
+	display:none !important;
+}
 #banner-tagline {
 	width: 712px;
 	position: absolute;
@@ -105,15 +110,20 @@ body.gazebos #image-banner .banner-wrap {
 	overflow: hidden;
 }
 
-#banner-tagline h1 {
+#banner-tagline h1,
+#fullwidth .caption span {
     font-size: 60px;
     font-weight: normal;
     line-height: 60px;
     margin: 17px 22px 2px 0;
 }
-#banner-tagline span {
+#banner-tagline span,
+#fullwidth .caption span span {
 	font-size: 28px;
 	font-style: italic;
+	display:block;
+	margin-top:0;
+	font-weight: normal;
 }
 .home #green-banner {
 	background:url(../images/bg_green2.png) repeat 0 0 scroll #365117;
@@ -627,7 +637,7 @@ body.home .pagination {
 #panels .price-range {
 	font-family: sans-serif;
 	color: #344e16;
-	font-size: 26px;
+	font-size: 24px;
 	font-weight: normal;
 }
 #panel-container {
@@ -685,13 +695,7 @@ body.home .pagination {
     margin: 0 0 20px;
     color: #3c2313;
 }
-
-#specs ul {
-	margin: 0;
-	padding: 0;
-	list-style: none outside none;
-}
-#specs ul li {
+#specs .spec {
     float: left;
     margin: 0 10px 0 0;
     width: 325px;
@@ -702,7 +706,7 @@ body.home .pagination {
 	background: url(../images/bg_darkpattern.png) repeat scroll 0 0 transparent;
 	padding: 10px;
 	box-shadow: 1px 1px 0 #fff;
-	margin:0 0 20px 20px;
+	margin:0 19px 20px 0;
 }
 #brochure-img {
     float: right;

@@ -31,20 +31,23 @@ class GazebosModelProductType extends JModel
 	{
 		$app = JFactory::getApplication();
 
-		$filter_material = $app->getUserStateFromRequest('filter.material', 'filter_material', array(), 'array');
-		$this->setState('filter.material', $filter_material);
-
-		$filter_shape = $app->getUserStateFromRequest('filter.shape', 'filter_shape', array(), 'array');
-		$this->setState('filter.shape', $filter_shape);
-
-		$filter_style = $app->getUserStateFromRequest('filter.style', 'filter_style', array(), 'array');
-		$this->setState('filter.style', $filter_style);
-
-		$filter_price = $app->getUserStateFromRequest('filter.price', 'filter_price', array(), 'array');
-		$this->setState('filter.price', $filter_price);
-
 		// Get the current product type setting from the menu item request
-		$this->setState('producttype.id', $app->input->getInt('id'));
+		$type = $app->input->getInt('id');
+		$this->setState('producttype.id', $type);
+
+		$context = 'product' . $type;
+
+		$filter_material = $app->getUserStateFromRequest($context . 'filter.material', 'filter_material', array(), 'array');
+		$this->setState($context . 'filter.material', $filter_material);
+
+		$filter_shape = $app->getUserStateFromRequest($context . 'filter.shape', 'filter_shape', array(), 'array');
+		$this->setState($context . 'filter.shape', $filter_shape);
+
+		$filter_style = $app->getUserStateFromRequest($context . 'filter.style', 'filter_style', array(), 'array');
+		$this->setState($context . 'filter.style', $filter_style);
+
+		$filter_price = $app->getUserStateFromRequest($context . 'filter.price', 'filter_price', array(), 'array');
+		$this->setState($context . 'filter.price', $filter_price);
 
 		$this->setState('params', $app->getParams());
 	}
@@ -109,17 +112,20 @@ class GazebosModelProductType extends JModel
 	 */
 	public function getProducts()
 	{
+		$type = $this->getState('producttype.id');
+		$context = 'product' . $type;
+
 		$q  = 'SELECT a.*, (SELECT b.path FROM #__gazebos_gallery AS b WHERE b.product_id = a.id';
 		$q .= ' ORDER BY b.ordering ASC LIMIT 1) AS image FROM #__gazebos_products AS a';
-		$q .= ' WHERE a.state = 1 AND a.type_id = ' . $this->getState('producttype.id');
+		$q .= ' WHERE a.state = 1 AND a.type_id = ' . $type;
 
-		$filter_material = $this->getState('filter.material');
+		$filter_material = $this->getState($context . 'filter.material');
 		if (is_array($filter_material) && !empty($filter_material) && !empty($filter_material[0]))
 		{
 			$q .= ' AND a.material_id IN (' . implode(',', $filter_material) . ')';
 		}
 
-		$filter_price = $this->getState('filter.price');
+		$filter_price = $this->getState($context . 'filter.price');
 		if (is_array($filter_price) && !empty($filter_price) && !empty($filter_price[0]))
 		{
 			// Remove the 0 placeholder
@@ -130,13 +136,13 @@ class GazebosModelProductType extends JModel
 			$q .= ' AND a.price_min ' . $comparison . $filter_price;
 		}
 
-		$filter_shape = $this->getState('filter.shape');
+		$filter_shape = $this->getState($context . 'filter.shape');
 		if (is_array($filter_shape) && !empty($filter_shape) && !empty($filter_shape[0]))
 		{
 			$q .= ' AND a.shape_id IN (' . implode(',', $filter_shape) . ')';
 		}
 
-		$filter_style = $this->getState('filter.style');
+		$filter_style = $this->getState($context . 'filter.style');
 		if (is_array($filter_style) && !empty($filter_style) && !empty($filter_style[0]))
 		{
 			$q .= ' AND a.style_id IN (' . implode(',', $filter_style) . ')';
@@ -148,7 +154,7 @@ class GazebosModelProductType extends JModel
 		{
 			foreach ($results as $product)
 			{
-				$Itemid = GazebosHelper::getProductTypeMenuItem($this->getState('producttype.id'));
+				$Itemid = GazebosHelper::getProductTypeMenuItem($type);
 				$product->link = JRoute::_('index.php?option=com_gazebos&view=product&id=' . $product->id . '&Itemid=' . $Itemid);
 
 				if (!empty($product->image))

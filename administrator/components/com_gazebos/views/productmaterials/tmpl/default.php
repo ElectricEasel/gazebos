@@ -57,7 +57,11 @@ $saveOrder	= $listOrder == 'a.ordering';
 				</th>
 
 				<th class='center'>
-				<?php echo JHtml::_('grid.sort',  'Type', 'a.type_id', $listDirn, $listOrder); ?>
+				<?php echo JHtml::_('grid.sort',  'Type', 'b.type_id', $listDirn, $listOrder); ?>
+				</th>
+
+				<th class='center'>
+				<?php echo JHtml::_('grid.sort',  'Line', 'a.line_id', $listDirn, $listOrder); ?>
 				</th>
 
                 <?php if (isset($this->items[0]->state)) { ?>
@@ -113,6 +117,10 @@ $saveOrder	= $listOrder == 'a.ordering';
 
 				<td class="center">
 					<?php echo $item->type; ?>
+				</td>
+
+				<td class="center">
+					<?php echo $item->line; ?>
 				</td>
 
                 <?php if (isset($this->items[0]->state)) { ?>

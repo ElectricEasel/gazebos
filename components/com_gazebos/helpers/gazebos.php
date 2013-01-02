@@ -14,10 +14,10 @@ abstract class GazebosHelper
 	protected static $aliases = array();
 
 	protected static $productTypes = array(
-		1 => 'Gazebos',
-		2 => 'Pergolas',
-		3 => 'Pavilions',
-		4 => 'Cabanas'
+		1 => 'Gazebo',
+		2 => 'Pergola',
+		3 => 'Pavilion',
+		4 => 'Three Season'
 	);
 
 	protected static $tableMap = array(
@@ -28,6 +28,7 @@ abstract class GazebosHelper
 		'type' => '#__gazebos_types',
 		'material' => '#__gazebos_materials',
 		'shape' => '#__gazebos_shapes',
+		'line' => '#__gazebos_lines'
 	);
 
 	protected static $productTypeMenuMap = array();

@@ -7,10 +7,20 @@
 		<field
 			name="title"
 			type="text"
-			label="COM_GAZEBOS_FORM_LBL_PRODUCTSHAPE_TITLE"
-			description="COM_GAZEBOS_FORM_DESC_PRODUCTSHAPE_TITLE"
-			required="true"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCTLINE_TITLE"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCTLINE_TITLE"
 			filter="raw" />
+
+		<field
+			name="type_id"
+			type="sql"
+			class="inputbox"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_TYPE_ID"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_TYPE_ID"
+			required="true"
+			query="SELECT 0 AS `id`, '- Please select -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_types`"
+			key_field="id"
+			value_field="title" />
 
 		<field
 			name="state"
@@ -27,45 +37,24 @@
 	</fieldset>
 
 	<fieldset
-		name="sizes"
-		label="Available Sizes">
-
-		<field
-			name="sizes"
-			type="sizes"
-			label="Available Sizes"
-			multiple="true" />
-
-	</fieldset>
-
-	<fieldset
 		name="hidden"
 		label="Hidden Fields">
-	
-		<field name="id"
+
+		<field
+			name="id"
 			type="text"
 			default="0"
-			label="COM_GAZEBOS_FORM_LBL_PRODUCTSHAPE_ID"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCTLINE_ID"
 			readonly="true"
 			class="readonly"
 			description="JGLOBAL_FIELD_ID_DESC" />
 
 		<field
-			name="line_id"
-			type="hidden"
-			required="true" />
-
-		<field
-			name="type_id"
-			type="hidden"
-			required="true" />
-			
-		<field
 			name="created_by"
 			type="createdby"
 			default=""
-			label="COM_GAZEBOS_FORM_LBL_PRODUCTSHAPE_CREATED_BY"
-			description="COM_GAZEBOS_FORM_DESC_PRODUCTSHAPE_CREATED_BY" />
+			label="COM_GAZEBOS_FORM_LBL_PRODUCTLINE_CREATED_BY"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCTLINE_CREATED_BY" />
 
 		<field
 			name="checked_out"
@@ -76,7 +65,7 @@
 			name="checked_out_time"
 			type="hidden"
 			filter="unset" />
-	
+
 	</fieldset>
 
 </form>

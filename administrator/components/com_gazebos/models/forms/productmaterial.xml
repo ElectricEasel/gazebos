@@ -12,17 +12,6 @@
 			filter="raw" />
 
 		<field
-			name="type_id"
-			type="sql"
-			class="inputbox"
-			label="COM_GAZEBOS_FORM_LBL_PRODUCT_TYPE_ID"
-			description="COM_GAZEBOS_FORM_DESC_PRODUCT_TYPE_ID"
-			required="true"
-			query="SELECT 0 AS `id`, '- Please select -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_types`"
-			key_field="id"
-			value_field="title" />
-
-		<field
 			name="state"
 			type="list"
 			label="JSTATUS"
@@ -48,6 +37,16 @@
 			readonly="true"
 			class="readonly"
 			description="JGLOBAL_FIELD_ID_DESC" />
+
+		<field
+			name="line_id"
+			type="hidden"
+			required="true" />
+
+		<field
+			name="type_id"
+			type="hidden"
+			required="true" />
 
 		<field
 			name="created_by"

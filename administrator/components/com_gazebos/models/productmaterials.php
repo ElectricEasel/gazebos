@@ -110,8 +110,11 @@ class GazebosModelproductmaterials extends JModelList
 		);
 		$query->from('`#__gazebos_materials` AS a');
 
-		$query->select('b.title AS type');
-		$query->leftJoin('#__gazebos_types AS b ON b.id = a.type_id');
+		$query->select('b.title AS line');
+		$query->leftJoin('#__gazebos_lines AS b ON b.id = a.line_id');
+
+		$query->select('c.title AS type');
+		$query->leftJoin('#__gazebos_types AS c ON c.id = b.type_id');
 
 		// Filter by published state
 		$published = $this->getState('filter.state');

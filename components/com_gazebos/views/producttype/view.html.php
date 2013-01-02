@@ -106,27 +106,30 @@ class GazebosViewProductType extends JView
 	{
 		JLoader::register('modProductSearchHelper', JPATH_SITE . '/modules/mod_product_search/helper.php');
 
+		$type = $this->state->get('producttype.id');
+		$context = 'product' . $type;
+
 		$html = array();
 		$filters = array(
-			'material' => $this->state->get('filter.material', array()),
-			'shape' => $this->state->get('filter.shape', array()),
-			'style' => $this->state->get('filter.style', array()),
-			'price' => $this->state->get('filter.price', array())
+			'material' => $this->state->get($context . 'filter.material', array()),
+			'shape' => $this->state->get($context . 'filter.shape', array()),
+			'style' => $this->state->get($context . 'filter.style', array()),
+			'price' => $this->state->get($context . 'filter.price', array())
 		);
 
 		$html[] = '<ul>';
 
-		foreach ($filters as $type => $selected)
+		foreach ($filters as $filter => $selected)
 		{
 			foreach ($selected as $item)
 			{
 				if ($item === '0') continue;
 
 				$html[] = '<li class="removeFilter" title="Remove Filter" rel="#filter_';
-				$html[] = $type . $item;
+				$html[] = $filter . $item;
 				$html[] = '">';
 				$html[] = '<span class="checkbox" style="background-position:0 -75px"></span>';
-				$html[] = modProductSearchHelper::getFilterName($item, $type);
+				$html[] = modProductSearchHelper::getFilterName($item, $filter);
 				$html[] = '</li>';
 			}
 		}

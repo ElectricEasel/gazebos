@@ -14,15 +14,14 @@ jimport('joomla.application.component.modellist');
 /**
  * Methods supporting a list of Gazebos records.
  */
-class GazebosModelproductshapes extends JModelList
+class GazebosModelProductLines extends JModelList
 {
-
 	/**
 	 * Constructor.
 	 *
-	 * @param    array    An optional associative array of configuration settings.
-	 * @see        JController
-	 * @since    1.6
+	 * @param  array    An optional associative array of configuration settings.
+	 * @see    JController
+	 * @since  1.6
 	 */
 	public function __construct($config = array())
 	{
@@ -34,7 +33,10 @@ class GazebosModelproductshapes extends JModelList
 				'state', 'a.state',
 				'created_by', 'a.created_by',
 				'title', 'a.title',
-
+				'icon', 'a.icon',
+				'image', 'a.image',
+				'tagline', 'a.tagline',
+				'description', 'a.description',
 			);
 		}
 
@@ -58,8 +60,6 @@ class GazebosModelproductshapes extends JModelList
 
 		$published = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
-
-
 
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_gazebos');
@@ -108,17 +108,22 @@ class GazebosModelproductshapes extends JModelList
 				'a.*'
 			)
 		);
-		$query->from('`#__gazebos_shapes` AS a');
+		$query->from('`#__gazebos_lines` AS a');
 
-		$query->select('b.title AS line');
-		$query->leftJoin('#__gazebos_lines AS b ON b.id = a.line_id');
+		$query->select('b.title AS type');
+		$query->leftJoin('#__gazebos_types AS b ON b.id = a.type_id');
 
-		$query->select('c.title AS type');
-		$query->leftJoin('#__gazebos_types AS c ON c.id = b.type_id');
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->leftJoin('#__users AS uc ON uc.id=a.checked_out');
+
+		// Join over the user field 'created_by'
+		$query->select('created_by.name AS created_by');
+		$query->leftJoin('#__users AS created_by ON created_by.id = a.created_by');
+
 
 		// Filter by published state
 		$published = $this->getState('filter.state');
-
 		if (is_numeric($published))
 		{
 			$query->where('a.state = '.(int) $published);
@@ -131,6 +136,7 @@ class GazebosModelproductshapes extends JModelList
 
 		// Filter by search in title
 		$search = $this->getState('filter.search');
+
 		if (!empty($search))
 		{
 			if (stripos($search, 'id:') === 0)

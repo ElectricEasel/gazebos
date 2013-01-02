@@ -13,6 +13,17 @@
 			filter="raw" />
 
 		<field
+			name="line_id"
+			type="sql"
+			class="inputbox"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCTLINE_ID"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCTLINE_ID"
+			required="true"
+			query="SELECT 0 AS `id`, '- Please select -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_lines`"
+			key_field="id"
+			value_field="title" />
+
+		<field
 			name="state"
 			type="list"
 			label="JSTATUS"

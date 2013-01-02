@@ -15,7 +15,7 @@ jimport('joomla.application.component.modeladmin');
 /**
  * Gazebos model.
  */
-class GazebosModelProductMaterial extends JModelAdmin
+class GazebosModelProductLine extends JModelAdmin
 {
 	/**
 	 * @var  string The prefix to use with controller messages.
@@ -32,7 +32,7 @@ class GazebosModelProductMaterial extends JModelAdmin
 	 * @return JTable A database object
 	 * @since 1.6
 	 */
-	public function getTable($type = 'ProductMaterial', $prefix = 'GazebosTable', $config = array())
+	public function getTable($type = 'ProductLine', $prefix = 'GazebosTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -51,7 +51,7 @@ class GazebosModelProductMaterial extends JModelAdmin
 		$app = JFactory::getApplication();
 
 		// Get the form.
-		$form = $this->loadForm('com_gazebos.productmaterial', 'productmaterial', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_gazebos.productline', 'productline', array('control' => 'jform', 'load_data' => $loadData));
 
 		if (empty($form))
 		{
@@ -69,24 +69,13 @@ class GazebosModelProductMaterial extends JModelAdmin
 	 */
 	protected function loadFormData()
 	{
-		$app = JFactory::getApplication();
 		// Check the session for previously entered form data.
-		$data = $app->getUserState('com_gazebos.edit.productmaterial.data', array());
+		$data = JFactory::getApplication()->getUserState('com_gazebos.edit.productline.data', array());
 
 		if (empty($data))
 		{
 			$data = $this->getItem();
 
-		}
-
-		if ($type_id = $app->input->get->getInt('type_id'))
-		{
-			$data->type_id = $type_id;
-		}
-
-		if ($line_id = $app->input->get->getInt('line_id'))
-		{
-			$data->line_id = $line_id;
 		}
 
 		return $data;
@@ -127,7 +116,7 @@ class GazebosModelProductMaterial extends JModelAdmin
 			if (@$table->ordering === '')
 			{
 				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__gazebos_materials');
+				$db->setQuery('SELECT MAX(ordering) FROM #__gazebos_lines');
 				$max = $db->loadResult();
 				$table->ordering = $max+1;
 			}

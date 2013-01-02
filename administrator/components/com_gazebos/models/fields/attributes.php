@@ -44,13 +44,13 @@ class JFormFieldAttributes extends JFormFieldList
 		// Initialize some field attributes.
 		$key = $this->element['key_field'] ? (string) $this->element['key_field'] : 'value';
 		$value = $this->element['value_field'] ? (string) $this->element['value_field'] : (string) $this->element['name'];
-		$type_id = (int) $this->form->getValue('type_id');
+		$line_id = (int) $this->form->getValue('line_id');
 		$table = (string) $this->element['table'];
 
 		// Get the database object.
 		$db = JFactory::getDBO();
 
-		$query = "SELECT 0 AS `id`, '- Please select -' AS `title` UNION SELECT `id`, `title` FROM `{$table}` WHERE `type_id` = {$type_id}";
+		$query = "SELECT 0 AS `id`, '- Please select -' AS `title` UNION SELECT `id`, `title` FROM `{$table}` WHERE `line_id` = {$line_id}";
 
 		// Set the query and get the result list.
 		$items = $db->setQuery($query)->loadObjectlist();

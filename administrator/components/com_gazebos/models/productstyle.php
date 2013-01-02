@@ -15,25 +15,24 @@ jimport('joomla.application.component.modeladmin');
 /**
  * Gazebos model.
  */
-class GazebosModelproductstyle extends JModelAdmin
+class GazebosModelProductStyle extends JModelAdmin
 {
 	/**
-	 * @var		string	The prefix to use with controller messages.
-	 * @since	1.6
+	 * @var  string The prefix to use with controller messages.
+	 * @since 1.6
 	 */
 	protected $text_prefix = 'COM_GAZEBOS';
-
 
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	 * @since	1.6
+	 * @param type The table type to instantiate
+	 * @param string A prefix for the table class name. Optional.
+	 * @param array Configuration array for model. Optional.
+	 * @return JTable A database object
+	 * @since 1.6
 	 */
-	public function getTable($type = 'Productstyle', $prefix = 'GazebosTable', $config = array())
+	public function getTable($type = 'ProductStyle', $prefix = 'GazebosTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -41,19 +40,21 @@ class GazebosModelproductstyle extends JModelAdmin
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param	array	$data		An optional array of data for the form to interogate.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	JForm	A JForm object on success, false on failure
-	 * @since	1.6
+	 * @param array $data  An optional array of data for the form to interogate.
+	 * @param boolean $loadData True if the form is to load its own data (default case), false if not.
+	 * @return JForm A JForm object on success, false on failure
+	 * @since 1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Initialise variables.
-		$app	= JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Get the form.
 		$form = $this->loadForm('com_gazebos.productstyle', 'productstyle', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -63,17 +64,29 @@ class GazebosModelproductstyle extends JModelAdmin
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return	mixed	The data for the form.
-	 * @since	1.6
+	 * @return mixed The data for the form.
+	 * @since 1.6
 	 */
 	protected function loadFormData()
 	{
+		$app = JFactory::getApplication();
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_gazebos.edit.productstyle.data', array());
+		$data = $app->getUserState('com_gazebos.edit.productstyle.data', array());
 
-		if (empty($data)) {
+		if (empty($data))
+		{
 			$data = $this->getItem();
-            
+
+		}
+
+		if ($type_id = $app->input->get->getInt('type_id'))
+		{
+			$data->type_id = $type_id;
+		}
+
+		if ($line_id = $app->input->get->getInt('line_id'))
+		{
+			$data->line_id = $line_id;
 		}
 
 		return $data;
@@ -82,14 +95,15 @@ class GazebosModelproductstyle extends JModelAdmin
 	/**
 	 * Method to get a single record.
 	 *
-	 * @param	integer	The id of the primary key.
+	 * @param integer The id of the primary key.
 	 *
-	 * @return	mixed	Object on success, false on failure.
-	 * @since	1.6
+	 * @return mixed Object on success, false on failure.
+	 * @since 1.6
 	 */
 	public function getItem($pk = null)
 	{
-		if ($item = parent::getItem($pk)) {
+		if ($item = parent::getItem($pk))
+		{
 
 			//Do any procesing on fields here if needed
 
@@ -101,16 +115,18 @@ class GazebosModelproductstyle extends JModelAdmin
 	/**
 	 * Prepare and sanitise the table prior to saving.
 	 *
-	 * @since	1.6
+	 * @since 1.6
 	 */
 	protected function prepareTable(&$table)
 	{
 		jimport('joomla.filter.output');
 
-		if (empty($table->id)) {
+		if (empty($table->id))
+		{
 
 			// Set ordering to the last item if not set
-			if (@$table->ordering === '') {
+			if (@$table->ordering === '')
+			{
 				$db = JFactory::getDbo();
 				$db->setQuery('SELECT MAX(ordering) FROM #__gazebos_styles');
 				$max = $db->loadResult();

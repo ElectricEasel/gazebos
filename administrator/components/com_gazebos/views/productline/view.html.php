@@ -11,16 +11,9 @@
 defined('_JEXEC') or die;
 
 /**
- * View class for a list of Gazebos.
+ * View to edit
  */
-class GazebosViewSelect extends EEView
+class GazebosViewProductLine extends EEView
 {
-	protected $useUniversalViews = false;
-
-	public function display($tpl = null)
-	{
-		$this->editView = JFactory::getApplication()->input->get->get('editView', 'product');
-
-		parent::display($tpl);
-	}
+	protected $useUniversalViews = true;
 }

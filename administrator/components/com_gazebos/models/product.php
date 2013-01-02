@@ -82,6 +82,11 @@ class GazebosModelproduct extends JModelAdmin
 			$data->type_id = $type_id;
 		}
 
+		if ($line_id = $app->input->get->getInt('line_id'))
+		{
+			$data->line_id = $line_id;
+		}
+
 		return $data;
 	}
 

@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 ?>
 <!-- close the m div, since we're using tabs -->
 </div>
-<form action="index.php" method="post" name="adminForm" id="product-form" class="form-validate">
+<form action="index.php" method="post" name="adminForm" id="product-form" class="form-validate"  enctype="multipart/form-data">
 <?php
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');

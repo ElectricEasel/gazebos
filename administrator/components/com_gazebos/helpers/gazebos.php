@@ -15,7 +15,9 @@ defined('_JEXEC') or die;
  */
 class GazebosHelper extends EEHelper
 {
-	protected $component = 'com_gazebos';
+	protected static $component = 'com_gazebos';
+
+	protected static $productTypes;
 
 	/**
 	 * Configure the Linkbar.
@@ -31,6 +33,11 @@ class GazebosHelper extends EEHelper
 			JText::_('COM_GAZEBOS_TITLE_PRODUCTTYPES'),
 			'index.php?option=com_gazebos&view=producttypes',
 			$vName == 'producttypes'
+		);
+		JSubMenuHelper::addEntry(
+			JText::_('COM_GAZEBOS_TITLE_PRODUCTLINES'),
+			'index.php?option=com_gazebos&view=productlines',
+			$vName == 'productlines'
 		);
 		JSubMenuHelper::addEntry(
 			JText::_('COM_GAZEBOS_TITLE_PRODUCTSTYLES'),
@@ -59,8 +66,4 @@ class GazebosHelper extends EEHelper
 		);
 	}
 
-	public static function getProductTypes()
-	{
-		return JFactory::getDbo()->setQuery('SELECT * FROM #__gazebos_types WHERE state = 1')->loadObjectList();
-	}
 }

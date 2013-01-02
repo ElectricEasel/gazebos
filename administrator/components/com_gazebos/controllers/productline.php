@@ -10,17 +10,17 @@
 // No direct access
 defined('_JEXEC') or die;
 
+jimport('joomla.application.component.controllerform');
+
 /**
- * View class for a list of Gazebos.
+ * Producttype controller class.
  */
-class GazebosViewSelect extends EEView
+class GazebosControllerProductLine extends JControllerForm
 {
-	protected $useUniversalViews = false;
-
-	public function display($tpl = null)
+	public function __construct()
 	{
-		$this->editView = JFactory::getApplication()->input->get->get('editView', 'product');
-
-		parent::display($tpl);
+		$this->view_list = 'productlines';
+		parent::__construct();
 	}
+
 }

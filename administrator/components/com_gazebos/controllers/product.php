@@ -12,6 +12,9 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controllerform');
 
+jimport('joomla.filesystem.file');
+jimport('joomla.filesystem.folder');
+
 /**
  * Product controller class.
  */
@@ -21,6 +24,30 @@ class GazebosControllerProduct extends JControllerForm
 	{
 		$this->view_list = 'products';
 		parent::__construct();
+	}
+
+	public function save($key = null, $urlVar = null)
+	{
+		$app = JFactory::getApplication();
+		$files = $app->input->files->get('jform');
+
+		// If brochure name is set, we assume successful upload.
+		if (isset($files['name']['brochure']))
+		{
+			die('test');
+			$dest = JPATH_SITE . '/media/com_gazebos/brochures/' . JFile::makeSafe($files['name']['brochure']);
+
+			// Add field to jform if successfull upload
+			if (JFile::upload($files['tmp_name']['brochure'], $dest))
+			{
+				$jform = JRequest::getVar('jform', array());
+				$jform['brochure'] = $data['name'];
+
+				JRequest::setVar('jform', $jform);
+			}
+		}
+
+		parent::save($key, $urlVar);
 	}
 
 }

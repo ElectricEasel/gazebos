@@ -13,9 +13,6 @@ defined('_JEXEC') or die;
 
 JHtml::_('behavior.tooltip');
 JHTML::_('script','system/multiselect.js',false,true);
-// Import CSS
-$document = JFactory::getDocument();
-$document->addStyleSheet('components/com_gazebos/assets/css/gazebos.css');
 
 $user	= JFactory::getUser();
 $userId	= $user->get('id');
@@ -25,7 +22,7 @@ $canOrder	= $user->authorise('core.edit.state', 'com_gazebos');
 $saveOrder	= $listOrder == 'a.ordering';
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_gazebos&view=productstyles'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_gazebos&view=productlines'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
@@ -53,16 +50,13 @@ $saveOrder	= $listOrder == 'a.ordering';
 					<input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
 				</th>
 				<th class='left'>
-				<?php echo JHtml::_('grid.sort',  'COM_GAZEBOS_PRODUCTSTYLES_TITLE', 'a.title', $listDirn, $listOrder); ?>
+				<?php echo JHtml::_('grid.sort',  'COM_GAZEBOS_PRODUCTLINES_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
 
-				<th class='center'>
-				<?php echo JHtml::_('grid.sort',  'Type', 'b.type_id', $listDirn, $listOrder); ?>
+				<th class='center' width="15%">
+				<?php echo JHtml::_('grid.sort',  'Type', 'b.title', $listDirn, $listOrder); ?>
 				</th>
 
-				<th class='center'>
-				<?php echo JHtml::_('grid.sort',  'Line', 'a.line_id', $listDirn, $listOrder); ?>
-				</th>
 
                 <?php if (isset($this->items[0]->state)) { ?>
 				<th width="5%">
@@ -73,7 +67,7 @@ $saveOrder	= $listOrder == 'a.ordering';
 				<th width="10%">
 					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
-						<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'productstyles.saveorder'); ?>
+						<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'productlines.saveorder'); ?>
 					<?php endif; ?>
 				</th>
                 <?php } ?>
@@ -105,10 +99,10 @@ $saveOrder	= $listOrder == 'a.ordering';
 				</td>
 				<td>
 				<?php if (isset($item->checked_out) && $item->checked_out) : ?>
-					<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'productstyles.', $canCheckin); ?>
+					<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'productlines.', $canCheckin); ?>
 				<?php endif; ?>
 				<?php if ($canEdit) : ?>
-					<a href="<?php echo JRoute::_('index.php?option=com_gazebos&task=productstyle.edit&id='.(int) $item->id); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_gazebos&task=productline.edit&id='.(int) $item->id); ?>">
 					<?php echo $this->escape($item->title); ?></a>
 				<?php else : ?>
 					<?php echo $this->escape($item->title); ?>
@@ -119,13 +113,10 @@ $saveOrder	= $listOrder == 'a.ordering';
 					<?php echo $item->type; ?>
 				</td>
 
-				<td class="center">
-					<?php echo $item->line; ?>
-				</td>
 
                 <?php if (isset($this->items[0]->state)) { ?>
 				    <td class="center">
-					    <?php echo JHtml::_('jgrid.published', $item->state, $i, 'productstyles.', $canChange, 'cb'); ?>
+					    <?php echo JHtml::_('jgrid.published', $item->state, $i, 'productlines.', $canChange, 'cb'); ?>
 				    </td>
                 <?php } ?>
                 <?php if (isset($this->items[0]->ordering)) { ?>
@@ -133,11 +124,11 @@ $saveOrder	= $listOrder == 'a.ordering';
 					    <?php if ($canChange) : ?>
 						    <?php if ($saveOrder) :?>
 							    <?php if ($listDirn == 'asc') : ?>
-								    <span><?php echo $this->pagination->orderUpIcon($i, true, 'productstyles.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-								    <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, true, 'productstyles.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+								    <span><?php echo $this->pagination->orderUpIcon($i, true, 'productlines.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+								    <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, true, 'productlines.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
 							    <?php elseif ($listDirn == 'desc') : ?>
-								    <span><?php echo $this->pagination->orderUpIcon($i, true, 'productstyles.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-								    <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, true, 'productstyles.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+								    <span><?php echo $this->pagination->orderUpIcon($i, true, 'productlines.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+								    <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, true, 'productlines.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
 							    <?php endif; ?>
 						    <?php endif; ?>
 						    <?php $disabled = $saveOrder ?  '' : 'disabled="disabled"'; ?>
