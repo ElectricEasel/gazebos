@@ -66,10 +66,14 @@ class JFormFieldProductOptions extends JFormField
 		$db = JFactory::getDbo();
 		$q  = $db->getQuery(true);
 
+		$type_id = (int) $this->form->getValue('type_id');
+		$line_id = (int) $this->form->getValue('line_id');
+
 		$q
 			->select('a.id AS option_id, a.title AS option_title, b.id AS category_id, b.title AS category_title')
 			->from('#__gazebos_options AS a')
-			->leftJoin('#__gazebos_option_categories AS b ON a.option_category_id = b.id');
+			->leftJoin('#__gazebos_option_categories AS b ON a.option_category_id = b.id')
+			->where("b.type_id = {$type_id} AND b.line_id = {$line_id}");
 
 		$results = $db->setQuery($q)->loadObjectList();
 

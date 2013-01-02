@@ -15,14 +15,13 @@ jimport('joomla.application.component.modeladmin');
 /**
  * Gazebos model.
  */
-class GazebosModeloptioncategory extends JModelAdmin
+class GazebosModelFeature extends JModelAdmin
 {
 	/**
 	 * @var  string The prefix to use with controller messages.
 	 * @since 1.6
 	 */
 	protected $text_prefix = 'COM_GAZEBOS';
-
 
 	/**
 	 * Returns a reference to the a Table object, always creating it.
@@ -33,7 +32,7 @@ class GazebosModeloptioncategory extends JModelAdmin
 	 * @return JTable A database object
 	 * @since 1.6
 	 */
-	public function getTable($type = 'Optioncategory', $prefix = 'GazebosTable', $config = array())
+	public function getTable($type = 'Feature', $prefix = 'GazebosTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -52,7 +51,8 @@ class GazebosModeloptioncategory extends JModelAdmin
 		$app = JFactory::getApplication();
 
 		// Get the form.
-		$form = $this->loadForm('com_gazebos.optioncategory', 'optioncategory', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_gazebos.feature', 'feature', array('control' => 'jform', 'load_data' => $loadData));
+
 		if (empty($form))
 		{
 			return false;
@@ -70,9 +70,8 @@ class GazebosModeloptioncategory extends JModelAdmin
 	protected function loadFormData()
 	{
 		$app = JFactory::getApplication();
-
 		// Check the session for previously entered form data.
-		$data = $app->getUserState('com_gazebos.edit.optioncategory.data', array());
+		$data = $app->getUserState('com_gazebos.edit.feature.data', array());
 
 		if (empty($data))
 		{
@@ -124,12 +123,11 @@ class GazebosModeloptioncategory extends JModelAdmin
 
 		if (empty($table->id))
 		{
-
 			// Set ordering to the last item if not set
 			if (@$table->ordering === '')
 			{
 				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__gazebos_option_categories');
+				$db->setQuery('SELECT MAX(ordering) FROM #__gazebos_features');
 				$max = $db->loadResult();
 				$table->ordering = $max+1;
 			}

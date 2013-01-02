@@ -108,29 +108,6 @@
 	</fieldset>
 
 	<fieldset
-		name="features"
-		label="Features">
-
-		<field
-			name="features"
-			type="Features"
-			multiple="true" />
-
-	</fieldset>
-
-	<fieldset
-		name="specs"
-		label="Specifications">
-
-		<field
-			name="specifications"
-			type="specifications"
-			label="Specifications"
-			multiple="true" />
-
-	</fieldset>
-
-	<fieldset
 		name="options"
 		label="Options">
 

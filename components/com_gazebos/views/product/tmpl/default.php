@@ -20,7 +20,7 @@ $brochure_img = '/templates/gazebos/images/gazebo-brochure-th.png';
 	<ul id="tabs">
 		<li><a href="#photos"><?php echo JText::_($type . ' Photos'); ?></a></li>
 		<li><a href="#description"><?php echo JText::_($type . ' Description'); ?></a></li>
-		<li><a href="#specs"><?php echo JText::_($type . ' Specifications'); ?></a></li>
+		<li><a href="#features"><?php echo JText::_($type . ' Features'); ?></a></li>
 		<li><a href="#brochure"><?php echo JText::_('Download Brochure'); ?></a></li>
 		<li><a href="#catalog"><?php echo JText::_('Request Catalog'); ?></a></li>
 		<li><a href="#quote"><?php echo JText::_('Get A Quote'); ?></a></li>
@@ -59,42 +59,24 @@ $brochure_img = '/templates/gazebos/images/gazebo-brochure-th.png';
 	</div>
 	<div id="description" class="panel">
 		<h2><?php echo $this->item->title; ?></h2>
+		<?php if (count($this->item->gallery) > 0) : ?>
 		<img src="/media/com_gazebos/gallery/products/<?php echo  $this->item->id . '/thumbs/296x242_' . $this->item->gallery[0]->path ?>" />
+		<?php endif; ?>
  		<p><?php echo nl2br($this->item->description); ?></p>
 	</div>
-	
-	<div id="specs" class="panel">
-		<h2>Specifications</h2>
-		<img src="/media/com_gazebos/gallery/products/<?php echo  $this->item->id . '/thumbs/296x242_' . $this->item->gallery[0]->path ?>" />
+	<?php if (count($this->item->features) > 0) : ?>
+	<div id="features" class="panel">
+		<h2>Features</h2>
  		<?php
-	 	$total = count($this->item->specifications['title']);
- 		for ($i = 0; $i < $total; $i++) :
+ 		foreach ($this->item->features as $feature) :
  		?>
- 		<div class="spec">
- 			<h4><?php echo $this->item->specifications['title'][$i]; ?></h4>
- 			<p><?php echo $this->item->specifications['value'][$i];?></p>
+ 		<div class="feature">
+ 			<img src="/<?php echo $feature->image; ?>" alt="<?php echo $this->item->title . ': ' . $feature->title; ?>" />
+ 			<h4><?php echo $feature->title; ?></h4>
  		</div>
-	 	<?php endfor; ?>
- 		<?php
-	 	$total = count($this->item->specifications['title']);
- 		for ($i = 0; $i < $total; $i++) :
- 		?>
- 		<div class="spec">
- 			<h4><?php echo $this->item->specifications['title'][$i]; ?></h4>
- 			<p><?php echo $this->item->specifications['value'][$i];?></p>
- 		</div>
-	 	<?php endfor; ?>
- 		<?php
-	 	$total = count($this->item->specifications['title']);
- 		for ($i = 0; $i < $total; $i++) :
- 		?>
- 		<div class="spec">
- 			<h4><?php echo $this->item->specifications['title'][$i]; ?></h4>
- 			<p><?php echo $this->item->specifications['value'][$i];?></p>
- 		</div>
-	 	<?php endfor; ?>
+	 	<?php endforeach; ?>
 	</div>
-	
+	<?php endif; ?>
 	<div id="brochure" class="panel">
 		<img id="brochure-img" src="<?php echo $brochure_img; ?>"/>
 		<h2>Download Brochure</h2>

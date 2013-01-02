@@ -13,9 +13,9 @@ defined('_JEXEC') or die;
 /**
  * View class for a list of Gazebos.
  */
-class GazebosViewOptioncategories extends EEViewList
+class GazebosViewFeatures extends EEViewList
 {
-	protected $singleItemView = 'optioncategory';
+	protected $singleItemView = 'feature';
 	protected $useUniversalViews = false;
 
 	/**

@@ -55,14 +55,19 @@ class GazebosHelper extends EEHelper
 			$vName == 'productmaterials'
 		);
 		JSubMenuHelper::addEntry(
+			JText::_('COM_GAZEBOS_TITLE_OPTIONCATEGORIES'),
+			'index.php?option=com_gazebos&view=optioncategories',
+			$vName == 'optioncategories'
+		);
+		JSubMenuHelper::addEntry(
 			JText::_('COM_GAZEBOS_TITLE_OPTIONS'),
 			'index.php?option=com_gazebos&view=options',
 			$vName == 'options'
 		);
 		JSubMenuHelper::addEntry(
-			JText::_('COM_GAZEBOS_TITLE_OPTIONCATEGORIES'),
-			'index.php?option=com_gazebos&view=optioncategories',
-			$vName == 'optioncategories'
+			JText::_('COM_GAZEBOS_TITLE_FEATURES'),
+			'index.php?option=com_gazebos&view=features',
+			$vName == 'features'
 		);
 	}
 

@@ -67,6 +67,7 @@ class GazebosModelProduct extends JModel
 				$registry = new JRegistry($result->specifications);
 				$result->specifications = $registry->toArray();
 				$result->gallery = $this->getGallery();
+				$result->features = $this->getFeatures($result);
 				$result->price_min = number_format($result->price_min);
 				$result->price_max = number_format($result->price_max);
 
@@ -98,6 +99,23 @@ class GazebosModelProduct extends JModel
 		}
 
 		$q = 'SELECT * FROM #__gazebos_gallery WHERE product_id = ' . $id . ' ORDER BY ordering ASC';
+
+		return $this->getDbo()->setQuery($q)->loadObjectList();
+	}
+
+	/**
+	 * Get features for current item
+	 *
+	 * @param   object  $item  The product for which to get the features.
+	 *
+	 * @return  array  An array of features for current product.
+	 */
+	public function getFeatures($item)
+	{
+		$type_id = (int) $item->type_id;
+		$line_id = (int) $item->line_id;
+
+		$q = "SELECT * FROM #__gazebos_features WHERE type_id = {$type_id} AND line_id = {$line_id}";
 
 		return $this->getDbo()->setQuery($q)->loadObjectList();
 	}
