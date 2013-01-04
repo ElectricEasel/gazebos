@@ -23,3 +23,8 @@ function modChrome_basic($module, &$params, &$attribs)
 <?php }; ?> <?php echo $module->content; ?></div>
 <?php };
 }
+
+function modChrome_blank($module, &$params, &$attribs)
+{
+	return $module->content;
+}

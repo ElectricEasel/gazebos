@@ -155,7 +155,7 @@ $this
 				</div>
 			</div>
 		</div>
-		<jdoc:include type="modules" name="favorites" style="basic" />
+		<jdoc:include type="modules" name="favorites" style="blank" />
 		<jdoc:include type="modules" name="debug" />
 	</body>
 </html>
