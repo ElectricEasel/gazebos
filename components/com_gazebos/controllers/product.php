@@ -28,7 +28,8 @@ class GazebosControllerProduct extends GazebosController
 		$type	= 'fail';
 		$html	= null;
 		
-		if (!isset($favs[$id])) {
+		if (!isset($favs[$id]))
+		{
 			$type	= 'success';
 			$tmp	=  new stdClass();
 			$tmp->id= $id;
@@ -83,11 +84,11 @@ class GazebosControllerProduct extends GazebosController
 			$html[] = '<div class="favorite">';
 			$html[] = '<a href="' . $link . '">';
 			$html[] = EEHtml::asset("products/{$item->id}/thumbs/60x60_{$item->image}", 'com_gazebos');
-			$html[] = '</a><div class="info"><a class="fav_title">';
+			$html[] = '</a><div class="info"><a class="fav_title" href="' . $link . '">';
 			$html[] = $item->title;
-			$html[] = '</a></div><a class="rm_fav" href="javascript:void(0);" id="remove-';
+			$html[] = '</a><a class="rm_fav" href="javascript:void(0);" id="remove-';
 			$html[] = $item->id;
-			$html[] = '">remove</a></div>';
+			$html[] = '">remove</a></div><div class="clear"></div></div>';
 		}
 
 		return implode($html);

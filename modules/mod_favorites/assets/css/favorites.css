@@ -51,41 +51,43 @@
 	-webkit-transform: rotate(-90deg);
 	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
-#favorites .intro span {
-	display:inline-block;
-	background:url(../images/add_fav.png);
-	width:13px;
-	height:13px;
-	text-indent:-9999px;
-}
 #favorites .favorite {
-	position:relative;
-	padding:10px;
-	margin-bottom:10px;
-	width:180px;
-	border-bottom:1px solid #cecece;
+	padding:10px 5px;
+	width:190px;
 }
 #favorites .favorite:last-child {
 	border-bottom:0;
 }
+#favorites .favorite img {
+	padding:5px;
+	background:#d1cac0;
+	float:left;
+}
 #favorites .favorite .fav_title {
-	color:#006cce;
+	color:#355a06;
 	display:block;
 	font-size:13px;
+	margin-bottom:5px;
 }
 #favorites .favorite .info {
-	color:#000;
-	display:block;
+	float:left;
+	margin-left:10px;
+	width:110px;
+}
+#favorites .info a {
+	color:#355a06;
+	text-decoration: none;
 }
 #favorites .favorite .rm_fav {
 	display: block;
-	text-indent:-9999px;
-	position: absolute;
-	background:url(../images/close-infobox.png);
-	width:13px;
-	height:13px;
-	top:12px;
-	right:0;
+	color:#bdaa9e;
+	background:url(/templates/gazebos/images/checkbox-sprite.png) no-repeat scroll 0 -79px transparent;
+	height:15px;
+	line-height:15px;
+	padding-left:20px;
+	font-size:12px;
+	text-transform: uppercase;
+	
 }
 #favorites h3 {
 	background:url(/templates/gazebos/images/product-hr.png) no-repeat scroll center bottom transparent;
@@ -96,6 +98,7 @@
 	font-weight: normal;
 	text-transform: uppercase;
 	font-size:16px;
+	margin-bottom:5px;
 }
 #favorites h3 > span {
 	background:url(/templates/gazebos/images/sprite-stars.png) no-repeat scroll left -1px transparent;

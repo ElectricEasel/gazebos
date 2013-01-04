@@ -18,8 +18,7 @@ jQuery(document).ready(function($){
 	});
 
 	$('a.add2fav').live('click', function(){
-		var base	= $(this);
-		var baseId	= base.attr('id');
+		var baseId	= $(this).attr('id');
 		var addId	= baseId.split('-');
 
 		if (parseInt(favorites.css('left')) == -200)
@@ -44,22 +43,20 @@ jQuery(document).ready(function($){
 		);
 	});
 	$('a.rm_fav').live('click', function(){
-		var base	= $(this);
-		var baseId	= base.attr('id');
+		var baseId	= $(this).attr('id');
 		var rmId	= baseId.split('-');
-			rmId	= rmId[1];
 		
 		$.post('/index.php',
 			{
 				option:	'com_gazebos',
 				tmpl:	'component',
 				task:	'product.delFavorite',
-				id:		rmId
+				id:		rmId[1]
 			},
 			function(resp){
-				if (resp.type == 'success') {
-					var rmId = '#remove-' + resp.id;
-					var fav	= $(rmId.replace(':', '\\3a ')).parent('.favorite').remove();
+				if (resp.type == 'success')
+				{
+					$('#remove-' + resp.id).parent('.info').parent('.favorite').remove();
 				}
 			},
 			'json'
