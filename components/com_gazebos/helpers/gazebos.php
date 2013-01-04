@@ -170,4 +170,22 @@ abstract class GazebosHelper
 
 		return $id;
 	}
+
+	/**
+	 * Load a module position.
+	 *
+	 * @param   string  $pos  The position to load.
+	 *
+	 * @return  HTML for the loaded module position.
+	 *
+	 */
+	public static function loadPosition($pos = null)
+	{
+		if ($pos === null) return false;
+
+		if (JFactory::getDocument()->countModules($pos))
+		{
+			return JHtml::_('content.prepare', '{loadposition ' . $pos . '}');
+		}
+	}
 }

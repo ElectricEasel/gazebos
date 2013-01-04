@@ -31,7 +31,7 @@ class GazebosControllerGallery extends JControllerForm
 		$model = $this->getModel();
 		$data  = JRequest::getVar('jform', array(), 'post', 'array');
 
-		$this->dir = '/media/com_gazebos/gallery/products/' . $data['product_id'] . '/';
+		$this->dir = '/media/com_gazebos/images/products/' . $data['product_id'] . '/';
 		$this->full_dir = JPATH_SITE . $this->dir;
 
 		if (!is_dir($this->full_dir))
@@ -97,7 +97,7 @@ class GazebosControllerGallery extends JControllerForm
 
 		if ($model->delete($pk))
 		{
-			$dir = '/media/com_gazebos/gallery/products/'.$data['product_id'].'/';
+			$dir = '/media/com_gazebos/images/products/'.$data['product_id'].'/';
 
 			$to_delete = array(JPATH_SITE . $dir . $obj->path);
 
@@ -117,8 +117,7 @@ class GazebosControllerGallery extends JControllerForm
 			$result = 'fail';
 		}
 
-		echo json_encode(array('result' => $result));
-		JFactory::getApplication()->close();
+		JFactory::getApplication()->close(json_encode(array('result' => $result)));
 	}
 
 	// Handles the ajax reordering of the photos

@@ -13,7 +13,8 @@ abstract class EEImageHelper
 			'296x242',
 			'199x160',
 			'165x130',
-			'150x150'
+			'150x150',
+			'60x60'
 		)
 	);
 

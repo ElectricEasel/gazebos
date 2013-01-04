@@ -159,7 +159,7 @@ class GazebosModelProductType extends JModel
 
 				if (!empty($product->image))
 				{
-					$product->image = '/media/com_gazebos/gallery/products/' . $product->id . '/thumbs/199x160_' . $product->image;
+					$product->image = EEHtml::asset("products/{$product->id}/thumbs/199x160_{$product->image}", 'com_gazebos');
 				}
 			}
 		}

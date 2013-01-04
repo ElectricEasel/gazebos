@@ -64,8 +64,6 @@ class GazebosModelProduct extends JModel
 
 			if ($result !== null)
 			{
-				$registry = new JRegistry($result->specifications);
-				$result->specifications = $registry->toArray();
 				$result->gallery = $this->getGallery($id);
 				$result->features = $this->getFeatures($result);
 				$result->price_min = number_format($result->price_min);

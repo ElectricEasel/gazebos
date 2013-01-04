@@ -29,7 +29,7 @@ $brochure_img = '/templates/gazebos/images/gazebo-brochure-th.png';
 	<h5>Starting At</h5>
 	<span class="price-range">$<?php echo $this->item->price_min; ?> - $<?php echo $this->item->price_max; ?></span>
 	<hr/>
-	<a href="#" class="add2fav brown-grad"><span>Add to Favorites</span></a>
+	<a href="#" id="add-<?php echo $this->item->id; ?>" class="add2fav brown-grad"><span>Add to Favorites</span></a>
 </div>
 <div id="panel-container">
 <?php if( $this->item ) : ?>
@@ -39,7 +39,7 @@ $brochure_img = '/templates/gazebos/images/gazebo-brochure-th.png';
 	    <div id="slides">
 	    	<?php foreach ($this->item->gallery as $photo)
 	    	{
-		    	echo '<img src="/media/com_gazebos/gallery/products/' . $this->item->id . '/thumbs/660x450_' . $photo->path . '" />';
+	    		echo EEHtml::asset("products/{$this->item->id}/thumbs/660x450_{$photo->path}");
 	    	} ?>
 	    </div>
         <div id="carousel-container">
@@ -48,8 +48,8 @@ $brochure_img = '/templates/gazebos/images/gazebo-brochure-th.png';
 	    	{
 	    		$html = array();
 	    		$html[] = '<li data-slide="' . $i . '">';
-	    		$html[] = '<img src="/media/com_gazebos/gallery/products/' . $this->item->id . '/thumbs/165x130_';
-	    		$html[] = $photo->path . '" /></li>';
+	    		$html[] = EEHtml::asset("products/{$this->item->id}/thumbs/165x130_{$photo->path}");
+	    		$html[] = '</li>';
 
 	    		echo implode($html);
 		    	$i++;
@@ -59,9 +59,7 @@ $brochure_img = '/templates/gazebos/images/gazebo-brochure-th.png';
 	</div>
 	<div id="description" class="panel">
 		<h2><?php echo $this->item->title; ?></h2>
-		<?php if (count($this->item->gallery) > 0) : ?>
-		<img src="/media/com_gazebos/gallery/products/<?php echo  $this->item->id . '/thumbs/296x242_' . $this->item->gallery[0]->path ?>" />
-		<?php endif; ?>
+		<?php if (count($this->item->gallery) > 0) EEHtml::asset("products/{$this->item->id}/thumbs/296x242_{$this->item->gallery[0]->path}"); ?>
  		<p><?php echo nl2br($this->item->description); ?></p>
 	</div>
 	<?php if (count($this->item->features) > 0) : ?>
