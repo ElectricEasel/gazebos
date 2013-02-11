@@ -50,4 +50,23 @@ class GazebosControllerProduct extends JControllerForm
 		parent::save($key, $urlVar);
 	}
 
+	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
+	{
+		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
+
+		$jform = JRequest::getVar('jform');
+
+		if (isset($jform['type_id']))
+		{
+			$append .= '&type_id=' . $jform['type_id'];
+		}
+
+		if (isset($jform['line_id']))
+		{
+			$append .= '&line_id=' . $jform['line_id'];
+		}
+
+		return $append;
+	}
+
 }

@@ -11,6 +11,8 @@
 			description="COM_GAZEBOS_FORM_DESC_PRODUCT_TITLE"
 			filter="raw"
 			required="true"
+			validate="unique"
+			table="#__gazebos_products"
 			size="50" />
 
 		<field

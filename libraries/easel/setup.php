@@ -9,3 +9,4 @@ JLoader::registerPrefix('EE', EE_PATH);
 JLoader::registerPrefix('J', EE_PATH . '/joverride/');
 
 JForm::addFieldPath(EE_PATH . '/joverride/form/field');
+JForm::addRulePath(EE_PATH . '/joverride/form/rule');

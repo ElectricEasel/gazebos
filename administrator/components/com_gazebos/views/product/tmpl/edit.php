@@ -56,7 +56,7 @@ if (!empty($this->item->id))
 echo JHtml::_('tabs.end');
 echo JHtml::_('form.token'); ?>
 <input type="hidden" name="task" value="" />
-<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
+<input type="hidden" name="id" value="<?php echo $this->form->getValue('id'); ?>" />
 <input type="hidden" name="option" value="com_gazebos" />
 <input type="hidden" name="layout" value="edit" />
 <div class="clr"></div>
