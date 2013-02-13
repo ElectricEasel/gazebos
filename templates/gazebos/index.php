@@ -21,6 +21,8 @@ $bodyclass = EEHelper::getBodyClasses();
 // $this JDocument
 $this
 	// Add Stylesheets
+	->addStyleSheet('//fonts.googleapis.com/css?family=Great+Vibes|Parisienne')
+	->addStyleSheet('//fonts.googleapis.com/css?family=Gilda+Display|Ovo|Quattrocento:400,700|Sorts+Mill+Goudy')
 	->addStyleSheet('/templates/system/css/system.css')
 	->addStyleSheet($template . '/css/normalize.css')
 	->addStyleSheet($template . '/css/fullwidth.css')
@@ -46,64 +48,30 @@ $this
 		<div id="header">
 			<div class="wrap">
 				<a href="/" id="logo"><?php echo $config->get('sitename'); ?></a>
-				<a href="/" id="bbb"></a>
-				<span id="tagline">Quality Gazebos Since 1982</span>
+				<div id="home-menu">
+					<jdoc:include type="modules" name="top-nav" />
+				</div>
 				<div class="navbar">
 					<jdoc:include type="modules" name="nav" />
 				</div>
+				<div class="top-contact">
+					<span class="phone">1-888-4-gazebo</span><span class="sep">|</span><a href="#">Chat Now</a>
+				</div>
 			</div>
 		</div>
-		<div id="subhead">
-			<div id="image-banner">
-				<?php if ($menu->getDefault() == $menu->getActive()) : ?>
-				<div id="fullwidth">
-					<ul id="fullwidth_slider">
-						<li>
-							<a href="javascript:void(0)">
-								<img src="/templates/gazebos/images/banners/home.jpg" />
-								<span><span>Gazebos.com<span>The Best Prices for Fine Quality</span></span></span>
-							</a>
-						</li>
-						<li>
-							<a href="/gazebos">
-								<img src="/templates/gazebos/images/banners/gazebo.jpg" />
-								<span><span>Gazebos<span>The Heart of American Charm</span></span></span>
-							</a>
-						</li>
-						<li>
-							<a href="/pergolas">
-								<img src="/templates/gazebos/images/banners/pergola.jpg" />
-								<span><span>Pergolas<span>Your Dream Getaway</span></span></span>
-							</a>
-						</li>
-						<li>
-							<a href="/pavilions">
-								<img src="/templates/gazebos/images/banners/pavilion.jpg" />
-								<span><span>Pavilions<span>Outdoor Living at it's Best</span></span></span>
-							</a>
-						</li>
-						<li>
-							<a href="/three-season-gazebos">
-								<img src="/templates/gazebos/images/banners/threeseasongazebo.jpg" />
-								<span><span>Three Season<span>The Perfect Place to Get Away</span></span></span>
-							</a>
-						</li>
-					</ul>
-				</div>
+		<div class="border"></div>
+		<div id="banner">
+			<div class="banner-wrap">
+				<?php if ($bodyclass == 'home'): ?>
+					<jdoc:include type="modules" name="home-banner" />
+				<?php elseif ($bodyclass == 'gazebos'): ?>
+					
 				<?php endif; ?>
 			</div>
-			<div id="green-banner">
-				<div class="subhead-wrap">
-					<div class="wrap">
-						<?php if ($bodyclass == 'home'): ?>
-							<h2>Building <span>quality gazebos</span> in the U.S.A. for over 30 years</h2>
-						<?php elseif ($bodyclass == 'gazebos'): ?>
-							<h2><span>"Wood Gazebos"</span> we found <span>200</span> items!</h2>
-						<?php endif; ?>
-					</div>
-				</div>
-			</div>
 		</div>
+		<div class="border"></div>
+		<jdoc:include type="modules" name="sub-head" />
+		<div class="border"></div>
 		<div id="main">
 			<div class="wrap">
 				<jdoc:include type="message" />
@@ -117,7 +85,7 @@ $this
 				<div id="content">
 					<jdoc:include type="component" />
 					<?php if ($this->countModules('home-spot-marketing')): ?>
-						<div id="spot-marketing">
+						<div id="spot-marketing" class="clr">
 							<jdoc:include type="modules" name="home-spot-marketing"   />
 						</div>
 						<div class="clear"></div>
@@ -138,19 +106,15 @@ $this
 					<div class="module">
 						<jdoc:include type="modules" name="position-11" />
 					</div>
-					<div class="module">
+					<div class="module last">
 						<jdoc:include type="modules" name="position-12" />
 					</div>
-					<div class="module">
-						<a href="/" id="footerlogo"><?php echo $config->get('sitename'); ?></a>
-						<h6>Liesure Woods, Inc.</h6>
-						<span id="address">710 W. Railroad St. Kingston, IL 60145</span>
-					</div>
+				
 					<div class="clear"></div>
 				</div>
 				<div id="footer-bottom">
-				<p class="left"><a href="#">Home</a><span>/</span><a href="#">FAQs</a><span>/</span><a href="#">Blog</a><span>/</span><a href="#">About Us</a><span>/</span><a href="#">Contact Us</a></p>
-				<p class="right">&copy;<?php echo date('Y')?> gazebos.com.  All Rights Reserved.</p>
+				
+				<p class="left">&copy;<?php echo date('Y')?> gazebos.com.  All Rights Reserved.</p>
 				<br class="clear"/>
 				</div>
 			</div>
