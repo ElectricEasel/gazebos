@@ -1,0 +1,84 @@
+/**
+ * @package JLive! Chat
+ * @version 4.3.2
+ * @copyright (C) Copyright 2008-2010 CMS Fruit, CMSFruit.com. All rights reserved.
+ * @license GNU/LGPL http://www.gnu.org/licenses/lgpl-3.0.txt
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU Lesser General Public License as published by
+ the Free Software Foundation; either version 3 of the License, or (at your
+ option) any later version.
+
+ This program is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ License for more details.
+
+ You should have received a copy of the GNU Lesser General Public License
+ along with this program.  If not, see http://www.gnu.org/licenses/.
+ */
+
+/**
+    This file is where you should put all your style customizations.
+**/
+
+@CHARSET "UTF-8";
+
+body div,
+body p,
+#jlc_offline_container,
+.livechat_inner,
+l.ivechat_inner p,
+#jlc_offline_container .message-header,
+#jlc_offline_container table td {
+color:#000 !important;
+}
+
+#livechat_container {
+background:url(/templates/gazebos/images/bg_content.png) repeat center center scroll transparent;
+}
+
+#close_window_button-button {text-decoration:underline;}
+
+#send_message_button-button {margin-top:10px;}
+
+#send_message_button-button,
+#start_button-button {
+background:#284405;
+border-radius: 10px 10px 10px 10px;
+box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+color: #FFFFFF;
+font-family:,sans-serif;
+font-size: 12px;
+font-weight: normal;
+padding: 10px 15px;
+text-align: center;
+text-decoration: none;
+text-shadow: 1px 1px 0 #000000;
+text-transform: uppercase;
+display:block;
+min-height:auto;
+line-height:1em;
+}
+#send_message_button-button:hover,
+#start_button-button:hover {background:#355A06}
+
+#send_message_button-button:active,
+#start_button-button:active {box-shadow:none;}
+
+#send_message_button-button,
+.yui-skin-sam .yui-button .first-child {border:medium none}
+
+.yui-skin-sam .yui-button {border:medium none; background:none;}
+
+#jlc_prechat_container input[type="text"], #jlc_offline_container input[type="text"], #jlc_offline_container textarea {
+background: #f0edea;
+border-radius:6px;
+border:1px solid #d9d3ca;
+box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) inset;
+text-indent:10px;
+}
+.jlc-name-wrapper {font-family:Serif}
+
+.offline_msg_wrapper {height:auto !important;}
+.offline_msg_wrapper p {padding:10px 0 !important;}

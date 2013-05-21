@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Product Type" option="View">
+	</layout>
+	<fields
+		name="request">
+
+		<fieldset
+			name="request">
+
+			<field
+				name="id"
+				type="sql"
+				label="Product Type"
+				description="The product type to display on this menu item."
+				query="SELECT 0 AS id, '- Please Select -' AS title UNION SELECT id, title FROM #__gazebos_types"
+				key_field="id"
+				value_field="title"
+				required="true" />
+
+		</fieldset>
+	</fields>
+</metadata>

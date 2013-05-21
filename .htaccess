@@ -1,0 +1,322 @@
+# Set the server environment
+SetEnv EE_ENV production
+
+# Turn on Expires and set default to 0
+ExpiresActive On
+ExpiresDefault A0
+
+# Set up caching on media files for 1 year (forever?)
+<FilesMatch "\.(flv|ico|pdf|avi|mov|ppt|doc|mp3|wmv|wav)$">
+ExpiresDefault A29030400
+Header append Cache-Control "public"
+</FilesMatch>
+
+# Set up caching on media files for 1 week
+<FilesMatch "\.(gif|jpg|jpeg|png|swf)$">
+ExpiresDefault A604800
+Header append Cache-Control "public"
+</FilesMatch>
+
+# Set up 2 Hour caching on commonly updated files
+<FilesMatch "\.(xml|txt|js|css)$">
+ExpiresDefault A604800
+Header append Cache-Control "proxy-revalidate"
+</FilesMatch>
+
+<FilesMatch "\.(js|css|xml|gz)$">
+Header append Vary Accept-Encoding
+</FilesMatch>
+
+# Force no caching for dynamic files
+<FilesMatch "\.(php|cgi|pl|htm)$">
+ExpiresActive Off
+Header set Cache-Control "private, no-cache, no-store, proxy-revalidate, no-transform"
+Header set Pragma "no-cache"
+</FilesMatch>
+
+# Force browsers that accept encoding to grab gzipped version
+AddEncoding gzip .gz
+<Files *.css.gz>
+  ForceType text/css
+</Files>
+<Files *.js.gz>
+  ForceType text/javascript
+</Files>
+<FilesMatch .*\.(js|css)>
+  RewriteEngine On
+  RewriteCond %{HTTP_USER_AGENT} !MSIE
+  RewriteCond %{HTTP:Accept-encoding} gzip
+  RewriteCond %{REQUEST_FILENAME}.gz -f
+  RewriteRule ^(.*)$ $1.gz [L]
+</FilesMatch>
+
+##
+# @package		Joomla
+# @copyright	Copyright (C) 2005 - 2012 Open Source Matters. All rights reserved.
+# @license		GNU General Public License version 2 or later; see LICENSE.txt
+##
+
+##
+# READ THIS COMPLETELY IF YOU CHOOSE TO USE THIS FILE!
+#
+# The line just below this section: 'Options +FollowSymLinks' may cause problems
+# with some server configurations.  It is required for use of mod_rewrite, but may already
+# be set by your server administrator in a way that dissallows changing it in
+# your .htaccess file.  If using it causes your server to error out, comment it out (add # to
+# beginning of line), reload your site in your browser and test your sef url's.  If they work,
+# it has been set by your server administrator and you do not need it set here.
+##
+
+## Can be commented out if causes errors, see notes above.
+# Options +FollowSymLinks
+
+## Mod_rewrite in use.
+
+RewriteEngine On
+
+## Begin - Rewrite rules to block out some common exploits.
+# If you experience problems on your site block out the operations listed below
+# This attempts to block the most common type of exploit `attempts` to Joomla!
+#
+# Block out any script trying to base64_encode data within the URL.
+RewriteCond %{QUERY_STRING} base64_encode[^(]*\([^)]*\) [OR]
+# Block out any script that includes a <script> tag in URL.
+RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+# Block out any script trying to set a PHP GLOBALS variable via URL.
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+# Block out any script trying to modify a _REQUEST variable via URL.
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+# Return 403 Forbidden header and show the content of the root homepage
+RewriteRule .* index.php [F]
+#
+## End - Rewrite rules to block out some common exploits.
+
+## Begin - Custom redirects
+#
+
+
+RewriteRule ^faqanswer(.*)?$ /resources/faq [R=301,L] 
+
+RewriteRule ^preview\.php$ http://www.gazebos.com/? [R=301,L]
+
+
+
+
+
+# If you need to redirect some pages, or set a canonical non-www to
+# www redirect (or vice versa), place that code here. Ensure those
+# redirects use the correct RewriteRule syntax and the [R=301,L] flags.
+#
+## End - Custom redirects
+
+##
+# Uncomment following line if your webserver's URL
+# is not directly related to physical file paths.
+# Update Your Joomla! Directory (just / for root).
+##
+
+# RewriteBase /
+
+## Begin - Joomla! core SEF Section.
+#
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+#
+# If the requested path and file is not /index.php and the request
+# has not already been internally rewritten to the index.php script
+RewriteCond %{REQUEST_URI} !^/index\.php
+# and the request is for something within the component folder,
+# or for the site root, or for an extensionless URL, or the
+# requested URL ends with one of the listed extensions
+RewriteCond %{REQUEST_URI} /component/|(/[^.]*|\.(php|html?|feed|pdf|vcf|raw))$ [NC]
+# and the requested path and file doesn't directly match a physical file
+RewriteCond %{REQUEST_FILENAME} !-f
+# and the requested path and file doesn't directly match a physical folder
+RewriteCond %{REQUEST_FILENAME} !-d
+# internally rewrite the request to the index.php script
+RewriteRule .* index.php [L]
+#
+## End - Joomla! core SEF Section.
+
+
+Redirect 301 /warranty.htm http://www.gazebos.com/about-us/lifetime-warranty
+Redirect 301 /4reasonstobuyagazebo.html http://www.gazebos.com/resources/faq/
+Redirect 301 /aboutus.htm http://www.gazebos.com/about-us/
+Redirect 301 /americanagazebos.htm http://www.gazebos.com/gazebos/wood/octagon/americana/
+Redirect 301 /artisanpergolas.htm http://www.gazebos.com/pergolas/wood/square/artisan/
+Redirect 301 /asphaltshingles.htm http://www.gazebos.com/pergolas/wood/rectangle/
+Redirect 301 /benchpackage.htm http://www.gazebos.com/pergolas/wood/rectangle/
+Redirect 301 /brighton3sgazebos.htm http://www.gazebos.com/three-season-gazebos/wood/octagon/brighton/
+Redirect 301 /brightongazebos.htm http://www.gazebos.com/three-season-gazebos/wood/octagon/brighton/
+Redirect 301 /cambridgegazebos.htm http://www.gazebos.com/gazebos/wood/octagon/cambridge/
+Redirect 301 /ccasphaltshingles.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /ccbenchpackage.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /ccdoubleroof.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /ccscreenpackage.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /ccstandardfloor.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /ccsteelroof.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /cctrifloor.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /ccvinylshingles.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /ccwindowgrills.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /cedar-gaebos.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /cedar-gaebos.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /cedarcovegazebos.htm http://www.gazebos.com/three-season-gazebos/wood/octagon/
+Redirect 301 /classicgazebos.htm http://www.gazebos.com/gazebos/wood/octagon/classic/
+Redirect 301 /colonialpinegazebos.htm http://www.gazebos.com/gazebos/wood/octagon/colonial/
+Redirect 301 /colonialvinylgazebos.htm http://www.gazebos.com/gazebos/wood/octagon/colonial/
+Redirect 301 /contact.php http://www.gazebos.com/about-us/contact-us/
+Redirect 301 /contemporarygazebos.htm http://www.gazebos.com/gazebos/wood/octagon/contemporary/
+Redirect 301 /countryvinylgazebos.htm http://www.gazebos.com/gazebos/vinyl/octagon/country/
+Redirect 301 /custom.htm http://www.gazebos.com/custom-quote/
+Redirect 301 /customgazebosfour.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /customgazebosone.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /customgazebosthree.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /customgazebostwo.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /design.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /doubleroof.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /dutchpinegazebos.htm http://www.gazebos.com/gazebos/wood/octagon/dutch/
+Redirect 301 /evolution-of-gazebos-graphic.html http://www.gazebos.com/blog/
+Redirect 301 /evolution-of-gazebos-ig.htm http://www.gazebos.com/blog/
+Redirect 301 /faq.htm http://www.gazebos.com/resources/faq/
+Redirect 301 /featured.php http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /features.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /garden-houses-features.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /gazebo-articles.htm http://www.gazebos.com/blog/
+Redirect 301 /gazebos.php http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /gazeboscoasttocoast.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /gazebospastpresentfuture.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /granvillegazebos.htm http://www.gazebos.com/gazebos/wood/octagon/granville/
+Redirect 301 /hamptonpavilions.htm http://www.gazebos.com/pavilions/vinyl/rectangle/hampton/
+Redirect 301 /hearthsidepergolas.htm http://www.gazebos.com/pergolas/wood/rectangle/hearthside/
+Redirect 301 /heartlandpergolas.htm http://www.gazebos.com/pergolas/wood/rectangle/heartland/
+Redirect 301 /heritage3sgazebos.htm http://www.gazebos.com/three-season-gazebos/wood/octagon/heritage/
+Redirect 301 /heritagegazebos.htm http://www.gazebos.com/three-season-gazebos/wood/octagon/heritage/
+Redirect 301 /historyofgazebos1.htm http://www.gazebos.com/blog/
+Redirect 301 /hot-tub-enclosures.htm http://www.gazebos.com/blog/gazebos/hot-tub-enclosure-benefits
+Redirect 301 /howto.htm http://www.gazebos.com/blog/gazebos/building-a-gazebo-101
+Redirect 301 /lwcolonialgazebos.htm http://www.gazebos.com/gazebos/wood/octagon/colonial/
+Redirect 301 /monticellogazebos.htm http://www.gazebos.com/gazebos/vinyl/octagon/monticello/
+Redirect 301 /newenglandpinegazebos.htm http://www.gazebos.com/gazebos/wood/octagon/new-england/
+Redirect 301 /options.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /orientalgazebos.htm http://www.gazebos.com/gazebos/wood/octagon/oriental/
+Redirect 301 /pavilions.htm http://www.gazebos.com/pergolas/wood/rectangle/
+Redirect 301 /pergolacornerbench.htm http://www.gazebos.com/pergolas/wood/rectangle/
+Redirect 301 /pergolalatticecorners.htm http://www.gazebos.com/pergolas/wood/rectangle/
+Redirect 301 /pergolalatticeroof.htm http://www.gazebos.com/pergolas/wood/rectangle/
+Redirect 301 /pergolaprivacypanels.htm http://www.gazebos.com/pergolas/wood/rectangle/
+Redirect 301 /pergolas.htm http://www.gazebos.com/pergolas/wood/rectangle/
+Redirect 301 /pergolastaincolors.htm http://www.gazebos.com/pergolas/wood/rectangle/
+Redirect 301 /pergolasuperiorposts.htm http://www.gazebos.com/pergolas/wood/rectangle/
+Redirect 301 /pergolavinylcolors.htm http://www.gazebos.com/pergolas/wood/rectangle/
+Redirect 301 /privacy.htm http://www.gazebos.com/privacy-policy
+Redirect 301 /savannahgazebos.htm http://www.gazebos.com/gazebos/wood/octagon/savannah/
+Redirect 301 /screen_package.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /screen-rooms-design.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /screen-rooms-features.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /screen-rooms-options.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /lakewoodgazebos.htm http://www.gazebos.com/three-season-gazebos/wood/octagon/
+Redirect 301 /spa-enclosures.htm http://www.gazebos.com/blog/
+Redirect 301 /springcleaning.html http://www.gazebos.com/blog/
+Redirect 301 /standard.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /steel_roof.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /stoneridge3sgazebos.htm http://www.gazebos.com/three-season-gazebos/wood/square/stoneridge/
+Redirect 301 /stratfordgazebos.htm http://www.gazebos.com/gazebos/wood/decagon/stratford/
+Redirect 301 /summerishere.htm http://www.gazebos.com/blog/
+Redirect 301 /threeseasongazebos.htm http://www.gazebos.com/three-season-gazebos/
+Redirect 301 /threeseasongazebosfireplace.htm http://www.gazebos.com/three-season-gazebos/wood/octagon/
+Redirect 301 /timberframepavilions.htm http://www.gazebos.com/pavilions/vinyl/rectangle/
+Redirect 301 /traditionalvinylpavilions.htm http://www.gazebos.com/pavilions/vinyl/square/traditional/
+Redirect 301 /traditionalvinylpergolas.htm http://www.gazebos.com/pergolas/vinyl/rectangle/traditional/
+Redirect 301 /traditionalwoodpavilions.htm http://www.gazebos.com/pavilions/wood/rectangle/traditional/
+Redirect 301 /traditionalwoodpergolas.htm http://www.gazebos.com/pergolas/wood/rectangle/traditional/
+Redirect 301 /trasphaltshingles.htm http://www.gazebos.com/pavilions/vinyl/rectangle/
+Redirect 301 /trbenchpackage.htm http://www.gazebos.com/pavilions/vinyl/rectangle/
+Redirect 301 /trdoubleroof.htm http://www.gazebos.com/pavilions/vinyl/rectangle/
+Redirect 301 /treatedpinegazebos.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /trfloorpackage.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /tri_floor.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /trvinylitewindows.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /trvinylshingles.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /victoriangazebos.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /vinyl_roof.htm http://www.gazebos.com/gazebos/vinyl/octagon/
+Redirect 301 /vinyl-gazebos.htm http://www.gazebos.com/gazebos/vinyl/octagon/
+Redirect 301 /vinylaspshingles.htm http://www.gazebos.com/gazebos/vinyl/octagon/
+Redirect 301 /vinylbenchpackage.htm http://www.gazebos.com/gazebos/vinyl/octagon/
+Redirect 301 /vinyldoubleroof.htm http://www.gazebos.com/gazebos/vinyl/octagon/
+Redirect 301 /vinylfloorpackage.htm http://www.gazebos.com/gazebos/vinyl/octagon/
+Redirect 301 /vinylgazebos.htm http://www.gazebos.com/gazebos/vinyl/octagon/
+Redirect 301 /vinylitewindows.htm http://www.gazebos.com/gazebos/vinyl/octagon/
+Redirect 301 /vinylscreenpackage.htm http://www.gazebos.com/gazebos/vinyl/octagon/
+Redirect 301 /vinylshingles.htm http://www.gazebos.com/gazebos/vinyl/octagon/
+Redirect 301 /vinylvinshingles.htm http://www.gazebos.com/gazebos/vinyl/octagon/
+Redirect 301 /vixfordgazebos.htm http://www.gazebos.com/gazebos/wood/octagon/vixford/
+Redirect 301 /windowgrills.htm http://www.gazebos.com/gazebos/wood/octagon/
+Redirect 301 /woodbridge3sgazebos.htm http://www.gazebos.com/three-season-gazebos/wood/octagon/woodbridge/
+Redirect 301 /woodbridgegazebos.htm http://www.gazebos.com/gazebos/wood/octagon/woodbridge/
+
+### 3/20/2013 Adding more - bryan ###
+
+Redirect 301 /build-a-gazebo.htm http://www.gazebos.com/blog/gazebos/building-a-gazebo-101
+Redirect 301 /faq.htm http://www.gazebos.com/resources/faq/
+Redirect 301 /gazebo-kits.htm http://www.gazebos.com/blog/gazebos/the-benefits-of-gazebos
+Redirect 301 /gazebos-benefits.htm http://www.gazebos.com/blog/gazebos/the-benefits-of-gazebos
+Redirect 301 /articles/gazebo-kits-offer-many-advantages/ http://www.gazebos.com/blog/gazebos/the-benefits-of-gazebos
+Redirect 301 /evolution-of-gazebos-graphic.html http://www.gazebos.com/about-us/lifetime-warranty
+Redirect 301 /garden-accessories.htm http://www.gazebos.com/blog/gazebos/liven-up-your-gazebo-this-spring
+Redirect 301 /blog/gazebos/spring-cleaning-tips-for-you-gazebo http://www.gazebos.com/blog/gazebos/spring-cleaning-tips-for-your-gazebo
+Redirect 301 /gazebo-articles.htm http://www.gazebos.com/blog
+Redirect 301 /bench.html http://www.gazebos.com/
+Redirect 301 /smoke.html http://www.gazebos.com/
+Redirect 301 /howto.htm http://www.gazebos.com/
+Redirect 301 /www.gazebos.com/gazebos.php?action=tab&parent_id=14&tab=design http://www.gazebos.com/
+Redirect 301 /spa-enclosures.htm http://www.gazebos.com/blog/gazebos/outdoor-spa-enclosure-for-health-benefits
+Redirect 301 /sitemap.htm http://www.gazebos.com/
+Redirect 301 /assembly/kd/kdassembly4.html http://www.gazebos.com/
+Redirect 301 /dev.gazebos.com/gazebos.php?parent_id=47 http://www.gazebos.com/
+Redirect 301 /swing.html http://www.gazebos.com/
+Redirect 301 /resources.htm http://www.gazebos.com/blog
+Redirect 301 /kd.html http://www.gazebos.com/
+Redirect 301 /home-improvement.htm http://www.gazebos.com/
+Redirect 301 /home-decor.htm http://www.gazebos.com/
+Redirect 301 /summerishere.htm http://www.gazebos.com/blog/
+Redirect 301 /accessories.html http://www.gazebos.com/
+Redirect 301 /dev.gazebos.com/gazebos.php?parent_id=25 http://www.gazebos.com/
+Redirect 301 /the-gazebos-difference http://www.gazebos.com/about-us/the-gazebos-difference
+Redirect 301 /www.vinylgazebos.htm http://www.gazebos.com/gazebos/vinyl
+Redirect 301 /springcleaning.html http://www.gazebos.com/blog/gazebos/spring-cleaning-tips-for-your-gazebo
+Redirect 301 /school/ http://www.gazebos.com/
+Redirect 301 /dev.gazebos.com/gazebos.php?parent_id=26 http://www.gazebos.com/
+Redirect 301 /dev.gazebos.com/gazebos.php?parent_id=14 http://www.gazebos.com/
+Redirect 301 /dev.gazebos.com/gazebos.php?parent_id=49 http://www.gazebos.com/
+Redirect 301 /dev.gazebos.com/gazebos.php?parent_id=27 http://www.gazebos.com/
+Redirect 301 /dev.gazebos.com/gazebos.php?parent_id=13 http://www.gazebos.com/
+Redirect 301 /doityourself/index.html http://www.gazebos.com/blog/gazebos/building-a-gazebo-101
+Redirect 301 /4reasonstobuyagazebo.html http://www.gazebos.com/blog/gazebos/the-benefits-of-gazebos
+Redirect 301 /wheel.html http://www.gazebos.com/
+Redirect 301 /bbqbash.htm http://www.gazebos.com/
+Redirect 301 /images/Artisan%20Pergolas/10%5C http://www.gazebos.com/pergolas/wood/rectangle/artisan
+Redirect 301 /images/14%5C http://www.gazebos.com/gallery
+Redirect 301 /shipping.htm http://www.gazebos.com/about-us/shipping
+Redirect 301 /shipping/ http://www.gazebos.com/about-us/shipping
+Redirect 301 /evolution-of-gazebos-ig.htm http://www.gazebos.com/
+Redirect 301 /images/Artisan%20Pergolas/12%5C http://www.gazebos.com/pergolas/wood/rectangle/artisan
+Redirect 301 /;1 http://www.gazebos.com/
+Redirect 301 /models.html http://www.gazebos.com/
+Redirect 301 /hot-tub-enclosures http://www.gazebos.com/
+Redirect 301 /?iframe=true&width=80%&height=80% http://www.gazebos.com/
+Redirect 301 /gazebos.php?product_id=184&action=view&style_no=&return_url=Z2F6ZWJvcy5waHA/X3JlcXVlc3Q9WVRveE9udHpPams2SW5CaGNtVnVkRjlwWkNJN2N6b3lPaUl5TnlJN2ZRPT0=?iframe=true&width=100%&height=100% http://www.gazebos.com/
+Redirect 301 /gazebos.php?product_id=136&action=view&style_no=&return_url=Z2F6ZWJvcy5waHA/X3JlcXVlc3Q9WVRveE9udHpPams2SW5CaGNtVnVkRjlwWkNJN2N6b3lPaUl5TnlJN2ZRPT0=?iframe=true&width=100%&height=100% http://www.gazebos.com/
+Redirect 301 /gazebos.php?product_id=151&action=view&style_no=&return_url=Z2F6ZWJvcy5waHA/X3JlcXVlc3Q9WVRveE9udHpPams2SW5CaGNtVnVkRjlwWkNJN2N6b3lPaUl5TnlJN2ZRPT0=?iframe=true&width=100%&height=100% http://www.gazebos.com/
+Redirect 301 /gazebos.php?product_id=185&action=view&style_no=&return_url=Z2F6ZWJvcy5waHA/X3JlcXVlc3Q9WVRveE9udHpPams2SW5CaGNtVnVkRjlwWkNJN2N6b3lPaUl5TnlJN2ZRPT0=?iframe=true&width=100%&height=100% http://www.gazebos.com/
+Redirect 301 /gazebos.php?action=tab&parent_id=13&tab=options http://www.gazebos.com/
+Redirect 301 /build-a-gazebo.htm http://www.gazebos.com/blog/gazebos/building-a-gazebo-101
+Redirect 301 /gazebo-kits.htm http://www.gazebos.com/blog/gazebos/the-benefits-of-gazebos
+Redirect 301 /smoke.html http://www.gazebos.com/
+Redirect 301 /howto.htm http://www.gazebos.com/blog/gazebos/building-a-gazebo-101
+Redirect 301 /doityourself/index.html http://www.gazebos.com/blog/gazebos/building-a-gazebo-101
+Redirect 301 /wheel.html http://www.gazebos.com/
+Redirect 301 /faqs/ http://www.gazebos.com/resources/faq/
+
+### 3/29/2013 Tres Mas -bm ###
+
+Redirect 301 /vinylasp http://www.gazebos.com/gazebos/vinyl
+Redirect 301 /articles/hot-tub-enclosure-benefits/ http://www.gazebos.com/blog/gazebos/hot-tub-enclosure-benefits

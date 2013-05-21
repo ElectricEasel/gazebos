@@ -1,0 +1,15 @@
+.formRed
+{
+	color: red;
+	font-weight: bold;
+}
+
+.formError {
+	color: #CF4D4D;
+	font-weight:bold;
+	font-size:10px;
+}
+
+.formNoError {
+	display:none;
+}

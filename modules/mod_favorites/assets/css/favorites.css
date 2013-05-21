@@ -1,0 +1,110 @@
+#favorites {
+	position: fixed;
+	top:30%;
+	left:-200px;
+	width:200px;
+	z-index: 2;
+	display: none;
+	border-radius: 0 0 10px 0;
+	box-shadow: 3px 4px 7px rgba(0, 0, 0, 0.2);
+}
+#favorites .container {
+	background:url(/templates/gazebos/images/bg_content.png) repeat scroll 0 0;
+	position: relative;
+	width:200px;
+	height:350px;
+	overflow: hidden;
+	border-radius: 0 0 10px 0;
+}
+#favorites .container .wrap {
+	background:url(/templates/gazebos/images/bg_gradient.png) no-repeat scroll right bottom;
+	overflow-y:scroll;
+	width:220px;
+	height:370px;
+}
+#favorites .toggle {
+	position: absolute;
+	right:-40px;
+	top:0;
+	width:40px;
+	height:100px;
+	display: block;
+	border-radius: 0 10px 10px 0;
+	box-shadow: 3px 4px 7px rgba(0, 0, 0, 0.2);
+}
+#favorites .toggle span {
+	width:100px;
+	height:40px;
+	position: absolute;
+	line-height:40px;
+	font-size:16px;
+	text-align: center;
+	color:#FFF;
+	text-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+	display:block;
+	text-align: center;
+	left:-30px;
+	top:30px;
+	letter-spacing: 1px;
+	transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+#favorites .favorite {
+	padding:10px 5px;
+	width:190px;
+}
+#favorites .favorite:last-child {
+	border-bottom:0;
+}
+#favorites .favorite img {
+	padding:5px;
+	background:#d1cac0;
+	float:left;
+}
+#favorites .favorite .fav_title {
+	color:#355a06;
+	display:block;
+	font-size:13px;
+	margin-bottom:5px;
+}
+#favorites .favorite .info {
+	float:left;
+	margin-left:10px;
+	width:110px;
+}
+#favorites .info a {
+	color:#355a06;
+	text-decoration: none;
+}
+#favorites .favorite .rm_fav {
+	display: block;
+	color:#bdaa9e;
+	background:url(/templates/gazebos/images/checkbox-sprite.png) no-repeat scroll 0 -79px transparent;
+	height:15px;
+	line-height:15px;
+	padding-left:20px;
+	font-size:12px;
+	text-transform: uppercase;
+	
+}
+#favorites h3 {
+	background:url(/templates/gazebos/images/product-hr.png) no-repeat scroll center bottom transparent;
+	padding-bottom:12px;
+	text-align: center;
+	color:#877264;
+	font-family:Times, serif;
+	font-weight: normal;
+	text-transform: uppercase;
+	font-size:16px;
+	margin-bottom:5px;
+}
+#favorites h3 > span {
+	background:url(/templates/gazebos/images/sprite-stars.png) no-repeat scroll left -1px transparent;
+	padding-left:20px;
+}
+#favorites h3 span span {
+	background:url(/templates/gazebos/images/sprite-stars.png) no-repeat scroll right -1px transparent;
+	padding-right:20px;
+}

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset
+		name="general"
+		label="General">
+
+		<field
+			name="title"
+			type="text"
+			label="Product Title"
+			class="readonly"
+			readonly="true" />
+
+		<field
+			name="state"
+			type="list"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC"
+			class="inputbox"
+			size="1"
+			default="1">
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+		</field>
+
+		<field
+			name="featured"
+			type="radio"
+			label="Featured"
+			description="If yes, this product will show up on the homepage featured carousel."
+			class="inputbox"
+			size="1"
+			default="0">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</field>
+
+		<field
+			name="series"
+			type="sql"
+			label="Product Series"
+			query="SELECT id, title FROM #__menu WHERE menutype = 'series'"
+			key_field="id"
+			value_field="title">
+			<option value="">No Series</option>
+		</field>
+
+		<field
+			name="style_id"
+			type="attributes"
+			class="inputbox"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_STYLE_ID"
+			required="true"
+			table="#__gazebos_styles"
+			key_field="id"
+			value_field="title" />
+
+		<field
+			name="material_id"
+			type="attributes"
+			class="inputbox"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_MATERIAL_ID"
+			required="true"
+			table="#__gazebos_materials"
+			key_field="id"
+			value_field="title" />
+
+		<field
+			name="shape_id"
+			type="attributes"
+			class="inputbox"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_SHAPE_ID"
+			required="true"
+			table="#__gazebos_shapes"
+			key_field="id"
+			value_field="title" />
+
+	</fieldset>
+
+	<fieldset
+		name="description"
+		label="Description">
+
+		<field
+			name="description"
+			type="editor"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_DESCRIPTION"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_DESCRIPTION"
+			cols="80"
+			rows="30"
+			filter="raw" />
+
+	</fieldset>
+
+	<fieldset
+		name="options"
+		label="Options">
+
+		<field
+			name="options"
+			type="productoptions"
+			multiple="true"
+			option_type="1" />
+
+	</fieldset>
+
+	<fieldset
+		name="features"
+		label="Features">
+
+		<field
+			name="features"
+			type="productoptions"
+			multiple="true"
+			option_type="2" />
+
+	</fieldset>
+
+	<fieldset
+		name="colors"
+		label="Colors">
+
+		<field
+			name="colors"
+			type="productoptions"
+			multiple="true"
+			option_type="3" />
+
+	</fieldset>
+
+	<fieldset
+		name="roofing"
+		label="Roofing">
+
+		<field
+			name="roofing"
+			type="productoptions"
+			multiple="true"
+			option_type="4" />
+
+	</fieldset>
+
+	<fieldset
+		name="flooring"
+		label="Flooring">
+
+		<field
+			name="flooring"
+			type="productoptions"
+			multiple="true"
+			option_type="5" />
+
+	</fieldset>
+
+	<fieldset
+		name="seo"
+		label="SEO">
+
+		<field
+			name="seo_title"
+			type="text"
+			label="SEO Title"
+			description="The SEO title tag for this product"
+			size="55" />
+
+		<field
+			name="seo_description"
+			type="textarea"
+			label="SEO Description"
+			description="The SEO description for this product"
+			rows="10"
+			cols="50" />
+
+	</fieldset>
+
+	<fieldset
+		name="hidden"
+		label="Hidden Fields">
+
+		<field
+			name="id"
+			type="text"
+			default="0"
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_ID"
+			readonly="true"
+			class="readonly"
+			description="JGLOBAL_FIELD_ID_DESC" />
+
+		<field
+			name="type_id"
+			type="hidden"
+			required="true" />
+
+		<field
+			name="created_by"
+			type="createdby"
+			default=""
+			label="COM_GAZEBOS_FORM_LBL_PRODUCT_CREATED_BY"
+			description="COM_GAZEBOS_FORM_DESC_PRODUCT_CREATED_BY" />
+
+		<field
+			name="checked_out"
+			type="hidden"
+			filter="unset" />
+
+		<field
+			name="checked_out_time"
+			type="hidden"
+			filter="unset" />
+
+	</fieldset>
+
+	<fieldset
+		name="filters"
+		label="Product Filters">
+
+		<field
+			name="filter_type_id"
+			type="sql"
+			class="inputbox"
+			onchange="this.form.submit();"
+			query="SELECT id, title FROM #__gazebos_types"
+			key_field="id"
+			value_field="title">
+			<option value="0">- Filter by Type -</option>
+		</field>
+
+		<field
+			name="filter_material_id"
+			type="groupedsql"
+			class="inputbox"
+			onchange="this.form.submit();"
+			query="SELECT 0 AS id, '- Filter by Material -' AS title, '' AS group_name UNION SELECT a.id, a.title, b.title AS group_name FROM #__gazebos_materials AS a LEFT JOIN #__gazebos_types AS b ON b.id = a.type_id"
+			key_field="id"
+			value_field="title"
+			group_field="group_name" />
+
+		<field
+			name="filter_style_id"
+			type="groupedsql"
+			class="inputbox"
+			onchange="this.form.submit();"
+			query="SELECT 0 AS id, '- Filter by Style -' AS title, '' AS group_name UNION SELECT a.id, a.title, b.title AS group_name FROM #__gazebos_styles AS a LEFT JOIN #__gazebos_types AS b ON b.id = a.type_id"
+			key_field="id"
+			value_field="title"
+			group_field="group_name" />
+
+		<field
+			name="filter_shape_id"
+			type="groupedsql"
+			class="inputbox"
+			onchange="this.form.submit();"
+			query="SELECT 0 AS id, '- Filter by Shape -' AS title, '' AS group_name UNION SELECT a.id, a.title, b.title AS group_name FROM #__gazebos_shapes AS a LEFT JOIN #__gazebos_types AS b ON b.id = a.type_id"
+			key_field="id"
+			value_field="title"
+			group_field="group_name" />
+
+	</fieldset>
+
+</form>

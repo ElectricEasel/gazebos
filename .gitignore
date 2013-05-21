@@ -1,0 +1,13 @@
+dev/
+email/
+html-pages/
+configuration.php
+LICENSE.txt
+README.txt
+web.config.txt
+htaccess.txt
+tmp/*
+cache/*
+logs/*
+sitemap.xml
+sitemap_images.xml

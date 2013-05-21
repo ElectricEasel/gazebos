@@ -1,0 +1,21 @@
+{
+	"name": "ElectricEasel/easel",
+	"description": "Joomla development library by ElectricEasel. It abstracts much of the boilerplate code away to nice methods.",
+	"keywords": [
+		"electric easel",
+		"joomla"
+	],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Don Gilbert",
+			"email": "don@electriceasel.com",
+			"homepage": "http://dongilbert.github.com",
+			"role": "Lead Developer"
+		}
+	],
+	"autoload": {
+		"classmap": [""],
+		"files": ["setup.php"]
+	}
+}

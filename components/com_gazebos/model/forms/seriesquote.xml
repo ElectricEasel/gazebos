@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset
+		name="general"
+		label="General">
+
+		<field
+			name="first_name"
+			type="placeholder"
+			label="First Name:" />
+
+		<field
+			name="last_name"
+			type="placeholder"
+			label="Last Name:" />
+
+		<field
+			name="email"
+			type="placeholder"
+			label="Email:"
+			required="true"
+			validate="email" />
+
+		<field
+			name="phone"
+			type="placeholder"
+			label="Phone:"
+			validate="tel" />
+			
+		<field
+			name="zip"
+			type="placeholder"
+			label="ZIP:"
+			limit="10"
+			validate="limit" />
+			
+		<field
+			name="contact_method"
+			type="chosen"
+			label="Preferred Method of Contact">
+			<option value="">Preferred Method of Contact</option>
+			<option value="phone">Phone</option>
+			<option value="email">Email</option>
+		</field>
+			
+		<field
+			name="project_timeframe"
+			type="chosen"
+			label="Project Timeframe">
+			<option value="">Project Timeframe</option>
+			<option value="Within 30 Days" />
+			<option value="Within 60 Days" />
+			<option value="Within 90 Days" />
+			<option value="Other" />
+		</field>
+			
+		<field
+			name="shape"
+			type="chosen"
+			label="Preferred Shape">
+			<option value="">Preferred Shape</option>
+			<option value="octagon">Octagon</option>
+			<option value="decagon">Decagon</option>
+			<option value="dodecagon">Dodecagon</option>
+			<option value="oblong">Oblong</option>
+			<option value="square">Square</option>
+			<option value="rectangle">Rectangle</option>
+		</field>
+			
+		<field
+			name="optional_packages"
+			type="chosen"
+			label="Optional Packages">
+			<option value="">Optional Packages</option>
+			<option value="Screens Only">Screens Only</option>
+			<option value="Windows and Screens"><![CDATA[Windows &amp; Screens]]></option>
+		</field>
+			
+		<field
+			name="comments"
+			type="textarea"
+			label="Comments:"
+			default="Please enter additional comments here."
+			cols="50"
+			rows="10"
+			filter="raw" />
+
+	</fieldset>
+
+	<fieldset
+		name="gazebos"
+		label="Gazebo Packages">
+
+		<field
+			name="window_package"
+			type="gazeboradio"
+			label="Window Package"
+			default="No"
+			class="styled">
+			<option value="Yes" />
+			<option value="No" />
+		</field>
+
+		<field
+			name="screen_package"
+			type="gazeboradio"
+			label="Screen Package"
+			default="No"
+			class="styled">
+			<option value="Yes" />
+			<option value="No" />
+		</field>
+
+		<field
+			name="electrical_package"
+			type="gazeboradio"
+			label="Electrical Package"
+			default="No"
+			class="styled">
+			<option value="Yes" />
+			<option value="No" />
+		</field>
+
+		<field
+			name="roof_package"
+			type="gazeboradio"
+			label="Roof Style"
+			default="Single"
+			class="styled">
+			<option value="Double" />
+			<option value="Single" />
+		</field>
+
+	</fieldset>
+
+	<fieldset
+		name="three_season_gazebos"
+		label="Three Season Gazebo Packages">
+
+		<field
+			name="grill_package"
+			type="gazeboradio"
+			label="Window Grills Package"
+			default="No"
+			class="styled">
+			<option value="Yes" />
+			<option value="No" />
+		</field>
+
+		<field
+			name="screen_package"
+			type="gazeboradio"
+			label="Screen Package"
+			default="No"
+			class="styled">
+			<option value="Yes" />
+			<option value="No" />
+		</field>
+
+		<field
+			name="electrical_package"
+			type="gazeboradio"
+			label="Electrical Package"
+			default="No"
+			class="styled">
+			<option value="Yes" />
+			<option value="No" />
+		</field>
+
+		<field
+			name="roof_package"
+			type="gazeboradio"
+			label="Roof Style"
+			default="Single"
+			class="styled">
+			<option value="Double" />
+			<option value="Single" />
+		</field>
+
+	</fieldset>
+
+	<fieldset
+		name="pergolas"
+		label="Pergola Packages">
+
+		<field
+			name="electrical_package"
+			type="gazeboradio"
+			label="Electrical Package"
+			default="No"
+			class="styled">
+			<option value="Yes" />
+			<option value="No" />
+		</field>
+
+		<field
+			name="superior_posts"
+			type="gazeboradio"
+			label="Superior Posts"
+			default="No"
+			class="styled">
+			<option value="Yes" />
+			<option value="No" />
+		</field>
+
+	</fieldset>
+
+	<fieldset
+		name="pavilions"
+		label="Pavilion Packages">
+
+		<field
+			name="electrical_package"
+			type="gazeboradio"
+			label="Electrical Package"
+			default="No"
+			class="styled">
+			<option value="Yes" />
+			<option value="No" />
+		</field>
+
+		<field
+			name="cupola"
+			type="gazeboradio"
+			label="Cupola"
+			default="No"
+			class="styled">
+			<option value="Yes" />
+			<option value="No" />
+		</field>
+
+	</fieldset>
+
+	<fieldset
+		name="hidden"
+		label="Hidden Fields">
+
+		<field
+			name="product_id"
+			label="Product ID:"
+			type="hidden" />
+			
+		<field
+			name="size_interested_in"
+			label="Size Interested In:"
+			type="hidden" />
+			
+		<field
+			name="size_id"
+			label="Size ID:"
+			type="hidden" />
+	
+	</fieldset>
+
+</form>

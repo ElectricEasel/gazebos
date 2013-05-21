@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset
+		name="general"
+		label="General">
+
+		<field
+			name="title"
+			type="text"
+			label="COM_GAZEBOS_FORM_LBL_OPTIONCATEGORY_TITLE"
+			description="COM_GAZEBOS_FORM_DESC_OPTIONCATEGORY_TITLE"
+			required="true"
+			filter="raw" />
+
+		<field
+			name="state"
+			type="list"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC"
+			class="inputbox"
+			size="1"
+			default="1">
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+		</field>
+
+		<field
+			name="option_type"
+			type="list"
+			label="Attribute Type"
+			class="inputbox"
+			size="1"
+			default="1">
+			<option value="1">Options</option>
+			<option value="2">Features</option>
+			<option value="3">Colors</option>
+			<option value="4">Roofing</option>
+			<option value="5">Flooring</option>
+		</field>
+
+	</fieldset>
+
+	<fieldset
+		name="hidden"
+		label="Hidden Fields">
+
+		<field
+			name="id"
+			type="text"
+			default="0"
+			label="COM_GAZEBOS_FORM_LBL_OPTIONCATEGORY_ID"
+			readonly="true"
+			class="readonly"
+			description="JGLOBAL_FIELD_ID_DESC" />
+
+		<field
+			name="type_id"
+			type="hidden"
+			required="true" />
+
+		<field
+			name="created_by"
+			type="createdby"
+			default=""
+			label="COM_GAZEBOS_FORM_LBL_OPTIONCATEGORY_CREATED_BY"
+			description="COM_GAZEBOS_FORM_DESC_OPTIONCATEGORY_CREATED_BY" />
+
+		<field
+			name="checked_out"
+			type="hidden"
+			filter="unset" />
+
+		<field
+			name="checked_out_time"
+			type="hidden"
+			filter="unset" />
+
+	</fieldset>
+
+	<fieldset
+		name="filters"
+		label="Product Filters">
+
+		<field
+			name="filter_type_id"
+			type="sql"
+			class="inputbox"
+			onchange="this.form.submit();"
+			query="SELECT 0 AS `id`, '- Filter by Type -' AS `title` UNION SELECT `id`, `title` FROM `#__gazebos_types`"
+			key_field="id"
+			value_field="title" />
+
+		<field
+			name="filter_option_type"
+			type="list"
+			class="inputbox"
+			onchange="this.form.submit();">
+			<option value="">- Select Group -</option>
+			<option value="1">Options</option>
+			<option value="2">Features</option>
+			<option value="3">Colors</option>
+			<option value="4">Roofing</option>
+			<option value="5">Flooring</option>
+		</field>
+
+	</fieldset>
+
+</form>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5" method="upgrade" client="site">
+	<name>RSForm! Pro Module</name>
+	<author>RSJoomla</author>
+	<creationDate>July 2010</creationDate>
+	<copyright>(C) 2007-2010 www.rsjoomla.com</copyright>
+	<license>GNU General Public License</license>
+	<authorEmail>support@rsjoomla.com</authorEmail>
+	<authorUrl>www.rsjoomla.com</authorUrl>
+	<version>1.3.0</version>
+	<description><![CDATA[This module is used to display forms created with RSForm! Pro. Works with at least RSForm! Pro 1.3.0 REV30!]]></description>
+	<files>
+	<filename module="mod_rsform">mod_rsform.php</filename>
+	<filename>index.html</filename>
+	<folder>tmpl</folder>
+	</files>
+	<params>
+		<param name="formId" type="text" default="1" label="Form id" description="The ID of the Form. You can find it in your Manage Forms screen (the last column)." />
+		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="" />
+	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="formId" type="text" default="1" label="Form id" description="The ID of the Form. You can find it in your Manage Forms screen (the last column)." />
+				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="" />
+			</fieldset>
+		</fields>
+	</config>
+</install>
