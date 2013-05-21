@@ -1,7 +1,7 @@
 dev/
 email/
 html-pages/
-configuration.php
+/configuration.php
 LICENSE.txt
 README.txt
 web.config.txt
@@ -11,3 +11,4 @@ cache/*
 logs/*
 sitemap.xml
 sitemap_images.xml
+components/com_sh404sef/cache/*
