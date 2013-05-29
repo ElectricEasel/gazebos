@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -24,9 +24,7 @@ function submitbutton(task)
 		submitform(task);
 }
 
-<?php if (RSFormProHelper::isJ16()) { ?>
-	Joomla.submitbutton = submitbutton;
-<?php } ?>
+Joomla.submitbutton = submitbutton;
 
 function toggleCheckColumns()
 {
@@ -51,49 +49,72 @@ function resetForm()
 }
 </script>
 
-<form action="index.php?option=com_rsform&amp;task=submissions.manage" method="post" name="adminForm" id="adminForm">
+<style type="text/css">
+.input-append {
+	display: inline;
+}
+
+.rs_inp {
+	margin-bottom: 9px !important;
+}
+
+#columnsDiv label {
+	display: inline;
+}
+</style>
+
+<form action="<?php echo JRoute::_('index.php?option=com_rsform&view=submissions'); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminform">
 		<tr>
 			<td width="100%">
-				<?php echo JText::_('RSFP_VIEW_SUBMISSIONS_FOR'); ?> <?php echo $this->lists['forms']; ?>
-				<?php echo JText::_('RSFP_SHOW_SUBMISSIONS_LANGUAGE'); ?> <?php echo $this->lists['Languages']; ?>
-				<?php echo JText::_( 'SEARCH' ); ?>
-				<input type="text" name="search" id="search" value="<?php echo $this->escape($this->filter); ?>" class="text_area" onChange="document.adminForm.submit();" />
-				<?php echo JText::_( 'DATE' ); ?> <?php echo $this->calendars['from']; ?> <?php echo JText::_('TO'); ?> <?php echo $this->calendars['to']; ?>
-				<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-				<button onclick="resetForm();this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+				<div class="rs_left">
+					<?php echo JText::_('RSFP_VIEW_SUBMISSIONS_FOR'); ?> <?php echo $this->lists['forms']; ?>
+					<?php echo JText::_('RSFP_SHOW_SUBMISSIONS_LANGUAGE'); ?> <?php echo $this->lists['Languages']; ?>
+					<?php echo JText::_( 'SEARCH' ); ?>
+					<input type="text" class="rs_inp rs_10" name="search" id="search" value="<?php echo $this->escape($this->filter); ?>" class="text_area" onchange="document.adminForm.submit();" />
+					<span class="hidden-phone">
+					<?php echo JText::_( 'DATE' ); ?>
+					<?php echo $this->calendars['from']; ?>
+					<?php echo JText::_('TO'); ?>
+					<?php echo $this->calendars['to']; ?>
+					</span>
+				</div>
+				<button class="rs_button rs_left" type="button" onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
+				<button class="rs_button rs_left" type="button" onclick="resetForm();this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
 			</td>
 			<td nowrap="nowrap">
-				<button type="button" onclick="toggleCustomizeColumns();"><?php echo JText::_('RSFP_CUSTOMIZE_COLUMNS'); ?></button>
-				<div id="columnsContainer">
-				<div id="columnsDiv">
-					<input type="checkbox" onclick="toggleCheckColumns();" id="checkColumns" /> <label for="checkColumns"><strong><?php echo JText::_('RSFP_CHECK_ALL'); ?></strong></label><br />
-				<?php $i = 0; ?>
-				<?php foreach ($this->staticHeaders as $header) { ?>
-					<input type="checkbox" <?php echo $this->isHeaderEnabled($header, 1) ? 'checked="checked"' : ''; ?> name="staticcolumns[]" value="<?php echo $this->escape($header); ?>" id="column<?php echo $i; ?>" /> <label for="column<?php echo $i; ?>"><?php echo JText::_('RSFP_'.$header); ?></label><br />
-					<?php $i++; ?>
-				<?php } ?>
-				<?php foreach ($this->headers as $header) { ?>
-					<input type="checkbox" <?php echo $this->isHeaderEnabled($header, 0) ? 'checked="checked"' : ''; ?> name="columns[]" value="<?php echo $this->escape($header); ?>" id="column<?php echo $i; ?>" /> <label for="column<?php echo $i; ?>">
-					<?php if ($header == '_STATUS') echo JText::_('RSFP_PAYPAL_STATUS'); elseif ($header == '_ANZ_STATUS') echo JText::_('RSFP_ANZ_STATUS'); else echo $header; ?>
-					</label><br />
-					<?php $i++; ?>
-				<?php } ?>
-				<button type="button" onclick="submitbutton('submissions.columns')"><?php echo JText::_('Submit'); ?></button>
-				</div>
+				<div class="hidden-phone">
+					<button class="rs_button" type="button" onclick="toggleCustomizeColumns();"><?php echo JText::_('RSFP_CUSTOMIZE_COLUMNS'); ?></button>
+					<div id="columnsContainer">
+						<div id="columnsDiv">
+							<input type="checkbox" onclick="toggleCheckColumns();" id="checkColumns" /> <label for="checkColumns"><strong><?php echo JText::_('RSFP_CHECK_ALL'); ?></strong></label><br />
+						<?php $i = 0; ?>
+						<?php foreach ($this->staticHeaders as $header) { ?>
+							<input type="checkbox" <?php echo $this->isHeaderEnabled($header, 1) ? 'checked="checked"' : ''; ?> name="staticcolumns[]" value="<?php echo $this->escape($header); ?>" id="column<?php echo $i; ?>" /> <label for="column<?php echo $i; ?>"><?php echo JText::_('RSFP_'.$header); ?></label><br />
+							<?php $i++; ?>
+						<?php } ?>
+						<?php foreach ($this->headers as $header) { ?>
+							<input type="checkbox" <?php echo $this->isHeaderEnabled($header, 0) ? 'checked="checked"' : ''; ?> name="columns[]" value="<?php echo $this->escape($header); ?>" id="column<?php echo $i; ?>" /> <label for="column<?php echo $i; ?>">
+							<?php if ($header == '_STATUS') echo JText::_('RSFP_PAYPAL_STATUS'); elseif ($header == '_ANZ_STATUS') echo JText::_('RSFP_ANZ_STATUS'); else echo $header; ?>
+							</label><br />
+							<?php $i++; ?>
+						<?php } ?>
+							<button class="rs_button" type="button" onclick="submitbutton('submissions.columns')"><?php echo JText::_('Submit'); ?></button>
+						</div>
+					</div>
 				</div>
 			</td>
 		</tr>
 	</table>
 	
 	<div style="overflow: auto;">
-	<table class="adminlist">
+	<table class="adminlist table table-striped" id="articleList">
 		<thead>
 		<tr>
-			<th width="5"><?php echo JText::_('#'); ?></th>
-			<th width="5"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->submissions); ?>);" /></th>
+			<th width="1%" nowrap="nowrap"><?php echo JText::_('#'); ?></th>
+			<th width="1%" nowrap="nowrap"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 			<?php foreach ($this->staticHeaders as $header) { ?>
-			<th <?php echo !$this->isHeaderEnabled($header, 1) ? 'style="display: none"' : ''; ?> class="title" nowrap="nowrap" width="5"><?php echo JHTML::_('grid.sort', JText::_('RSFP_'.$header), $header, $this->sortOrder, $this->sortColumn, 'submissions.manage'); ?></th>
+			<th width="1%" nowrap="nowrap" <?php echo !$this->isHeaderEnabled($header, 1) ? 'style="display: none"' : ''; ?> class="title"><?php echo JHTML::_('grid.sort', JText::_('RSFP_'.$header), $header, $this->sortOrder, $this->sortColumn, 'submissions.manage'); ?></th>
 			<?php } ?>
 			<?php foreach ($this->headers as $header) { ?>
 			<th <?php echo !$this->isHeaderEnabled($header, 0) ? 'style="display: none"' : ''; ?> class="title">
@@ -108,13 +129,23 @@ function resetForm()
 		$k = 0;
 		foreach ($this->submissions as $submissionId => $submission) { ?>
 			<tr class="row<?php echo $k; ?>">
-				<td align="center" width="30"><?php echo $this->pagination->getRowOffset($i); ?></td>
-				<td><?php echo JHTML::_('grid.id', $i, $submissionId); ?></td>
+				<td width="1%" nowrap="nowrap" align="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
+				<td width="1%" nowrap="nowrap"><?php echo JHTML::_('grid.id', $i, $submissionId); ?></td>
 				<?php foreach ($this->staticHeaders as $header) { ?>
-				<td <?php echo !$this->isHeaderEnabled($header, 1) ? 'style="display: none"' : ''; ?> nowrap="nowrap"><?php echo $submission[$header]; ?></td>
+				<td width="1%" nowrap="nowrap" <?php echo !$this->isHeaderEnabled($header, 1) ? 'style="display: none"' : ''; ?>><?php echo $this->escape($submission[$header]); ?></td>
 				<?php } ?>
 				<?php foreach ($this->headers as $header) { ?>
-				<td <?php echo !$this->isHeaderEnabled($header, 0) ? 'style="display: none"' : ''; ?>><?php echo isset($submission['SubmissionValues'][$header]['Value']) ? $submission['SubmissionValues'][$header]['Value'] : ''; ?></td>
+				<td <?php echo !$this->isHeaderEnabled($header, 0) ? 'style="display: none"' : ''; ?>>
+					<?php if (isset($submission['SubmissionValues'][$header]['Value'])) { ?>
+						<?php if (in_array($header, $this->uploads)) { ?>
+							<?php echo $submission['SubmissionValues'][$header]['Value']; ?>
+						<?php } else { ?>
+							<?php echo $this->escape($submission['SubmissionValues'][$header]['Value']); ?>
+						<?php } ?>
+					<?php } else { ?>
+					&nbsp;
+					<?php } ?>
+				</td>
 				<?php } ?>
 			</tr>
 		<?php
@@ -125,7 +156,7 @@ function resetForm()
 	</table>
 	</div>
 	
-	<table class="adminlist">
+	<table class="adminlist table table-striped" id="articleList">
 	<tfoot>
 		<tr>
 			<td>
@@ -135,11 +166,11 @@ function resetForm()
 	</tfoot>
 	</table>
 
-	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>"/>
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortOrder; ?>"/>
-	<input type="hidden" name="formId" value="<?php echo $this->formId; ?>"/>
-	<input type="hidden" name="task" value="submissions.manage"/>
-	<input type="hidden" name="option" value="com_rsform"/>
+	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortOrder; ?>" />
+	<input type="hidden" name="formId" value="<?php echo $this->formId; ?>" />
+	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="option" value="com_rsform" />
 	<input type="hidden" name="boxchecked" value="0" />
 </form>
 

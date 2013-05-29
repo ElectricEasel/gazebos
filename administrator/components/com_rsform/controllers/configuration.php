@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -18,7 +18,7 @@ class RSFormControllerConfiguration extends RSFormController
 		
 		$this->registerTask('apply', 'save');
 		
-		$this->_db =& JFactory::getDBO();
+		$this->_db = JFactory::getDBO();
 	}
 
 	function edit()
@@ -41,8 +41,8 @@ class RSFormControllerConfiguration extends RSFormController
 		$db = JFactory::getDBO();
 		foreach ($config as $name => $value)
 		{
-			$db->setQuery("UPDATE #__rsform_config SET SettingValue = '".$db->getEscaped($value)."' WHERE SettingName = '".$db->getEscaped($name)."'");
-			$db->query();
+			$db->setQuery("UPDATE #__rsform_config SET SettingValue = '".$db->escape($value)."' WHERE SettingName = '".$db->escape($name)."'");
+			$db->execute();
 		}
 		
 		RSFormProHelper::readConfig(true);

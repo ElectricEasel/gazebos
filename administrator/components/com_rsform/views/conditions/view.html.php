@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.view');
 
-class RSFormViewConditions extends JView
+class RSFormViewConditions extends JViewLegacy
 {
 	function display($tpl = null)
 	{		
@@ -53,14 +53,14 @@ class RSFormViewConditions extends JView
 		
 		$lists['allfields'] = JHTML::_('select.genericlist', $allFields, 'component_id', '', 'ComponentId', 'PropertyValue', $condition->component_id);
 		
-		$this->assignRef('lang', $this->get('lang'));
-		$this->assignRef('operators', $operators);
-		$this->assignRef('allFields', $allfields);
-		$this->assignRef('optionFields', $optionFields);
-		$this->assignRef('formId', $this->get('formId'));
-		$this->assignRef('close', JRequest::getInt('close'));
-		$this->assignRef('condition', $condition);
-		$this->assignRef('lists', $lists);
+		$this->lang = $this->get('lang');
+		$this->operators = $operators;
+		$this->allFields = $allFields;
+		$this->optionFields = $optionFields;
+		$this->formId = $this->get('formId');
+		$this->close = JRequest::getInt('close');
+		$this->condition = $condition;
+		$this->lists = $lists;
 		
 		parent::display($tpl);
 	}

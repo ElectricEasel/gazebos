@@ -17,9 +17,12 @@ function rsfp_changePage(formId, page, totalPages, validate)
 	var thePage = document.getElementById('rsform_' + formId + '_page_' + page);
 	if (thePage)
 	{
-		thePage.style.display = '';
+		thePage.style.display = 'block';
 		try {
-			eval('if (typeof rsfp_showProgress_' + formId + ' == "function") rsfp_showProgress_' + formId + '(' + page + ')');
+			var func = window["rsfp_showProgress_" + formId];
+			if (typeof func == "function") {
+				func(page);
+			}
 		}
 		catch (err) { }
 	}

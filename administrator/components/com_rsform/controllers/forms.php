@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -21,7 +21,7 @@ class RSFormControllerForms extends RSFormController
 		$this->registerTask('publish',   'changestatus');
 		$this->registerTask('unpublish', 'changestatus');
 		
-		$this->_db =& JFactory::getDBO();
+		$this->_db = JFactory::getDBO();
 	}
 
 	function manage()
@@ -66,8 +66,8 @@ class RSFormControllerForms extends RSFormController
 	
 	function menuAddBackend()
 	{
-		$db		=& JFactory::getDBO();
-		$app	=& JFactory::getApplication();
+		$db		= JFactory::getDBO();
+		$app	= JFactory::getApplication();
 		$formId	= JRequest::getInt('formId',0);
 		
 		if (!$formId)
@@ -81,17 +81,17 @@ class RSFormControllerForms extends RSFormController
 			$db->setQuery("SELECT extension_id FROM #__extensions WHERE `type` = 'component' AND `element` = 'com_rsform' AND `name` = 'rsform' ");
 			$componentid = $db->loadResult();
 			
-			$db->setQuery("INSERT INTO `#__menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`) VALUES('', 'main', '".$db->getEscaped($formname)."', '".$db->getEscaped($formname)."', '', 'rsform', 'index.php?option=com_rsform&view=forms&layout=show&formId=".$formId."', 'component', 0, 1, 1, ".(int) $componentid.", 0, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '', 0, 0, 0, '', 1)");
-			$db->query();
+			$db->setQuery("INSERT INTO `#__menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`) VALUES('', 'main', '".$db->escape($formname)."', '".$db->escape($formname)."', '', 'rsform', 'index.php?option=com_rsform&view=forms&layout=show&formId=".$formId."', 'component', 0, 1, 1, ".(int) $componentid.", 0, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '', 0, 0, 0, '', 1)");
+			$db->execute();
 		}
 		else 
 		{
-			$db->setQuery("INSERT INTO `#__components` (`id`, `name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`) VALUES('', '".$db->getEscaped($formname)."', '', 0, 0, 'option=com_rsform&view=forms&layout=show&formId=".$formId."', '".$db->getEscaped($formname)."', 'com_rsform_menu', 0, 'js/ThemeOffice/component.png', 1, '', 1)");
-			$db->query();
+			$db->setQuery("INSERT INTO `#__components` (`id`, `name`, `link`, `menuid`, `parent`, `admin_menu_link`, `admin_menu_alt`, `option`, `ordering`, `admin_menu_img`, `iscore`, `params`, `enabled`) VALUES('', '".$db->escape($formname)."', '', 0, 0, 'option=com_rsform&view=forms&layout=show&formId=".$formId."', '".$db->escape($formname)."', 'com_rsform_menu', 0, 'js/ThemeOffice/component.png', 1, '', 1)");
+			$db->execute();
 		}
 		
 		$db->setQuery("UPDATE #__rsform_forms SET `Backendmenu` = 1 WHERE FormId = ".$formId." ");
-		$db->query();
+		$db->execute();
 		
 		$app->redirect('index.php?option=com_rsform&task=forms.manage', JText::_('RSFP_FORM_ADDED_BACKEND'));
 	}
@@ -101,21 +101,21 @@ class RSFormControllerForms extends RSFormController
 	 */
 	function menuRemoveBackend()
 	{
-		$db		=& JFactory::getDBO();
-		$app	=& JFactory::getApplication();
+		$db		= JFactory::getDBO();
+		$app	= JFactory::getApplication();
 		$formId	= JRequest::getInt('formId',0);
 		
 		if (!$formId)
 			$app->redirect('index.php?option=com_rsform&task=forms.manage');
 		
 		if (RSFormProHelper::isJ16())
-			$db->setQuery("DELETE FROM `#__menu` WHERE `path` = 'rsform' AND link = 'index.php?option=com_rsform&view=forms&layout=show&formId=".$formId."' ");
+			$db->setQuery("DELETE FROM `#__menu` WHERE `client_id` = '1' AND link = 'index.php?option=com_rsform&view=forms&layout=show&formId=".$formId."' ");
 		else
 			$db->setQuery("DELETE FROM `#__components` WHERE `option` = 'com_rsform_menu' AND admin_menu_link = 'option=com_rsform&view=forms&layout=show&formId=".$formId."' ");
-		$db->query();
+		$db->execute();
 		
 		$db->setQuery("UPDATE #__rsform_forms SET `Backendmenu` = 0 WHERE FormId = ".$formId." ");
-		$db->query();
+		$db->execute();
 		
 		$app->redirect('index.php?option=com_rsform&task=forms.manage', JText::_('RSFP_FORM_REMOVED_BACKEND'));
 	}
@@ -158,14 +158,14 @@ class RSFormControllerForms extends RSFormController
 		$row->FormName = JFilterOutput::stringURLSafe($row->FormTitle);
 		$row->FormLayoutName = $session->get('com_rsform.wizard.FormLayout');		
 		if (empty($row->FormLayoutName))
-			$row->FormLayoutName = 'inline';
+			$row->FormLayoutName = 'responsive';
 		
 		$AdminEmail = $session->get('com_rsform.wizard.AdminEmail');
 		if ($AdminEmail)
 		{
 			$row->AdminEmailTo = $session->get('com_rsform.wizard.AdminEmailTo');
-			$row->AdminEmailFrom = $config->getValue('config.mailfrom');
-			$row->AdminEmailFromName = $config->getValue('config.fromname');
+			$row->AdminEmailFrom = $config->get('mailfrom');
+			$row->AdminEmailFromName = $config->get('fromname');
 			$row->AdminEmailSubject = JText::sprintf('RSFP_ADMIN_EMAIL_DEFAULT_SUBJECT', $row->FormTitle);
 			$row->AdminEmailText = JText::_('RSFP_ADMIN_EMAIL_DEFAULT_MESSAGE');
 		}
@@ -173,8 +173,8 @@ class RSFormControllerForms extends RSFormController
 		$UserEmail = $session->get('com_rsform.wizard.UserEmail');
 		if ($UserEmail)
 		{
-			$row->UserEmailFrom = $config->getValue('config.mailfrom');
-			$row->UserEmailFromName = $config->getValue('config.fromname');
+			$row->UserEmailFrom = $config->get('mailfrom');
+			$row->UserEmailFromName = $config->get('fromname');
 			$row->UserEmailSubject = JText::_('RSFP_USER_EMAIL_DEFAULT_SUBJECT');
 			$row->UserEmailText = JText::_('RSFP_USER_EMAIL_DEFAULT_MESSAGE');
 		}
@@ -187,7 +187,7 @@ class RSFormControllerForms extends RSFormController
 		
 		$filter = JFilterInput::getInstance();
 		
-		$layout = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_rsform'.DS.'layouts'.DS.$filter->clean($row->FormLayoutName, 'path').'.php';
+		$layout = JPATH_ADMINISTRATOR.'/components/com_rsform/layouts/'.$filter->clean($row->FormLayoutName, 'path').'.php';
 		
 		if (file_exists($layout))
 		{
@@ -202,8 +202,8 @@ class RSFormControllerForms extends RSFormController
 			$predefinedForm = JRequest::getVar('predefinedForm');
 			if ($predefinedForm)
 			{
-				$path = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_rsform'.DS.'assets'.DS.'forms'.DS.$filter->clean($predefinedForm);
-				if (file_exists($path.DS.'install.xml'))
+				$path = JPATH_ADMINISTRATOR.'/components/com_rsform/assets/forms/'.$filter->clean($predefinedForm);
+				if (file_exists($path.'/install.xml'))
 				{
 					$GLOBALS['q_FormId'] = $row->FormId;
 					JRequest::setVar('formId', $row->FormId);
@@ -211,7 +211,7 @@ class RSFormControllerForms extends RSFormController
 					$options = array();
 					$options['cleanup'] = 0;
 					
-					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_rsform'.DS.'helpers'.DS.'restore.php');
+					require_once(JPATH_ADMINISTRATOR.'/components/com_rsform/helpers/restore.php');
 					
 					$restore = new RSFormProRestore($options);
 					$restore->installDir = $path;
@@ -273,6 +273,9 @@ class RSFormControllerForms extends RSFormController
 			break;
 		}
 		
+		if (JRequest::getVar('tmpl') == 'component')
+			$link .= '&tmpl=component';
+		
 		$this->setRedirect($link, JText::_('RSFP_FORM_SAVED'));
 	}
 	
@@ -284,6 +287,7 @@ class RSFormControllerForms extends RSFormController
 	function delete()
 	{
 		$db = JFactory::getDBO();
+		$app = JFactory::getApplication();
 		
 		// Get the selected items
 		$cid = JRequest::getVar('cid', array(0), 'post', 'array');
@@ -301,48 +305,55 @@ class RSFormControllerForms extends RSFormController
 
 			//Delete Components
 			$db->setQuery("SELECT ComponentId FROM #__rsform_components WHERE FormId = '".$formId."'");
-			$componentIds = $db->loadResultArray();
+			$componentIds = $db->loadColumn();
 			
 			if (!empty($componentIds))
 			{
 				$components = implode(',',$componentIds);
 				$db->setQuery("DELETE FROM #__rsform_properties WHERE ComponentId IN (".$components.")");
-				$db->query();
+				$db->execute();
 				$db->setQuery("DELETE FROM #__rsform_components WHERE ComponentId IN (".$components.")");
-				$db->query();
+				$db->execute();
 			}
 
 			//delete mappings
 			$db->setQuery("DELETE FROM #__rsform_mappings WHERE formId = '".$formId."'");
-			$db->query();
+			$db->execute();
 			
 			//delete extra emails
 			$db->setQuery("DELETE FROM #__rsform_emails WHERE formId = '".$formId."'");
-			$db->query();
+			$db->execute();
 			
 			//Delete Forms
 			$db->setQuery("DELETE FROM #__rsform_forms WHERE FormId = '".$formId."'");
-			$db->query();
+			$db->execute();
 			
 			//Delete Translations
 			$db->setQuery("DELETE FROM #__rsform_translations WHERE form_id = '".$formId."'");
-			$db->query();
+			$db->execute();
 			
 			// delete conditions
 			$db->setQuery("SELECT `id` FROM #__rsform_conditions WHERE form_id = '".$formId."'");
-			if ($condition_ids = $db->loadResultArray())
+			if ($condition_ids = $db->loadColumn())
 			{
 				$db->setQuery("DELETE FROM #__rsform_conditions WHERE form_id = '".$formId."'");
-				$db->query();
+				$db->execute();
 				$db->setQuery("DELETE FROM #__rsform_condition_details WHERE condition_id IN (".implode(',', $condition_ids).")");
-				$db->query();
+				$db->execute();
 			}
 			
 			if (RSFormProHelper::isJ16())
 				$db->setQuery("DELETE FROM `#__menu` WHERE `path` = 'rsform' AND link = 'index.php?option=com_rsform&view=forms&layout=show&formId=".$formId."' ");
 			else
 				$db->setQuery("DELETE FROM `#__components` WHERE `option` = 'com_rsform_menu' AND admin_menu_link = 'option=com_rsform&view=forms&layout=show&formId=".$formId."' ");
-			$db->query();			
+			$db->execute();		
+
+			//Trigger Event - onFormDelete
+			$app->triggerEvent('rsfp_bk_onFormDelete', array(
+				array(
+					'formId' => $formId
+				)
+			));
 		}
 		
 		$this->setRedirect('index.php?option=com_rsform&task=forms.manage', JText::sprintf('RSFP_FORMS_DELETED', $total));
@@ -366,7 +377,7 @@ class RSFormControllerForms extends RSFormController
 		{
 			$formIds = implode(',', $cid);
 			$db->setQuery("UPDATE #__rsform_forms SET Published = '".$value."' WHERE FormId IN (".$formIds.")");
-			$db->query();
+			$db->execute();
 		}
 		
 		$msg = $value ? JText::sprintf('RSFP_FORMS_PUBLISHED', $total) : JText::sprintf('RSFP_FORMS_UNPUBLISHED', $total);
@@ -377,6 +388,7 @@ class RSFormControllerForms extends RSFormController
 	function copy()
 	{
 		$db = JFactory::getDBO();
+		$app = JFactory::getApplication();
 		
 		// Get the selected items
 		$cid = JRequest::getVar('cid', array(0), 'post', 'array');
@@ -392,13 +404,13 @@ class RSFormControllerForms extends RSFormController
 				
 			$total++;
 			
-			$original =& JTable::getInstance('RSForm_Forms', 'Table');
+			$original = JTable::getInstance('RSForm_Forms', 'Table');
 			$original->load($formId);
 			$original->FormName .= ' copy';
 			$original->FormTitle .= ' copy';
 			$original->FormId = null;
 			
-			$copy =& JTable::getInstance('RSForm_Forms', 'Table');
+			$copy = JTable::getInstance('RSForm_Forms', 'Table');
 			$copy->bind($original);
 			$copy->store();
 			
@@ -410,18 +422,18 @@ class RSFormControllerForms extends RSFormController
 			
 			// copy language
 			$db->setQuery("SELECT * FROM #__rsform_translations WHERE `reference`='forms' AND `form_id`='".$formId."'");
-			$translations = $db->loadObjectList();
-			foreach ($translations as $translation)
-			{
-				$db->setQuery("INSERT INTO #__rsform_translations SET `form_id`='".$newFormId."', `lang_code`='".$db->getEscaped($translation->lang_code)."', `reference`='forms', `reference_id`='".$db->getEscaped($translation->reference_id)."', `value`='".$db->getEscaped($translation->value)."'");
-				$db->query();
+			if ($translations = $db->loadObjectList()) {
+				foreach ($translations as $translation) {
+					$db->setQuery("INSERT INTO #__rsform_translations SET `form_id`='".$newFormId."', `lang_code`='".$db->escape($translation->lang_code)."', `reference`='forms', `reference_id`='".$db->escape($translation->reference_id)."', `value`='".$db->escape($translation->value)."'");
+					$db->execute();
+				}
 			}
 			
 			$componentRelations = array();
 			$conditionRelations = array();
 			
 			$db->setQuery("SELECT ComponentId FROM #__rsform_components WHERE FormId='".$formId."' ORDER BY `Order`");
-			$components = $db->loadResultArray();
+			$components = $db->loadColumn();
 			foreach ($components as $r)
 				$componentRelations[$r] = RSFormProHelper::copyComponent($r, $newFormId);
 			
@@ -431,8 +443,9 @@ class RSFormControllerForms extends RSFormController
 			{
 				foreach ($conditions as $condition)
 				{
-					$new_condition =& JTable::getInstance('RSForm_Conditions', 'Table');
+					$new_condition = JTable::getInstance('RSForm_Conditions', 'Table');
 					$new_condition->bind($condition);
+					$new_condition->id = null;
 					$new_condition->form_id = $newFormId;
 					$new_condition->component_id = $componentRelations[$condition->component_id];
 					$new_condition->store();
@@ -445,8 +458,9 @@ class RSFormControllerForms extends RSFormController
 				{
 					foreach ($details as $detail)
 					{
-						$new_detail =& JTable::getInstance('RSForm_Condition_Details', 'Table');
+						$new_detail = JTable::getInstance('RSForm_Condition_Details', 'Table');
 						$new_detail->bind($detail);
+						$new_detail->id = null;
 						$new_detail->condition_id = $conditionRelations[$detail->condition_id];
 						$new_detail->component_id = $componentRelations[$detail->component_id];
 						$new_detail->store();
@@ -454,7 +468,47 @@ class RSFormControllerForms extends RSFormController
 				}
 			}
 			
-			//foreach ($relations as $oldComponentId => $newComponentId)
+			// copy additional emails
+			$db->setQuery("SELECT * FROM #__rsform_emails WHERE `formId`='".$formId."'");
+			if ($emails = $db->loadObjectList()) {
+				foreach ($emails as $email) {
+					$new_email = JTable::getInstance('RSForm_Emails', 'Table');
+					$new_email->bind($email);
+					$new_email->id = null;
+					$new_email->formId = $newFormId;
+					$new_email->store();
+				}
+			}
+			
+			// copy mappings
+			$db->setQuery("SELECT * FROM #__rsform_mappings WHERE `formId`='".$formId."'");
+			if ($mappings = $db->loadObjectList()) {
+				foreach ($mappings as $mapping) {
+					$new_mapping = JTable::getInstance('RSForm_Mappings', 'Table');
+					$new_mapping->bind($mapping);
+					$new_mapping->id = null;
+					$new_mapping->formId = $newFormId;
+					$new_mapping->store();
+				}
+			}
+			
+			// copy post to location
+			$db->setQuery("SELECT * FROM #__rsform_posts WHERE form_id='".$formId."'");
+			if ($post = $db->loadObject())
+			{
+				$db->setQuery("INSERT INTO #__rsform_posts SET `form_id`='".(int) $newFormId."', `enabled`='".(int) $post->enabled."', `method`='".(int) $post->method."', `silent`='".(int) $post->silent."', `url`=".$db->quote($post->url));
+				$db->execute();
+			}
+			
+			//Trigger Event - onFormCopy
+			$app->triggerEvent('rsfp_bk_onFormCopy', array(
+				array(
+					'formId' => $formId,
+					'newFormId' => $newFormId,
+					'components' => $components,
+					'componentRelations' => $componentRelations
+				)
+			));
 		}
 		
 		$this->setRedirect('index.php?option=com_rsform&task=forms.manage', JText::sprintf('RSFP_FORMS_COPIED', $total));
@@ -466,8 +520,8 @@ class RSFormControllerForms extends RSFormController
 		$formLayoutName = JRequest::getVar('formLayoutName');
 		$db 			= JFactory::getDBO();
 		
-		$db->setQuery("UPDATE #__rsform_forms SET `FormLayoutAutogenerate` = ABS(FormLayoutAutogenerate-1), `FormLayoutName`='".$db->getEscaped($formLayoutName)."' WHERE `FormId` = '".$formId."'");
-		$db->query();
+		$db->setQuery("UPDATE #__rsform_forms SET `FormLayoutAutogenerate` = ABS(FormLayoutAutogenerate-1), `FormLayoutName`='".$db->escape($formLayoutName)."' WHERE `FormId` = '".$formId."'");
+		$db->execute();
 		
 		jexit();
 	}

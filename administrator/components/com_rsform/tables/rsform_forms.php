@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -19,11 +19,12 @@ class TableRSForm_Forms extends JTable
 	
 	var $FormName = '';
 	var $FormLayout = '';
-	var $FormLayoutName = 'inline';
+	var $FormLayoutName = 'responsive';
 	var $FormLayoutAutogenerate = 1;
 	var $CSS = '';
 	var $JS = '';
 	var $FormTitle = '';
+	var $ShowFormTitle = 1;
 	var $Lang = '';
 	var $Keepdata = 1;
 	var $ReturnUrl = '';

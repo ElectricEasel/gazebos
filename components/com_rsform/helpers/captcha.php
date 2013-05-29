@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -40,9 +40,9 @@ class RSFormProCaptcha
 		header('Content-type: image/png');
 		
 	    $this->Length = $this->data['LENGTH'];
-		$this->Size = is_numeric($this->data['SIZE']) && $this->data['SIZE'] > 0 ? $this->data['SIZE'] : 15;
+		$this->Size = !empty($this->data['SIZE']) && is_numeric($this->data['SIZE']) && $this->data['SIZE'] > 0 ? $this->data['SIZE'] : 15;
 
-	    $this->fontpath = JPATH_SITE.DS.'components'.DS.'com_rsform'.DS.'assets'.DS.'fonts';
+	    $this->fontpath = JPATH_SITE.'/components/com_rsform/assets/fonts';
 	    $this->fonts    = $this->getFonts();
 		
 		if ($this->data['IMAGETYPE'] == 'FREETYPE')
@@ -76,7 +76,7 @@ class RSFormProCaptcha
 	
     function getRandomFont()
 	{
-		return $this->fontpath.DS.$this->fonts[mt_rand(0, count($this->fonts) - 1)];
+		return $this->fontpath.'/'.$this->fonts[mt_rand(0, count($this->fonts) - 1)];
     }
     
 	function stringGenerate()

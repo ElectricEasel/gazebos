@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
-class RSFormController extends JController
+class RSFormController extends JControllerLegacy
 {
 	var $_db;
 	
@@ -21,28 +21,29 @@ class RSFormController extends JController
 		if (RSFormProHelper::isJ16())
 			JHTML::_('behavior.framework');
 		
-		if (!RSFormProHelper::isJ16())
-		{
-			if (!headers_sent())
-				header('Content-type: text/html; charset=utf-8');
-		}
-		
 		$this->_db = JFactory::getDBO();
 		
-		$doc =& JFactory::getDocument();
-		$doc->addScript(JURI::root(true).'/administrator/components/com_rsform/assets/js/jquery.js');
-		$doc->addScript(JURI::root(true).'/administrator/components/com_rsform/assets/js/tablednd.js');
-		$doc->addScript(JURI::root(true).'/administrator/components/com_rsform/assets/js/jquery.scrollto.js');
-		$doc->addScript(JURI::root(true).'/administrator/components/com_rsform/assets/js/script.js');
+		$version = new RSFormProVersion();
+		$v = $version->revision;
 		
-		$doc->addStyleSheet(JURI::root(true).'/administrator/components/com_rsform/assets/css/style.css');
-		if (RSFormProHelper::isJ16())
-			$doc->addStyleSheet(JURI::root(true).'/administrator/components/com_rsform/assets/css/style16.css');
+		$doc = JFactory::getDocument();
+		$doc->addScript(JURI::root(true).'/administrator/components/com_rsform/assets/js/jquery.js?v='.$v);
+		$doc->addScript(JURI::root(true).'/administrator/components/com_rsform/assets/js/script.js?v='.$v);
+		$doc->addScript(JURI::root(true).'/administrator/components/com_rsform/assets/js/tablednd.js?v='.$v);
+		$doc->addScript(JURI::root(true).'/administrator/components/com_rsform/assets/js/jquery.scrollto.js?v='.$v);
+		
+		$doc->addStyleSheet(JURI::root(true).'/administrator/components/com_rsform/assets/css/style.css?v='.$v);
+		if (RSFormProHelper::isJ('2.5') && !RSFormProHelper::isJ('3.0')) {
+			$doc->addStyleSheet(JURI::root(true).'/administrator/components/com_rsform/assets/css/style25.css?v='.$v);
+		} elseif (RSFormProHelper::isJ('3.0')) {
+			$doc->addStyleSheet(JURI::root(true).'/administrator/components/com_rsform/assets/css/style30.css?v='.$v);
+		}
+		$doc->addStyleSheet(JURI::root(true).'/administrator/components/com_rsform/assets/css/rsdesign.css?v='.$v);
 	}
 	
-	function display()
+	function display($cachable = false, $urlparams = false)
 	{
-		parent::display();
+		parent::display($cachable, $urlparams);
 	}
 	
 	function mappings()
@@ -60,7 +61,7 @@ class RSFormController extends JController
 		$tabposition = JRequest::getInt('tabposition');
 		$tab		 = JRequest::getInt('tab',0);
 		$tab 		 = $tabposition ? '&tab='.$tab : '';
-		$session 	 =& JFactory::getSession();
+		$session 	 = JFactory::getSession();
 		$session->set('com_rsform.form.'.$formId.'.lang', JRequest::getVar('Language'));
 		
 		$this->setRedirect('index.php?option=com_rsform&task=forms.edit&formId='.$formId.'&tabposition='.$tabposition.$tab);
@@ -70,7 +71,7 @@ class RSFormController extends JController
 	{
 		$formId  = JRequest::getInt('formId');
 		$cid	 = JRequest::getInt('id');
-		$session =& JFactory::getSession();
+		$session = JFactory::getSession();
 		$session->set('com_rsform.emails.'.$cid.'.lang', JRequest::getVar('ELanguage'));
 		
 		$this->setRedirect('index.php?option=com_rsform&task=forms.emails&tmpl=component&formId='.$formId.'&cid='.$cid);
@@ -93,8 +94,8 @@ class RSFormController extends JController
 		$name = JRequest::getVar('formLayoutName');
 		
 		$db = JFactory::getDBO();
-		$db->setQuery("UPDATE #__rsform_forms SET FormLayoutName='".$db->getEscaped($name)."' WHERE FormId='".$formId."'");
-		$db->query();
+		$db->setQuery("UPDATE #__rsform_forms SET FormLayoutName='".$db->escape($name)."' WHERE FormId='".$formId."'");
+		$db->execute();
 		
 		exit();
 	}
@@ -111,11 +112,11 @@ class RSFormController extends JController
 	function saveRegistration()
 	{
 		$code = JRequest::getVar('code');
-		$code = $this->_db->getEscaped($code);
+		$code = $this->_db->escape($code);
 		if (!empty($code))
 		{
 			$this->_db->setQuery("UPDATE #__rsform_config SET `SettingValue`='".$code."' WHERE `SettingName`='global.register.code'");
-			$this->_db->query();
+			$this->_db->execute();
 			$this->setRedirect('index.php?option=com_rsform&task=updates.manage', JText::_('RSFP_REGISTRATION_SAVED'));
 		}
 		else
@@ -140,7 +141,7 @@ class RSFormController extends JController
 	 */
 	function backupDownload()
 	{
-		require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_rsform'.DS.'helpers'.DS.'backup.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_rsform/helpers/backup.php';
 		
 		jimport('joomla.filesystem.archive');
 		jimport('joomla.filesystem.folder');
@@ -153,7 +154,7 @@ class RSFormController extends JController
 		JArrayHelper::toInteger($cid, array(0));
 		
 		$tmpdir = uniqid('rsformbkp');
-		$path = JPATH_SITE.DS.'media'.DS.$tmpdir;
+		$path = JPATH_SITE.'/media/'.$tmpdir;
 		if (!JFolder::create($path, 0777))
 		{
 			JError::raiseWarning(500, JText::_('Could not create directory ').$path);
@@ -161,19 +162,19 @@ class RSFormController extends JController
 		}
 		
 		$export_submissions = JRequest::getInt('submissions');
-		if (!RSFormProBackup::create($cid, $export_submissions, $path.DS.'install.xml'))
+		if (!RSFormProBackup::create($cid, $export_submissions, $path.'/install.xml'))
 		{
 			JError::raiseWarning(500, JText::_('Could not write to ').$path);
 			return $this->setRedirect('index.php?option=com_rsform&task=backup.restore');
 		}
 		
 		$name = 'rsform_backup_'.date('Y-m-d_His').'.zip';
-		$files = array(array('data' => JFile::read($path.DS.'install.xml'), 'name' => 'install.xml'));
+		$files = array(array('data' => JFile::read($path.'/install.xml'), 'name' => 'install.xml'));
 		
-		$adapter =& JArchive::getAdapter('zip');
-		if (!$adapter->create($path.DS.$name, $files))
+		$adapter = JArchive::getAdapter('zip');
+		if (!$adapter->create($path.'/'.$name, $files))
 		{
-			JError::raiseWarning(500, JText::_('Could not create archive ').$path.DS.$name);
+			JError::raiseWarning(500, JText::_('Could not create archive ').$path.'/'.$name);
 			return $this->setRedirect('index.php?option=com_rsform&task=backup.restore');
 		}
 
@@ -182,7 +183,7 @@ class RSFormController extends JController
 
 	function restoreProcess()
 	{
-		require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_rsform'.DS.'helpers'.DS.'restore.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_rsform/helpers/restore.php';
 		
 		jimport('joomla.filesystem.archive');
 		jimport('joomla.filesystem.folder');
@@ -206,8 +207,8 @@ class RSFormController extends JController
 			return $this->setRedirect($link);
 		}
 
-		$baseDir = JPATH_SITE.DS.'media';
-		$moved = JFile::upload($userfile['tmp_name'], $baseDir.DS.$userfile['name']);
+		$baseDir = JPATH_SITE.'/media';
+		$moved = JFile::upload($userfile['tmp_name'], $baseDir.'/'.$userfile['name']);
 		if (!$moved)
 		{
 			JError::raiseWarning(500, JText::_('FAILED TO MOVE UPLOADED FILE TO'));
@@ -215,7 +216,7 @@ class RSFormController extends JController
 		}
 		
 		$options = array();
-		$options['filename'] = $baseDir.DS.$userfile['name'];
+		$options['filename'] = $baseDir.'/'.$userfile['name'];
 		$options['overwrite'] = JRequest::getInt('overwrite');
 		
 		$restore = new RSFormProRestore($options);
@@ -241,25 +242,25 @@ class RSFormController extends JController
 	
 	function goToPlugins()
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$mainframe->redirect('http://www.rsjoomla.com/support/documentation/view-knowledgebase/26-plugins-and-modules.html');
 	}
 	
 	function goToSupport()
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$mainframe->redirect('http://www.rsjoomla.com/support/documentation/view-knowledgebase/21-rsform-pro-user-guide.html');
 	}
 	
 	function plugin()
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$mainframe->triggerEvent('rsfp_bk_onSwitchTasks');
 	}
 	
 	function setMenu()
 	{
-		$app   =& JFactory::getApplication();
+		$app   = JFactory::getApplication();
 		
 		$type  = json_decode('{"id":0,"title":"COM_RSFORM_MENU_FORM","request":{"option":"com_rsform","view":"rsform"}}');
 		$title = 'component';
@@ -284,12 +285,12 @@ class RSFormController extends JController
 	
 	function captcha()
 	{
-		require_once JPATH_SITE.DS.'components'.DS.'com_rsform'.DS.'helpers'.DS.'captcha.php';
+		require_once JPATH_SITE.'/components/com_rsform/helpers/captcha.php';
 		
 		$componentId = JRequest::getInt('componentId');
 		$captcha = new RSFormProCaptcha($componentId);
 
-		$session =& JFactory::getSession();
+		$session = JFactory::getSession();
 		$session->set('com_rsform.captcha.'.$componentId, $captcha->getCaptcha());
 		exit();
 	}

@@ -1,8 +1,8 @@
 <?php
 /**
-* @version 1.3.0
-* @package RSform!Pro 1.3.0
-* @copyright (C) 2007-2010 www.rsjoomla.com
+* @version 1.4.0
+* @package RSform!Pro 1.4.0
+* @copyright (C) 2007-2012 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -36,8 +36,9 @@ class plgSystemRSForm extends JPlugin
 	function onAfterDispatch()
 	{
 		// Preload
-		$doc =& JFactory::getDocument();
-		if ($doc->getType() == 'html')
+		$doc = JFactory::getDocument();
+		$app = JFactory::getApplication();
+		if ($doc->getType() == 'html' && $app->isSite())
 		{
 			$doc->addStyleSheet(JURI::root(true).'/components/com_rsform/assets/calendar/calendar.css');
 			$doc->addStyleSheet(JURI::root(true).'/components/com_rsform/assets/css/front.css');
@@ -50,7 +51,7 @@ class plgSystemRSForm extends JPlugin
 	{
 		if (class_exists('RSFormProHelper')) return true;
 		
-		$helper = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_rsform'.DS.'helpers'.DS.'rsform.php';
+		$helper = JPATH_ADMINISTRATOR.'/components/com_rsform/helpers/rsform.php';
 		if (file_exists($helper))
 		{
 			require_once($helper);
@@ -62,8 +63,7 @@ class plgSystemRSForm extends JPlugin
 	
 	function onAfterRender()
 	{
-		global $RSadapter;
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		
 		if ($mainframe->isAdmin()) return;
 		$option = JRequest::getVar('option');
@@ -71,25 +71,40 @@ class plgSystemRSForm extends JPlugin
 		if ($option == 'com_content' && $task == 'edit')
 			return;
 		
-		$content =& JResponse::getBody();
+		if (!$this->canRun()) return true;
+		
+		$content = JResponse::getBody();
 		
 		if (strpos($content, '{rsform ') === false)
 			return true;
-		
-		if (!$this->canRun()) return true;
 		
 		// expression to search for
 		$pattern = '#\{rsform ([0-9]+)\}#i';
 		if (preg_match_all($pattern, $content, $matches))
 		{
-			$lang =& JFactory::getLanguage();
+			static $found_textarea;
+			
+			$lang = JFactory::getLanguage();
 			$lang->load('com_rsform', JPATH_SITE);
 			
-			$db =& JFactory::getDBO();
-			$head = array('js' => array(), 'css' => array());
-			
+			$db = JFactory::getDBO();
+			$head = array('js' => array(), 'css' => array());			
 			foreach ($matches[0] as $j => $match)
 			{
+				// within <textarea>
+				$before = strtolower(reset(explode($match, $content, 2)));
+				$before = preg_replace('#\s+#', ' ', $before);
+				
+				// we have a textarea
+				if (strpos($before, '<textarea') !== false)
+				{
+					// find last occurrence
+					$textarea = end(explode('<textarea', $before));				
+					// found & no closing tag
+					if (!empty($textarea) && strpos($textarea, '</textarea>') === false)
+						continue;
+				}
+					
 				$formId = $matches[1][$j];
 				
 				$db->setQuery("SELECT `FormId`, `FormLayout`, `ScriptDisplay`, `ErrorMessage`, `FormTitle`, `CSS`, `JS`, `CSSClass`, `CSSId`, `CSSName`, `CSSAction`, `CSSAdditionalAttributes`, `AjaxValidation`, `ThemeParams` FROM #__rsform_forms WHERE FormId='".$formId."' AND `Published`='1'");
@@ -102,8 +117,9 @@ class plgSystemRSForm extends JPlugin
 						$head['css'][md5($form->CSS)] = $form->CSS;
 					if ($form->ThemeParams)
 					{
-						jimport('joomla.html.parameter');
-						$form->ThemeParams = new JParameter($form->ThemeParams);
+						$registry = new JRegistry();
+						$registry->loadString($form->ThemeParams, 'INI');
+						$form->ThemeParams = $registry;
 						
 						if ($form->ThemeParams->get('num_css', 0) > 0)
 							for ($i=0; $i<$form->ThemeParams->get('num_css'); $i++)

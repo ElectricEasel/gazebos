@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -13,6 +13,10 @@ defined('_JEXEC') or die('Restricted access');
 
 <input type="hidden" value="<?php echo $this->file; ?>" id="ExportFile" />
 <input type="hidden" value="<?php echo $this->exportType; ?>" id="exportType" />
+
+<div style="display: none" id="backButtonContainer">
+<button type="button" class="rs_button" onclick="document.location.href='<?php echo JRoute::_('index.php?option=com_rsform&view=forms&layout=edit&formId='.$this->formId); ?>'"><?php echo JText::_('RSFP_BACK_TO_FORM'); ?></button>
+</div>
 
 <script type="text/javascript">
 t = setInterval(function() {

@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class RSFormModelMenus extends JModel
+class RSFormModelMenus extends JModelLegacy
 {
 	var $_data = null;
 	var $_total = 0;
@@ -24,7 +24,7 @@ class RSFormModelMenus extends JModel
 		$this->_db = JFactory::getDBO();
 		$this->_query = $this->_buildQuery();
 		
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option    =  JRequest::getVar('option', 'com_rsform');
 		
 		// Get pagination request variables

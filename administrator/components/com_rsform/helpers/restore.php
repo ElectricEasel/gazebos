@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -30,7 +30,7 @@ class RSFormProRestore
 		jimport('joomla.filesystem.file');
 		
 		$config = JFactory::getConfig();
-		$this->dbprefix = $config->getValue('config.dbprefix');
+		$this->dbprefix = $config->get('dbprefix');
 		
 		if (isset($options['filename']))
 			$this->archive = $options['filename'];
@@ -44,9 +44,9 @@ class RSFormProRestore
 	
 	function process()
 	{
-		$this->installDir = JPATH_SITE.DS.'media'.DS.uniqid('rsinstall_');
+		$this->installDir = JPATH_SITE.'/media/'.uniqid('rsinstall_');
 		
-		$adapter =& JArchive::getAdapter('zip');
+		$adapter = JArchive::getAdapter('zip');
 		if (!$adapter->extract($this->archive, $this->installDir))
 			return false;
 		
@@ -55,7 +55,7 @@ class RSFormProRestore
 	
 	function restore()
 	{
-		$this->installFile = $this->installDir.DS.'install.xml';
+		$this->installFile = $this->installDir.'/install.xml';
 		if (!JFile::exists($this->installFile))
 		{	
 			$this->installFile = '';
@@ -64,59 +64,76 @@ class RSFormProRestore
 			return false;
 		}
 		
-		$xml = JFactory::getXMLParser('Simple');
-		if (!$xml->loadFile($this->installFile))
+		
+		if (!$xml = simplexml_load_file($this->installFile))
 		{
 			$this->cleanUp();
 			JError::raiseWarning(500, JText::_('RSFP_RESTORE_BADFILE'));
 			return false;
 		}
 		
-		$root = $xml->document;
-		$attr = $root->attributes();
-		$name = $root->name();
-		if ($name != 'rsinstall' || $attr['type'] != 'rsformbackup')
+		$attr = $xml->attributes();
+		$name = strtolower($xml->getName());
+		$type = (string) $attr['type'];
+		
+		if ($name != 'rsinstall' || $type != 'rsformbackup')
 		{
 			$this->cleanUp();
 			JError::raiseWarning(500, JText::_('RSFP_RESTORE_BADFILE'));
 			return false;
 		}
 		
-		$version = $root->getElementByPath('version');
-		$this->version = $version->data();
+		$this->version  = (string) $xml->version;
+		$this->revision = (string) $xml->revision;
 		
-		$revision = $root->getElementByPath('revision');
-		if ($revision)
-			$this->revision = $revision->data();
-		
-		$tasks = $root->getElementByPath('tasks');
-		$tasks = $tasks->children();
+		$tasks = $xml->tasks->task;
 		if (!empty($tasks))
 		{
 			if ($this->overwrite)
 			{
 				$db = JFactory::getDBO();
 				
+				// remove form fields
 				$db->setQuery("TRUNCATE TABLE #__rsform_forms");
-				$db->query();
-				
+				$db->execute();
 				$db->setQuery("TRUNCATE TABLE #__rsform_components");
-				$db->query();
-				
+				$db->execute();
 				$db->setQuery("TRUNCATE TABLE #__rsform_properties");
-				$db->query();
+				$db->execute();
 				
+				// remove submissions
 				$db->setQuery("TRUNCATE TABLE #__rsform_submissions");
-				$db->query();
-				
+				$db->execute();
+				$db->setQuery("TRUNCATE TABLE #__rsform_submission_columns");
+				$db->execute();
 				$db->setQuery("TRUNCATE TABLE #__rsform_submission_values");
-				$db->query();
+				$db->execute();
 				
+				// remove translations
 				$db->setQuery("TRUNCATE TABLE #__rsform_translations");
-				$db->query();
+				$db->execute();
+				
+				// remove mappings
+				$db->setQuery("TRUNCATE TABLE #__rsform_mappings");
+				$db->execute();
+				
+				// remove post to location
+				$db->setQuery("TRUNCATE TABLE #__rsform_posts");
+				$db->execute();
+				
+				// remove conditions
+				$db->setQuery("TRUNCATE TABLE #__rsform_conditions");
+				$db->execute();
+				$db->setQuery("TRUNCATE TABLE #__rsform_condition_details");
+				$db->execute();
+				
+				//Trigger Event - onFormRestoreTruncate
+				$app = JFactory::getApplication();
+				$app->triggerEvent('rsfp_bk_onFormRestoreTruncate');
 			}
-			foreach ($tasks as $task)
+			foreach ($tasks as $task) {
 				$this->processTask($task);
+			}
 			
 			$this->updateUploads();
 		}
@@ -140,8 +157,8 @@ class RSFormProRestore
 		if (count($this->removeColumns))
 			foreach ($this->removeColumns as $removeColumn)
 			{
-				$db->setQuery("ALTER TABLE `#__rsform_forms` DROP `".$db->getEscaped($removeColumn)."`");
-				$db->query();
+				$db->setQuery("ALTER TABLE `#__rsform_forms` DROP `".$db->escape($removeColumn)."`");
+				$db->execute();
 			}
 		
 		if ($this->cleanup)
@@ -157,8 +174,7 @@ class RSFormProRestore
 		if (isset($attr['type']))
 			$type = $attr['type'];
 		
-		$value = $task->data();
-		
+		$value = (string) $task;		
 		switch ($type)
 		{
 			case 'query':
@@ -186,6 +202,21 @@ class RSFormProRestore
 					$with[] = $GLOBALS['q_SubmissionId'];
 				}
 				
+				if (isset($GLOBALS['q_ConditionId']))
+				{
+					$replace[] = '{ConditionId}';
+					$with[] = $GLOBALS['q_ConditionId'];
+				}
+				
+				if (!empty($GLOBALS['ComponentIds']))
+				{
+					foreach ($GLOBALS['ComponentIds'] as $ComponentName => $ComponentId)
+					{
+						$replace[] 	= '{ComponentIds['.$ComponentName.']}';
+						$with[] 	= $ComponentId;
+					}
+				}
+				
 				// Little hack to rename all uppercase tables to new lowercase format
 				if (preg_match('/INSERT INTO `'.$this->dbprefix.'(\w+)`/', $value, $matches))
 					$value = str_replace($matches[1], strtolower($matches[1]), $value);
@@ -201,6 +232,7 @@ class RSFormProRestore
 						$value = str_replace('\\\\', '', $value);
 				}
 				
+				/*
 				$value = $task->get('_data');
 				$replaced = false;
 				while (strpos($value, '&#39;') !== false)
@@ -210,22 +242,23 @@ class RSFormProRestore
 				}
 				if (!$replaced)
 					$value = $task->data();
+				*/
 				
 				$value = str_replace($replace, $with, $value);				
 				$db->setQuery($value);
-				if (!$db->query())
+				if (!$db->execute())
 				{
 					// Compatibility with an older version
 					$pattern = "#Unknown column '(.*?)'#is";
 					if (preg_match($pattern, $db->getErrorMsg(), $match) && $match[1] == 'UserEmailConfirmation')
 					{
 						$db->setQuery("ALTER TABLE `#__rsform_forms` ADD `UserEmailConfirmation` TINYINT(1) NOT NULL");
-						$db->query();
+						$db->execute();
 						
 						$this->_addColumnToRemove('UserEmailConfirmation');
 						
 						$db->setQuery($value);
-						if (!$db->query())
+						if (!$db->execute())
 						{
 							JError::raiseWarning(500, $db->getErrorMsg());
 							return false;
@@ -283,13 +316,13 @@ class RSFormProRestore
 				
 				if (!empty($updateemailattach))
 				{
-					$db->setQuery("INSERT INTO #__rsform_properties SET ComponentId = '".$uploadcomponent->ComponentId."' , PropertyName = 'EMAILATTACH', PropertyValue = '".$db->getEscaped($updateemailattach)."' ");
-					$db->query();
+					$db->setQuery("INSERT INTO #__rsform_properties SET ComponentId = '".$uploadcomponent->ComponentId."' , PropertyName = 'EMAILATTACH', PropertyValue = '".$db->escape($updateemailattach)."' ");
+					$db->execute();
 					
 					$db->setQuery("DELETE FROM #__rsform_properties WHERE PropertyId = '".$adminemail->PropertyId."'");
-					$db->query();
+					$db->execute();
 					$db->setQuery("DELETE FROM #__rsform_properties WHERE PropertyId = '".$useremail->PropertyId."'");
-					$db->query();
+					$db->execute();
 				}
 			}
 		}

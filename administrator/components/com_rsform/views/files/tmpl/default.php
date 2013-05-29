@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -21,19 +21,21 @@ function rsform_close_window()
 
 <div id="rsmembership_explorer">
 	<form action="index.php?option=com_rsform&amp;controller=files&amp;task=display" method="post" name="adminForm" enctype="multipart/form-data">
-	<button type="button" onclick="rsform_close_window();"><?php echo JText::_('CLOSE'); ?></button>
+	<button type="button" class="rs_button" onclick="rsform_close_window();"><?php echo JText::_('CLOSE'); ?></button>
 		<?php if ($this->canUpload) { ?>
 		<table class="adminform">
 		<tr>
-			<th colspan="2"><?php echo JText::_('Upload File'); ?></th>
+			<th colspan="3"><?php echo JText::_('Upload File'); ?></th>
 		</tr>
 		<tr>
 			<td width="120">
 				<label for="upload"><?php echo JText::_('File'); ?>:</label>
 			</td>
-			<td>
+			<td width="1%" nowrap="nowrap">
 				<input class="input_box" id="upload" name="upload" type="file" size="57" />
-				<input class="button" type="button" value="<?php echo JText::_('Upload File'); ?>" onclick="submitbutton('upload')" />
+			</td>
+			<td>
+				<input class="rs_button" type="button" value="<?php echo JText::_('Upload File'); ?>" onclick="submitbutton('upload')" />
 			</td>
 		</tr>
 		</table>
@@ -44,12 +46,12 @@ function rsform_close_window()
 		<?php } ?>
 		
 		<div id="editcell1">
-			<table class="adminlist">
+			<table class="adminlist table table-striped" id="articleList">
 				<thead>
 				<tr>
 					<th><strong><?php echo JText::_('RSFP_CURRENT_LOCATION'); ?></strong>
 						<?php foreach ($this->elements as $folder) { ?>
-							<a href="index.php?option=com_rsform&amp;controller=files&amp;task=display&amp;folder=<?php echo urlencode($folder->fullpath); ?>&amp;tmpl=component"><?php echo $folder->name; ?></a> <?php echo DS; ?>
+							<a href="index.php?option=com_rsform&amp;controller=files&amp;task=display&amp;folder=<?php echo urlencode($folder->fullpath); ?>&amp;tmpl=component"><?php echo $folder->name; ?></a> <?php echo DIRECTORY_SEPARATOR; ?>
 						<?php } ?>
 					</th>
 				</tr>

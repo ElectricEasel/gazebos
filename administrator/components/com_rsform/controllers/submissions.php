@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -18,80 +18,89 @@ class RSFormControllerSubmissions extends RSFormController
 		
 		$this->registerTask('apply', 		'save');
 		$this->registerTask('exportCSV', 	'export');
+		$this->registerTask('exportODS', 	'export');
 		$this->registerTask('exportExcel', 	'export');
 		$this->registerTask('exportXML', 	'export');
 		
-		$this->_db =& JFactory::getDBO();
+		$this->_db = JFactory::getDBO();
 	}
 
 	function manage()
 	{
-		JRequest::setVar('view', 	'submissions');
-		JRequest::setVar('layout', 	'default');
+		$app	= JFactory::getApplication();
+		$model	= $this->getModel('submissions');
+		$formId = $model->getFormId();
 		
-		parent::display();
+		$app->redirect('index.php?option=com_rsform&view=submissions'.($formId ? '&formId='.$formId : ''));
+	}
+	
+	function back() {
+		$app	= JFactory::getApplication();
+		$formId = $app->input->getInt('formId');
+		$app->redirect('index.php?option=com_rsform&view=submissions&formId='.$formId);
 	}
 	
 	function edit()
 	{
-		JRequest::setVar('view', 	'submissions');
-		JRequest::setVar('layout', 	'edit');
-		
-		parent::display();
+		$model = $this->getModel('submissions');
+		$cid   = $model->getSubmissionId();
+		$app = JFactory::getApplication();
+		$app->redirect('index.php?option=com_rsform&view=submissions&layout=edit&cid='.$cid);
 	}
 	
 	function columns()
 	{
-		$mainframe 	=& JFactory::getApplication();
-		$formId 	= JRequest::getInt('formId');
+		$app 	= JFactory::getApplication();
+		$formId = JRequest::getInt('formId');
 		
 		$this->_db->setQuery("DELETE FROM #__rsform_submission_columns WHERE FormId='".$formId."'");
-		$this->_db->query();
+		$this->_db->execute();
 		
 		$staticcolumns = JRequest::getVar('staticcolumns', array());
 		foreach ($staticcolumns as $column)
 		{
-			$this->_db->setQuery("INSERT INTO #__rsform_submission_columns SET FormId='".$formId."', ColumnName='".$this->_db->getEscaped($column)."', ColumnStatic='1'");
-			$this->_db->query();
+			$this->_db->setQuery("INSERT INTO #__rsform_submission_columns SET FormId='".$formId."', ColumnName='".$this->_db->escape($column)."', ColumnStatic='1'");
+			$this->_db->execute();
 		}
 		
 		$columns = JRequest::getVar('columns', array());
 		foreach ($columns as $column)
 		{
-			$this->_db->setQuery("INSERT INTO #__rsform_submission_columns SET FormId='".$formId."', ColumnName='".$this->_db->getEscaped($column)."', ColumnStatic='0'");
-			$this->_db->query();
+			$this->_db->setQuery("INSERT INTO #__rsform_submission_columns SET FormId='".$formId."', ColumnName='".$this->_db->escape($column)."', ColumnStatic='0'");
+			$this->_db->execute();
 		}
 		
-		$this->setRedirect('index.php?option=com_rsform&task=submissions.manage&formId='.$formId);
+		$app->redirect('index.php?option=com_rsform&view=submissions&formId='.$formId);
 	}
 	
 	function save()
 	{
+		$app 	= JFactory::getApplication();
 		// Get the model
 		$model = $this->getModel('submissions');
 		
 		// Save
 		$model->save();
 		
-		$cid = $model->getSubmissionId();
-		
 		$task = $this->getTask();
 		switch ($task)
 		{
 			case 'apply':
-				$link = 'index.php?option=com_rsform&task=submissions.edit&cid[]='.$cid;
+				$cid  = $model->getSubmissionId();
+				$link = 'index.php?option=com_rsform&view=submissions&layout=edit&cid='.$cid;
 			break;
 		
 			case 'save':
-				$link = 'index.php?option=com_rsform&task=submissions.manage';
+				$link = 'index.php?option=com_rsform&view=submissions';
 			break;
 		}
 		
-		$this->setRedirect($link, JText::_('RSFP_SUBMISSION_SAVED'));
+		$app->redirect($link, JText::_('RSFP_SUBMISSION_SAVED'));
 	}
 	
 	function resend()
 	{
+		$app 	= JFactory::getApplication();
 		$formId = JRequest::getInt('formId');
 		$cid 	= JRequest::getVar('cid', array(), 'post');
 		JArrayHelper::toInteger($cid);
@@ -99,33 +108,37 @@ class RSFormControllerSubmissions extends RSFormController
 		foreach ($cid as $SubmissionId)
 			RSFormProHelper::sendSubmissionEmails($SubmissionId);
 		
-		$this->setRedirect('index.php?option=com_rsform&task=submissions.manage&formId='.$formId, JText::_('RSFP_SUBMISSION_MAILS_RESENT'));
+		$app->redirect('index.php?option=com_rsform&view=submissions&formId='.$formId, JText::_('RSFP_SUBMISSION_MAILS_RESENT'));
 	}
 	
 	function cancel()
 	{
-		$this->setRedirect('index.php?option=com_rsform');
+		$app = JFactory::getApplication();
+		$app->redirect('index.php?option=com_rsform');
 	}
 	
 	function cancelForm()
 	{
-		$formId = JRequest::getInt('formId');
-		$this->setRedirect('index.php?option=com_rsform&task=forms.edit&formId='.$formId);
+		$app 	= JFactory::getApplication();
+		$formId = $app->input->getInt('formId');
+		$app->redirect('index.php?option=com_rsform&view=forms&layout=edit&formId='.$formId);
 	}
 	
 	function clear()
 	{
+		$app 	= JFactory::getApplication();
 		$formId = JRequest::getInt('formId');
 		$model 	= $this->getModel('submissions');
 		
 		$model->deleteSubmissionFiles($formId);
 		$total = $model->deleteSubmissions($formId);
 		
-		$this->setRedirect('index.php?option=com_rsform&task=forms.manage', JText::sprintf('RSFP_SUBMISSIONS_CLEARED', $total));
+		$app->redirect('index.php?option=com_rsform&view=forms', JText::sprintf('RSFP_SUBMISSIONS_CLEARED', $total));
 	}
 	
 	function delete()
 	{
+		$app 	= JFactory::getApplication();
 		$formId = JRequest::getInt('formId');
 		$cid 	= JRequest::getVar('cid', array(), 'post');
 		JArrayHelper::toInteger($cid);
@@ -134,28 +147,35 @@ class RSFormControllerSubmissions extends RSFormController
 		$model->deleteSubmissionFiles($cid);
 		$model->deleteSubmissions($cid);
 		
-		$this->setRedirect('index.php?option=com_rsform&task=submissions.manage&formId='.$formId);
+		$app->redirect('index.php?option=com_rsform&view=submissions&formId='.$formId);
 	}
 	
 	function export()
 	{
-		$config = JFactory::getConfig();
-		$tmp_path = $config->getValue('config.tmp_path');
+		$app 	  = JFactory::getApplication();
+		$config   = JFactory::getConfig();
+		
+		$model 	= $this->getModel('submissions');
+		$formId = $model->getFormId();
+		
+		$tmp_path = $config->get('tmp_path');
 		if (!is_writable($tmp_path))
 		{
 			JError::raiseWarning(500, JText::sprintf('RSFP_EXPORT_ERROR_MSG', $tmp_path));
-			$this->setRedirect('index.php?option=com_rsform&task=submissions.manage');
+			$app->redirect('index.php?option=com_rsform&view=submissions');
 		}
 		
-		JRequest::setVar('view', 	'submissions');
-		JRequest::setVar('layout', 	'export');
+		$view 	= $this->getView('submissions', 'html');
+		$model 	= $this->getModel('submissions');
+		$view->setLayout('export');
+		$view->setModel($model, true);
 		
-		parent::display();
+		$view->display();
 	}
 	
 	function exportProcess()
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option    =  JRequest::getVar('option', 'com_rsform');
 		
 		$config = JFactory::getConfig();
@@ -172,8 +192,8 @@ class RSFormControllerSubmissions extends RSFormController
 		$mainframe->setUserState($option.'.submissions.limit', $limit);
 		
 		// Tmp path
-		$tmp_path = $config->getValue('config.tmp_path');
-		$file = $tmp_path.DS.$post['ExportFile'];
+		$tmp_path = $config->get('tmp_path');
+		$file = $tmp_path.'/'.$post['ExportFile'];
 		
 		$formId = $post['formId'];
 		
@@ -256,7 +276,7 @@ class RSFormControllerSubmissions extends RSFormController
 		// Excel Options
 		elseif ($type == 'excel')
 		{
-			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_rsform'.DS.'helpers'.DS.'excel.php');
+			require_once(JPATH_ADMINISTRATOR.'/components/com_rsform/helpers/excel.php');
 			
 			$xls = new RSFormProXLS();
 			$xls->use_headers = $use_headers;
@@ -340,12 +360,57 @@ class RSFormControllerSubmissions extends RSFormController
 						if (!is_numeric($item))
 							$item = '<![CDATA['.$item.']]>';
 						
-						$buffer .= "\t\t\t".'<'.$header.'>'.$item.'</'.$header.'>';
+						$header = preg_replace('#\s+#', '', $header);
+						
+						$buffer .= "\t\t\t".'<'.$header.'>'.$item.'</'.$header.'>'."\n";
 					}
 					fwrite($handle, $buffer);
 					fwrite($handle, "\t\t".'</submission>'."\n");
 				}
 				fclose($handle);
+			}
+		} elseif ($type == 'ods') {
+			require_once JPATH_COMPONENT.'/helpers/ods.php';
+			
+			$ods = new RSFormProODS($file);
+			if ($start == 0) {
+				$ods->startDoc();
+				$ods->startSheet();
+				if ($use_headers) {
+					foreach ($order as $orderId => $header) {
+						$ods->addCell($orderId, $header, 'string');
+					}
+					$ods->saveRow();
+				}
+			}
+			
+			if (empty($submissions)) {
+				$ods->endSheet();
+				$ods->endDoc();
+				$ods->saveOds();
+				
+				// Adjust pagination
+				$mainframe->setUserState($option.'.submissions.limitstart', 0);
+				$mainframe->setUserState($option.'.submissions.limit', $mainframe->getCfg('list_limit'));
+				echo 'END';
+			} else {
+				foreach ($submissions as $submissionId => $submission) {
+					foreach ($order as $orderId => $header) {
+						if (isset($submission['SubmissionValues'][$header]))
+							$item = $submission['SubmissionValues'][$header]['Value'];
+						elseif (isset($submission[$header]))
+							$item = $submission[$header];
+						else
+							$item = '';
+						
+						if (is_numeric($item)) {
+							$ods->addCell($orderId, (float) $item, 'float');
+						} else {
+							$ods->addCell($orderId, $item, 'string');
+						}
+					}
+					$ods->saveRow();
+				}
 			}
 		}
 		
@@ -354,56 +419,70 @@ class RSFormControllerSubmissions extends RSFormController
 	
 	function exportTask()
 	{
-		JRequest::setVar('view', 'submissions');
-		JRequest::setVar('layout', 'exportprocess');
-		
-		parent::display();
-		
 		$session = JFactory::getSession();
 		$option  = JRequest::getVar('option', 'com_rsform');
 		
 		$session->set($option.'.export.data', serialize(JRequest::get('post', JREQUEST_ALLOWRAW)));
+		
+		$view 	= $this->getView('submissions', 'html');
+		$model 	= $this->getModel('submissions');
+		$view->setLayout('exportprocess');
+		$view->setModel($model, true);
+		$view->display();
 	}
 	
 	function exportFile()
 	{
 		$config = JFactory::getConfig();
 		$file = JRequest::getCmd('ExportFile');
-		$file = $config->getValue('config.tmp_path').DS.$file;
+		$file = $config->get('tmp_path').'/'.$file;
 		
 		$type = JRequest::getCmd('ExportType');
 		$extension = 'csv';
-		if ($type == 'csv')
-			$extension = 'csv';
-		elseif ($type == 'excel')
-			$extension = 'xls';
-		elseif ($type == 'xml')
-			$extension = 'xml';
+		
+		switch ($type) {
+			default:
+				$extension = $type;
+			break;
+			
+			case 'ods':	
+				$extension = 'ods';
+				$file = $file.'.ods';
+			break;
+			
+			case 'excel':
+				$extension = 'xls';
+			break;
+		}
 		
 		RSFormProHelper::readFile($file, date('Y-m-d').'_rsform.'.$extension);
 	}
 	
 	function viewFile()
 	{
-		$id = JRequest::getInt('id');
+		$app	= JFactory::getApplication();
+		$id 	= JRequest::getInt('id');
+		
 		$this->_db->setQuery("SELECT * FROM #__rsform_submission_values WHERE SubmissionValueId='".$id."'");
 		$result = $this->_db->loadObject();
 		
 		// Not found
-		if (empty($result))
-			return $this->setRedirect('index.php?option=com_rsform&task=submissions.manage');
+		if (empty($result)) {
+			$app->redirect('index.php?option=com_rsform&view=submissions');
+		}
 		
 		// Not an upload field
-		$this->_db->setQuery("SELECT c.ComponentTypeId FROM #__rsform_properties p LEFT JOIN #__rsform_components c ON (p.ComponentId=c.ComponentId) WHERE p.PropertyName='NAME' AND p.PropertyValue='".$this->_db->getEscaped($result->FieldName)."'");
+		$this->_db->setQuery("SELECT c.ComponentTypeId FROM #__rsform_properties p LEFT JOIN #__rsform_components c ON (p.ComponentId=c.ComponentId) WHERE p.PropertyName='NAME' AND p.PropertyValue='".$this->_db->escape($result->FieldName)."'");
 		$type = $this->_db->loadResult();
-		if ($type != 9)
-			return $this->setRedirect('index.php?option=com_rsform&task=submissions.manage', JText::_('RSFP_VIEW_FILE_NOT_UPLOAD'));
+		if ($type != 9) {
+			$app->redirect('index.php?option=com_rsform&view=submissions', JText::_('RSFP_VIEW_FILE_NOT_UPLOAD'));
+		}
 		
 		jimport('joomla.filesystem.file');
 		
 		if (JFile::exists($result->FieldValue))
 			RSFormProHelper::readFile($result->FieldValue);
 		
-		$this->setRedirect('index.php?option=com_rsform&task=submissions.manage', JText::_('RSFP_VIEW_FILE_NOT_FOUND'));
+		$app->redirect('index.php?option=com_rsform&view=submissions', JText::_('RSFP_VIEW_FILE_NOT_FOUND'));
 	}
 }

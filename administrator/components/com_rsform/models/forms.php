@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class RSFormModelForms extends JModel
+class RSFormModelForms extends JModelLegacy
 {
 	var $_data = null;
 	var $_mdata = null;
@@ -28,10 +28,13 @@ class RSFormModelForms extends JModel
 		parent::__construct();
 		$this->_db = JFactory::getDBO();
 		$this->_query = $this->_buildQuery();
-		$this->_mquery = $this->_buildMQuery();
-		$this->_conditionsquery = $this->_buildConditionsQuery();
 		
-		$mainframe =& JFactory::getApplication();
+		if (JRequest::getVar('layout', 'default') != 'default') {
+			$this->_mquery = $this->_buildMQuery();
+			$this->_conditionsquery = $this->_buildConditionsQuery();
+		}
+		
+		$mainframe = JFactory::getApplication();
 		$option    =  JRequest::getVar('option', 'com_rsform');
 		
 		// Get pagination request variables
@@ -65,7 +68,7 @@ class RSFormModelForms extends JModel
 	{
 		$formId	= JRequest::getInt('formId');
 		$lang	= $this->getLang();
-		$query  = "SELECT c.*,p.PropertyValue AS ComponentName FROM `#__rsform_conditions` c LEFT JOIN #__rsform_properties p ON (c.component_id = p.ComponentId) WHERE c.`form_id` = ".$formId." AND c.lang_code='".$this->_db->getEscaped($lang)."' AND p.PropertyName='NAME' ORDER BY c.`id` ASC";
+		$query  = "SELECT c.*,p.PropertyValue AS ComponentName FROM `#__rsform_conditions` c LEFT JOIN #__rsform_properties p ON (c.component_id = p.ComponentId) WHERE c.`form_id` = ".$formId." AND c.lang_code='".$this->_db->escape($lang)."' AND p.PropertyName='NAME' ORDER BY c.`id` ASC";
 		
 		return $query;
 	}
@@ -114,14 +117,14 @@ class RSFormModelForms extends JModel
 	
 	function getSortColumn()
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option    =  JRequest::getVar('option', 'com_rsform');
 		return $mainframe->getUserStateFromRequest($option.'.forms.filter_order', 'filter_order', 'FormId', 'word');
 	}
 	
 	function getSortOrder()
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option    =  JRequest::getVar('option', 'com_rsform');
 		return $mainframe->getUserStateFromRequest($option.'.forms.filter_order_Dir', 'filter_order_Dir', 'ASC', 'word');
 	}
@@ -159,8 +162,19 @@ class RSFormModelForms extends JModel
 			$field->published = $component->Published;
 			$field->ordering = $component->Order;
 			$field->preview = RSFormProHelper::showPreview($formId, $field->id, $data);
-			$field->required = isset($data['REQUIRED']) && $data['REQUIRED'] == 'YES' ? '<b>'.JText::_(RSFormProHelper::isJ16() ? 'JYES' : 'YES').'</b>' : JText::_(RSFormProHelper::isJ16() ? 'JNO' : 'NO');
-			$field->validation = isset($data['VALIDATIONRULE']) && $data['VALIDATIONRULE'] != 'none' ? '<b>'.$data['VALIDATIONRULE'].'</b>' : '-';
+			
+			$field->required = '-';
+			if (!empty($data['REQUIRED'])) {
+				$field->required = $data['REQUIRED'] == 'YES';
+			}
+			
+			$field->validation = '-';
+			if (isset($data['VALIDATIONRULE']) && $data['VALIDATIONRULE'] != 'none') {
+				$field->validation = '<b>'.$data['VALIDATIONRULE'].'</b>';
+			}
+			if (isset($data['VALIDATIONRULE_DATE']) && $data['VALIDATIONRULE_DATE'] != 'none') {
+				$field->validation = '<b>'.$data['VALIDATIONRULE_DATE'].'</b>';
+			}
 			
 			$return[] = $field;
 		}
@@ -196,14 +210,16 @@ class RSFormModelForms extends JModel
 			
 			if (empty($this->_form->Lang))
 			{
-				$language =& JFactory::getLanguage();
+				$language = JFactory::getLanguage();
 				$this->_form->Lang = $language->getTag();
 			}
 			
 			if ($this->_form->FormLayoutAutogenerate)
 				$this->autoGenerateLayout();
 			
-			$this->_form->ThemeParams = new JParameter($this->_form->ThemeParams);
+			$registry = new JRegistry();
+			$registry->loadString($this->_form->ThemeParams, 'INI');
+			$this->_form->ThemeParams =& $registry;
 			
 			$lang = $this->getLang();
 			if ($lang != $this->_form->Lang)
@@ -221,18 +237,28 @@ class RSFormModelForms extends JModel
 		return $this->_form;
 	}
 	
+	function getFormPost()
+	{
+		$formId = JRequest::getInt('formId');
+		
+		$post = JTable::getInstance('RSForm_Posts', 'Table');
+		$post->load($formId, false);
+		return $post;
+	}
+	
 	function autoGenerateLayout()
 	{
 		$formId = $this->_form->FormId;
 		
 		$filter = JFilterInput::getInstance();
 		
-		$layout = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_rsform'.DS.'layouts'.DS.$filter->clean($this->_form->FormLayoutName, 'path').'.php';
+		$layout = JPATH_ADMINISTRATOR.'/components/com_rsform/layouts/'.$filter->clean($this->_form->FormLayoutName, 'path').'.php';
 		if (!file_exists($layout))
 			return false;
 		
 		$quickfields = $this->getQuickFields();
 		$requiredfields = $this->getRequiredFields();
+		$hiddenfields = $this->getHiddenFields();
 		$pagefields = $this->getPageFields();
 			
 		$this->_form->FormLayout = include($layout);
@@ -262,7 +288,33 @@ class RSFormModelForms extends JModel
 			}
 		}
 		
+		// add captcha and recaptcha as required
+		$this->_db->setQuery("SELECT p.PropertyName, p.PropertyValue, c.ComponentId FROM #__rsform_properties p LEFT JOIN #__rsform_components c ON (p.ComponentId = c.ComponentId) WHERE c.FormId='".$formId."' AND p.PropertyName='NAME' AND c.ComponentTypeId IN (8, 24) AND c.Published='1' ORDER BY c.Order");
+		$results = $this->_db->loadObjectList();
+		foreach ($results as $result) {
+			$return[] = $result->PropertyValue;
+		}
+		
 		return $return;
+	}
+	
+	function getHiddenFields()
+	{
+		$formId = JRequest::getInt('formId');
+		
+		$names = array();
+		
+		$this->_db->setQuery("SELECT p.ComponentId FROM #__rsform_properties p LEFT JOIN #__rsform_components c ON (p.ComponentId = c.ComponentId) WHERE c.FormId='".$formId."' AND (p.PropertyName='LAYOUTHIDDEN' AND p.PropertyValue='YES') AND c.Published='1' ORDER BY c.Order");
+		if ($results = $this->_db->loadColumn()) {
+			$data = RSFormProHelper::getComponentProperties($results);
+			foreach ($data as $ComponentId => $properties) {
+				if (isset($properties['NAME'])) {
+					$names[] = $properties['NAME'];
+				}
+			}
+		}
+		
+		return $names;
 	}
 	
 	function getQuickFields()
@@ -271,7 +323,7 @@ class RSFormModelForms extends JModel
 		
 		$this->_db->setQuery("SELECT p.PropertyValue FROM #__rsform_properties p LEFT JOIN #__rsform_components c ON (p.ComponentId = c.ComponentId) WHERE c.FormId='".$formId."' AND p.PropertyName='NAME' AND c.Published='1' ORDER BY c.Order");
 		
-		return $this->_db->loadResultArray();
+		return $this->_db->loadColumn();
 	}
 	
 	function getPageFields()
@@ -280,7 +332,7 @@ class RSFormModelForms extends JModel
 		
 		$this->_db->setQuery("SELECT p.PropertyValue FROM #__rsform_properties p LEFT JOIN #__rsform_components c ON (p.ComponentId = c.ComponentId) WHERE c.FormId='".$formId."' AND p.PropertyName='NAME' AND c.Published='1' AND c.ComponentTypeId='41' ORDER BY c.Order");
 		
-		return $this->_db->loadResultArray();
+		return $this->_db->loadColumn();
 	}
 	
 	function getFormList()
@@ -310,7 +362,7 @@ class RSFormModelForms extends JModel
 		$return[] = JHTML::_('select.option', '', JText::_('RSFP_PREDEFINED_BLANK_FORM'));
 		
 		jimport('joomla.filesystem.folder');
-		$folders = JFolder::folders(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_rsform'.DS.'assets'.DS.'forms');
+		$folders = JFolder::folders(JPATH_ADMINISTRATOR.'/components/com_rsform/assets/forms');
 		foreach ($folders as $folder)
 			$return[] = JHTML::_('select.option', $folder, $folder);
 		
@@ -345,7 +397,7 @@ class RSFormModelForms extends JModel
 		
 		$return[] = $data;
 		
-		$dirs = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_rsform'.DS.'assets'.DS.'themes', '.', false, true);
+		$dirs = JFolder::folders(JPATH_SITE.'/components/com_rsform/assets/themes', '.', false, true);
 		foreach ($dirs as $i => $dir)
 		{
 			$data = $this->_parseXML($dir);
@@ -359,21 +411,15 @@ class RSFormModelForms extends JModel
 	function _parseXML($dir)
 	{
 		// Read the file to see if it's a valid component XML file
-		$xml = & JFactory::getXMLParser('Simple');
 
 		$files = JFolder::files($dir, '\.xml');
 		if (!count($files))
 			return false;
 		
 		$file = reset($files);
-		$path = $dir.DS.$file;
+		$path = $dir.'/'.$file;
 		
-		if (!$xml->loadFile($path)) {
-			unset($xml);
-			return false;
-		}
-		
-		if (!is_object($xml->document)) {
+		if (!$xml = simplexml_load_file($path)) {
 			unset($xml);
 			return false;
 		}
@@ -390,54 +436,39 @@ class RSFormModelForms extends JModel
 			$data->img_path = JURI::root().'components/com_rsform/assets/themes/'.$data->directory.'/'.$file;
 		}
 		
-		$element = & $xml->document->name[0];
-		$data->name = $element ? $element->data() : '';
+		$data->name = isset($xml->name) ? $xml->name : '';
+		$data->creationdate = isset($xml->creationDate) ? $xml->creationDate : JText::_('Unknown');
+		$data->author = isset($xml->author) ? $xml->author : JText::_('Unknown');
+		$data->copyright = isset($xml->copyright) ? $xml->copyright : '';
+		$data->authorEmail = isset($xml->authorEmail) ? $xml->authorEmail : '';
+		$data->authorUrl = isset($xml->authorUrl) ? $xml->authorUrl : '';
+		$data->version = isset($xml->version) ? $xml->version : '';
+		$data->description = isset($xml->description) ? $xml->description : '';
 		
-		$element = & $xml->document->creationDate[0];
-		$data->creationdate = $element ? $element->data() : JText::_('Unknown');
-		
-		$element = & $xml->document->author[0];
-		$data->author = $element ? $element->data() : JText::_('Unknown');
-		
-		$element = & $xml->document->copyright[0];
-		$data->copyright = $element ? $element->data() : '';
-		
-		$element = & $xml->document->authorEmail[0];
-		$data->authorEmail = $element ? $element->data() : '';
-
-		$element = & $xml->document->authorUrl[0];
-		$data->authorUrl = $element ? $element->data() : '';
-
-		$element = & $xml->document->version[0];
-		$data->version = $element ? $element->data() : '';
-
-		$element = & $xml->document->description[0];
-		$data->description = $element ? $element->data() : '';
-		
-		if (isset($xml->document->css))
-			for ($i=0; $i<count($xml->document->css); $i++)
-			{
-				$element = & $xml->document->css[$i];
-				$data->css[$i] = $element ? $element->data() : '';
+		if (isset($xml->css)) {
+			$data->css = array();
+			foreach ($xml->css as $css) {
+				$data->css[] = (string) $css;
 			}
-		if (isset($xml->document->js))
-			for ($i=0; $i<count($xml->document->js); $i++)
-			{
-				$element = & $xml->document->js[$i];
-				$data->js[$i] = $element ? $element->data() : '';
+		}
+		if (isset($xml->js)) {
+			$data->js = array();
+			foreach ($xml->js as $js) {
+				$data->js[] = (string) $js;
 			}
+		}
 		
 		return $data;
 	}
 	
 	function save()
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		
 		$post = JRequest::get('post', JREQUEST_ALLOWRAW);
 		$post['FormId'] = $post['formId'];
 		
-		$form =& JTable::getInstance('RSForm_Forms', 'Table');
+		$form = JTable::getInstance('RSForm_Forms', 'Table');
 		unset($form->Thankyou);
 		unset($form->UserEmailText);
 		unset($form->AdminEmailText);
@@ -478,6 +509,21 @@ class RSFormModelForms extends JModel
 		
 		if ($form->store())
 		{
+			// Post to another location
+			$formId = $post['formId'];
+			$db 	= JFactory::getDBO();
+			
+			$db->setQuery("SELECT form_id FROM #__rsform_posts WHERE form_id='".(int) $formId."'");
+			if (!$db->loadResult())
+			{
+				$db->setQuery("INSERT INTO #__rsform_posts SET form_id='".(int) $formId."'");
+				$db->execute();
+			}
+			$row = JTable::getInstance('RSForm_Posts', 'Table');
+			$row->form_id = $formId;
+			$row->bind(JRequest::getVar('form_post', array(), 'default', 'none', JREQUEST_ALLOWRAW));
+			$row->store();
+			
 			// Trigger event
 			$mainframe->triggerEvent('rsfp_onFormSave', array(&$form));
 			return true;
@@ -499,20 +545,20 @@ class RSFormModelForms extends JModel
 		{
 			$query   = array();
 			$query[] = "`form_id`='".$form->FormId."'";
-			$query[] = "`lang_code`='".$this->_db->getEscaped($lang)."'";
+			$query[] = "`lang_code`='".$this->_db->escape($lang)."'";
 			$query[] = "`reference`='forms'";
-			$query[] = "`reference_id`='".$this->_db->getEscaped($field)."'";
-			$query[] = "`value`='".$this->_db->getEscaped($form->$field)."'";
+			$query[] = "`reference_id`='".$this->_db->escape($field)."'";
+			$query[] = "`value`='".$this->_db->escape($form->$field)."'";
 			
 			if (!isset($translations[$field]))
 			{
 				$this->_db->setQuery("INSERT INTO #__rsform_translations SET ".implode(", ", $query));
-				$this->_db->query();
+				$this->_db->execute();
 			}
 			else
 			{
 				$this->_db->setQuery("UPDATE #__rsform_translations SET ".implode(", ", $query)." WHERE id='".(int) $translations[$field]."'");
-				$this->_db->query();
+				$this->_db->execute();
 			}
 			unset($form->$field);
 		}
@@ -524,20 +570,20 @@ class RSFormModelForms extends JModel
 		
 		$query   = array();
 		$query[] = "`form_id`='".$formId."'";
-		$query[] = "`lang_code`='".$this->_db->getEscaped($lang)."'";
+		$query[] = "`lang_code`='".$this->_db->escape($lang)."'";
 		$query[] = "`reference`='forms'";
-		$query[] = "`reference_id`='".$this->_db->getEscaped($opener)."'";
-		$query[] = "`value`='".$this->_db->getEscaped($value)."'";
+		$query[] = "`reference_id`='".$this->_db->escape($opener)."'";
+		$query[] = "`value`='".$this->_db->escape($value)."'";
 		
 		if (!isset($translations[$opener]))
 		{
 			$this->_db->setQuery("INSERT INTO #__rsform_translations SET ".implode(", ", $query));
-			$this->_db->query();
+			$this->_db->execute();
 		}
 		else
 		{
 			$this->_db->setQuery("UPDATE #__rsform_translations SET ".implode(", ", $query)." WHERE id='".(int) $translations[$opener]."'");
-			$this->_db->query();
+			$this->_db->execute();
 		}
 	}
 	
@@ -550,11 +596,11 @@ class RSFormModelForms extends JModel
 		{
 			if (!isset($params[$field])) continue;
 			
-			$reference_id = $componentId.".".$this->_db->getEscaped($field);
+			$reference_id = $componentId.".".$this->_db->escape($field);
 			
 			$query   = array();
 			$query[] = "`form_id`='".$formId."'";
-			$query[] = "`lang_code`='".$this->_db->getEscaped($lang)."'";
+			$query[] = "`lang_code`='".$this->_db->escape($lang)."'";
 			$query[] = "`reference`='properties'";
 			$query[] = "`reference_id`='".$reference_id."'";
 			$query[] = "`value`='".$params[$field]."'";
@@ -562,12 +608,12 @@ class RSFormModelForms extends JModel
 			if (!isset($translations[$reference_id]))
 			{
 				$this->_db->setQuery("INSERT INTO #__rsform_translations SET ".implode(", ", $query));
-				$this->_db->query();
+				$this->_db->execute();
 			}
 			else
 			{
 				$this->_db->setQuery("UPDATE #__rsform_translations SET ".implode(", ", $query)." WHERE id='".(int) $translations[$reference_id]."'");
-				$this->_db->query();
+				$this->_db->execute();
 			}
 			
 			if (!$just_added)
@@ -577,8 +623,8 @@ class RSFormModelForms extends JModel
 	
 	function getLang()
 	{
-		$session =& JFactory::getSession();
-		$lang 	 =& JFactory::getLanguage();
+		$session = JFactory::getSession();
+		$lang 	 = JFactory::getLanguage();
 		
 		if (empty($this->_form))
 			$this->getForm();
@@ -588,8 +634,8 @@ class RSFormModelForms extends JModel
 	
 	function getEmailLang($id = null)
 	{
-		$session =& JFactory::getSession();
-		$lang 	 =& JFactory::getLanguage();
+		$session = JFactory::getSession();
+		$lang 	 = JFactory::getLanguage();
 		$cid	 = JRequest::getInt('cid');
 		if (!is_null($id)) $cid = $id;
 		
@@ -598,7 +644,7 @@ class RSFormModelForms extends JModel
 	
 	function getLanguages()
 	{
-		$lang 	   =& JFactory::getLanguage();
+		$lang 	   = JFactory::getLanguage();
 		$languages = $lang->getKnownLanguages(JPATH_SITE);
 		
 		$return = array();
@@ -645,19 +691,24 @@ class RSFormModelForms extends JModel
 	function getEmails()
 	{
 		$formId = JRequest::getInt('formId',0);
-		$session =& JFactory::getSession();
-		$lang =& JFactory::getLanguage();
+		$session = JFactory::getSession();
+		$lang = JFactory::getLanguage();
 		if (!$formId) return array();
 		
 		$emails = $this->_getList("SELECT `id`, `to`, `subject`, `formId` FROM `#__rsform_emails` WHERE `formId` = ".$formId." ");
-		$translations = RSFormProHelper::getTranslations('emails', $formId, $session->get('com_rsform.form.'.$formId.'.lang', $lang->getDefault()));
-		
 		if (!empty($emails))
 		{
-			foreach ($emails as $id=> $email)
-			{
-				if (isset($translations[$email->id.'.subject']))
+			$translations = RSFormProHelper::getTranslations('emails', $formId, $session->get('com_rsform.form.'.$formId.'.lang', $lang->getDefault()));
+			foreach ($emails as $id => $email) {
+				if (isset($translations[$email->id.'.fromname'])) {
+					$emails[$id]->fromname = $translations[$email->id.'.fromname'];
+				}
+				if (isset($translations[$email->id.'.subject'])) {
 					$emails[$id]->subject = $translations[$email->id.'.subject'];
+				}
+				if (isset($translations[$email->id.'.message'])) {
+					$emails[$id]->message = $translations[$email->id.'.message'];
+				}
 			}
 		}
 		
@@ -666,9 +717,9 @@ class RSFormModelForms extends JModel
 	
 	function getEmail()
 	{
-		$row		=& JTable::getInstance('RSForm_Emails', 'Table');
-		$session	=& JFactory::getSession();
-		$lang		=& JFactory::getLanguage();
+		$row		= JTable::getInstance('RSForm_Emails', 'Table');
+		$session	= JFactory::getSession();
+		$lang		= JFactory::getLanguage();
 		$cid		= JRequest::getInt('cid');
 		$formId		= JRequest::getInt('formId');
 		
@@ -689,7 +740,7 @@ class RSFormModelForms extends JModel
 	
 	function saveemail()
 	{
-		$row	=& JTable::getInstance('RSForm_Emails', 'Table');
+		$row	= JTable::getInstance('RSForm_Emails', 'Table');
 		$post 	= JRequest::get('post', JREQUEST_ALLOWRAW);
 		if (!$row->bind($post))
 		{
@@ -710,7 +761,7 @@ class RSFormModelForms extends JModel
 	
 	function saveEmailsTranslation(&$email, $lang)
 	{
-		$jlang =& JFactory::getLanguage();
+		$jlang = JFactory::getLanguage();
 		if (!$email->id) return true;
 		if ($lang == $jlang->getDefault()) return true;
 		
@@ -719,28 +770,32 @@ class RSFormModelForms extends JModel
 		
 		foreach ($fields as $field)
 		{
-			$reference_id = $email->id.".".$this->_db->getEscaped($field);
+			$reference_id = $email->id.".".$this->_db->escape($field);
 			
 			$query   = array();
 			$query[] = "`form_id`='".$email->formId."'";
-			$query[] = "`lang_code`='".$this->_db->getEscaped($lang)."'";
+			$query[] = "`lang_code`='".$this->_db->escape($lang)."'";
 			$query[] = "`reference`='emails'";
 			$query[] = "`reference_id`='".$reference_id."'";
-			$query[] = "`value`='".$this->_db->getEscaped($email->$field)."'";
+			$query[] = "`value`='".$this->_db->escape($email->$field)."'";
 			
 			if (!isset($translations[$reference_id]))
 			{
 				$this->_db->setQuery("INSERT INTO #__rsform_translations SET ".implode(", ", $query));
-				$this->_db->query();
+				$this->_db->execute();
 			}
 			else
 			{
 				$this->_db->setQuery("UPDATE #__rsform_translations SET ".implode(", ", $query)." WHERE id='".(int) $translations[$reference_id]."'");
-				$this->_db->query();
+				$this->_db->execute();
 			}
 			unset($email->$field);
 		}
 	}
 	
+	public function getSideBar() {
+		require_once JPATH_COMPONENT.'/helpers/toolbar.php';
+		
+		return RSFormProToolbarHelper::render();
+	}
 }
-?>

@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -10,17 +10,17 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class RSFormViewSubmissions extends JView
+class RSFormViewSubmissions extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		if (empty($lang->_metadata['pdffontname']))
 			$lang->_metadata['pdffontname'] = 'freesans';
 		
-		$this->assignRef('staticHeaders', $this->get('staticHeaders'));
-		$this->assignRef('staticFields', $this->get('staticFields'));
-		$this->assignRef('fields', $this->get('editFields'));
+		$this->staticHeaders = $this->get('staticHeaders');
+		$this->staticFields = $this->get('staticFields');
+		$this->fields = $this->get('editFields');
 		
 		parent::display('pdf');
 		
@@ -36,25 +36,25 @@ class RSFormViewSubmissions extends JView
 			 */
 
 			// Installation path
-			define("K_PATH_MAIN", JPATH_LIBRARIES.DS."tcpdf");
+			define("K_PATH_MAIN", JPATH_LIBRARIES."/tcpdf");
 
 			// URL path
 			define("K_PATH_URL", JPATH_BASE);
 
 			// Fonts path
-			define("K_PATH_FONTS", K_PATH_MAIN.DS.'fonts'.DS);
+			define("K_PATH_FONTS", K_PATH_MAIN.'/fonts/');
 
 			// Cache directory path
-			define("K_PATH_CACHE", K_PATH_MAIN.DS."cache");
+			define("K_PATH_CACHE", K_PATH_MAIN."/cache");
 
 			// Cache URL path
-			define("K_PATH_URL_CACHE", K_PATH_URL.DS."cache");
+			define("K_PATH_URL_CACHE", K_PATH_URL."/cache");
 
 			// Images path
-			define("K_PATH_IMAGES", K_PATH_MAIN.DS."images");
+			define("K_PATH_IMAGES", K_PATH_MAIN."/images");
 
 			// Blank image path
-			define("K_BLANK_IMAGE", K_PATH_IMAGES.DS."_blank.png");
+			define("K_BLANK_IMAGE", K_PATH_IMAGES."/_blank.png");
 
 			/*
 			 * Format options
@@ -85,7 +85,7 @@ class RSFormViewSubmissions extends JView
 			$pdf->SetFooterMargin(10);
 			$pdf->setImageScale(4);
 			
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			
 			// Set PDF Metadata
 			$pdf->SetCreator($document->getGenerator());
@@ -97,7 +97,7 @@ class RSFormViewSubmissions extends JView
 			$pdf->setHeaderData('', 0, $document->getTitle(), null);
 			
 			// Set RTL
-			$lang =& JFactory::getLanguage();
+			$lang = JFactory::getLanguage();
 			$pdf->setRTL($lang->isRTL());
 			
 			// Set Font

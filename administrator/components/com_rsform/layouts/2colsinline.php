@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -21,20 +21,29 @@ if (!empty($pagefields))
 else
 	$pages_array[0] = $quickfields;
 
-$out = '<div class="componentheading">{global:formtitle}</div>'."\n";
+if ($this->_form->ShowFormTitle) {
+	$out = '<div class="componentheading">{global:formtitle}</div>'."\n";
+} else {
+	$out = '';
+}
 $out.='{error}'."\n";
 	
 foreach ($pages_array as $page_num => $items)
 {
 	$out.= '<!-- Do not remove this ID, it is used to identify the page so that the pagination script can work correctly -->'."\n";
-	$out.= '<table border="0" id="rsform_'.$formId.'_page_'.$page_num.'">'."\n";
+	$out.= '<table class="formTableLayout" border="0" id="rsform_'.$formId.'_page_'.$page_num.'">'."\n";
 	
-	$outLeft  ='<table border="0">'."\n";
-	$outRight ='<table border="0">'."\n";
+	$outLeft  ='<table class="formTableLayout" border="0">'."\n";
+	$outRight ='<table class="formTableLayout" border="0">'."\n";
 
 	$i = 0;
 	foreach ($items as $quickfield)
 	{
+		// skip...
+		if (in_array($quickfield, $hiddenfields)) {
+			continue;
+		}
+		
 		$tmp = '';
 		if (in_array($quickfield, $pagefields))
 		{
@@ -68,10 +77,10 @@ foreach ($pages_array as $page_num => $items)
 	$outRight.="\t\t\t</table>\n";
 
 	$out .= "\t<tr>\n";
-	$out .= "\t\t<td valign=\"top\">\n";
+	$out .= "\t\t<td class=\"formTableLeft\" valign=\"top\">\n";
 	$out .= "\t\t\t".$outLeft."\n";
 	$out .= "\t\t</td>\n";
-	$out .= "\t\t<td valign=\"top\">\n";
+	$out .= "\t\t<td class=\"formTableRight\" valign=\"top\">\n";
 	$out .= "\t\t\t".$outRight."\n";
 	$out .= "\t\t</td>\n";
 	$out .= "\t</tr>\n";
@@ -83,8 +92,8 @@ if ($out != $this->_form->FormLayout && $this->_form->FormId)
 	// Clean it
 	// Update the layout
 	$db = JFactory::getDBO();
-	$db->setQuery("UPDATE #__rsform_forms SET FormLayout='".$db->getEscaped($out)."' WHERE FormId=".$this->_form->FormId);
-	$db->query();
+	$db->setQuery("UPDATE #__rsform_forms SET FormLayout='".$db->escape($out)."' WHERE FormId=".$this->_form->FormId);
+	$db->execute();
 }
 	
 return $out;
