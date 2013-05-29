@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class RSFormModelConditions extends JModel
+class RSFormModelConditions extends JModelLegacy
 {
 	var $_data 	= null;
 	var $_total = 0;
@@ -43,9 +43,15 @@ class RSFormModelConditions extends JModel
 	
 	function getOptionFields()
 	{
+		$app 	= JFactory::getApplication();
+		$types 	= array(3, 4, 5, 22);
 		$formId = $this->getFormId();
 		
-		$this->_db->setQuery("SELECT p.PropertyValue, p.PropertyName, p.ComponentId FROM #__rsform_properties p LEFT JOIN #__rsform_components c ON (p.ComponentId = c.ComponentId) WHERE c.FormId='".$formId."' AND (p.PropertyName='DEFAULTVALUE' OR p.PropertyName='ITEMS') AND c.ComponentTypeId IN (3, 4, 5, 22) ORDER BY c.Order");
+		$app->triggerEvent('rsfp_bk_onCreateConditionOptionFields',array(array('types' => &$types, 'formId' => $formId)));
+		
+		JArrayHelper::toInteger($types);
+		
+		$this->_db->setQuery("SELECT p.PropertyValue, p.PropertyName, p.ComponentId, c.ComponentTypeId FROM #__rsform_properties p LEFT JOIN #__rsform_components c ON (p.ComponentId = c.ComponentId) WHERE c.FormId='".$formId."' AND (p.PropertyName='DEFAULTVALUE' OR p.PropertyName='ITEMS') AND c.ComponentTypeId IN (".implode(',', $types).") ORDER BY c.Order");
 		$results = $this->_db->loadObjectList();
 		
 		$lang 		  = RSFormProHelper::getCurrentLanguage($formId);
@@ -58,15 +64,24 @@ class RSFormModelConditions extends JModel
 				$result->PropertyValue = $translations[$reference_id];
 			
 			$result->PropertyValue = RSFormProHelper::isCode($result->PropertyValue);
-			$result->PropertyValue = str_replace(array("\r", '[c]', '[g]'), '', $result->PropertyValue);
+			$result->PropertyValue = str_replace(array("\r\n", "\r"), "\n", $result->PropertyValue);
+			$result->PropertyValue = str_replace(array('[c]', '[g]'), '', $result->PropertyValue);
 			$result->PropertyValue = explode("\n", $result->PropertyValue);
 			
 			foreach ($result->PropertyValue as $k => $v)
 			{
 				$v = explode('|', $v, 2);
-				if (!isset($v[1]))
-					$v[1] = $v[0];
-					
+				// paypal ?
+				if ($result->ComponentTypeId == 22)
+				{
+					$v[0] = $v[1];
+				}
+				else
+				{
+					if (!isset($v[1]))
+						$v[1] = $v[0];
+				}
+				
 				$result->PropertyValue[$k] = $v;
 			}
 			
@@ -79,7 +94,7 @@ class RSFormModelConditions extends JModel
 	function getCondition()
 	{
 		$cid = JRequest::getInt('cid');
-		$row =& JTable::getInstance('RSForm_Conditions', 'Table');
+		$row = JTable::getInstance('RSForm_Conditions', 'Table');
 		$row->load($cid);
 		
 		$row->details = array();
@@ -102,7 +117,7 @@ class RSFormModelConditions extends JModel
 	function save()
 	{
 		$post		= JRequest::get('post', JREQUEST_ALLOWRAW);
-		$condition 	=& JTable::getInstance('RSForm_Conditions', 'Table');
+		$condition 	= JTable::getInstance('RSForm_Conditions', 'Table');
 		
 		if (!$condition->bind($post))
 		{
@@ -113,15 +128,15 @@ class RSFormModelConditions extends JModel
 		if ($condition->store())
 		{
 			$this->_db->setQuery("DELETE FROM #__rsform_condition_details WHERE condition_id='".(int) $condition->id."'");
-			$this->_db->query();
+			$this->_db->execute();
 			
 			$component_ids 	= JRequest::getVar('detail_component_id');
 			$operators 		= JRequest::getVar('operator');
-			$values 		= JRequest::getVar('value');
+			$values 		= JRequest::getVar('value', null, 'default', 'none', JREQUEST_ALLOWRAW);
 			
 			for ($i=0; $i<count($component_ids); $i++)
 			{
-				$detail =& JTable::getInstance('RSForm_Condition_Details', 'Table');
+				$detail = JTable::getInstance('RSForm_Condition_Details', 'Table');
 				$detail->condition_id 	= $condition->id;
 				$detail->component_id 	= $component_ids[$i];
 				$detail->operator 		= $operators[$i];
@@ -143,8 +158,8 @@ class RSFormModelConditions extends JModel
 		$cid = JRequest::getInt('cid');
 		
 		$this->_db->setQuery("DELETE FROM #__rsform_conditions WHERE id='".$cid."'");
-		$this->_db->query();
+		$this->_db->execute();
 		$this->_db->setQuery("DELETE FROM #__rsform_condition_details WHERE condition_id='".$cid."'");
-		$this->_db->query();
+		$this->_db->execute();
 	}
 }

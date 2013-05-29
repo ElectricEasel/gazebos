@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -10,12 +10,12 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-class RSFormViewForms extends JView
+class RSFormViewForms extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		$mainframe =& JFactory::getApplication();
-		$document =& JFactory::getDocument();
+		$mainframe = JFactory::getApplication();
+		$document  = JFactory::getDocument();
 		$document->addCustomTag('<!--[if IE 7]><link href="'.JURI::root().'administrator/components/com_rsform/assets/css/styleie.css" rel="stylesheet" type="text/css" /><![endif]-->');
 		
 		if (RSFormProHelper::getConfig('global.codemirror'))
@@ -34,28 +34,23 @@ class RSFormViewForms extends JView
 		
 		JToolBarHelper::title('RSForm! Pro','rsform');
 		
-		if (RSFormProHelper::isJ16())
-		{
-			$lang =& JFactory::getLanguage();
-			$lang->load('com_rsform.sys', JPATH_ADMINISTRATOR);
-			
-			JSubMenuHelper::addEntry(JText::_('COM_RSFORM_MANAGE_FORMS'), 'index.php?option=com_rsform&task=forms.manage', true);
-			JSubMenuHelper::addEntry(JText::_('COM_RSFORM_MANAGE_SUBMISSIONS'), 'index.php?option=com_rsform&task=submissions.manage');
-			JSubMenuHelper::addEntry(JText::_('COM_RSFORM_CONFIGURATION'), 'index.php?option=com_rsform&task=configuration.edit');
-			JSubMenuHelper::addEntry(JText::_('COM_RSFORM_BACKUP_RESTORE'), 'index.php?option=com_rsform&task=backup.restore');
-			JSubMenuHelper::addEntry(JText::_('COM_RSFORM_UPDATES'), 'index.php?option=com_rsform&task=updates.manage');
-			JSubMenuHelper::addEntry(JText::_('COM_RSFORM_PLUGINS'), 'index.php?option=com_rsform&task=goto.plugins');
+		// adding the toolbar on 2.5
+		if (!RSFormProHelper::isJ('3.0')) {
+			$this->addToolbar();
 		}
 		
 		$layout = $this->getLayout();
-		$this->assign('isComponent', JRequest::getVar('tmpl') == 'component');
+		$this->isComponent = JRequest::getVar('tmpl') == 'component';
 		if ($layout == 'edit')
 		{
+			$submissionsIcon = RSFormProHelper::isJ('3.0') ? 'database' : 'forward';
+			$previewIcon	 = RSFormProHelper::isJ('3.0') ? 'new tab' : 'preview';
+			
 			JToolBarHelper::apply('forms.apply');
 			JToolBarHelper::save('forms.save');
 			JToolBarHelper::spacer();
-			JToolBarHelper::custom('forms.preview', 'preview', 'preview', RSFormProHelper::isJ16() ? JText::_('JGLOBAL_PREVIEW') : JText::_('PREVIEW'), false);
-			JToolBarHelper::custom('submissions.manage', 'forward', 'forward', JText::_('RSFP_SUBMISSIONS'), false);
+			JToolBarHelper::custom('forms.preview', $previewIcon, $previewIcon, JText::_('JGLOBAL_PREVIEW'), false);
+			JToolBarHelper::custom('submissions.back', $submissionsIcon, $submissionsIcon, JText::_('RSFP_SUBMISSIONS'), false);
 			JToolBarHelper::custom('components.copy', 'copy', 'copy', JText::_('RSFP_COPY_TO_FORM'), false);
 			JToolBarHelper::custom('components.duplicate', 'copy', 'copy', JText::_('RSFP_DUPLICATE'), false);
 			JToolBarHelper::deleteList(JText::_('VALIDDELETEITEMS'), 'components.remove', RSFormProHelper::isJ16() ? JText::_('JTOOLBAR_DELETE') : JText::_('DELETE'));
@@ -64,55 +59,70 @@ class RSFormViewForms extends JView
 			JToolBarHelper::spacer();
 			JToolBarHelper::cancel('forms.cancel');
 			
-			$this->assignRef('tabposition', JRequest::getInt('tabposition', 0));
-			$this->assignRef('tab', JRequest::getInt('tab', 0));
-			$this->assignRef('form', $this->get('form'));
+			$this->tabposition = JRequest::getInt('tabposition', 0);
+			$this->tab 		   = JRequest::getInt('tab', 0);
+			$this->form 	   = $this->get('form');
+			$this->form_post   = $this->get('formPost');
 			
-			$this->assign('hasSubmitButton', $this->get('hasSubmitButton'));
+			$this->hasSubmitButton = $this->get('hasSubmitButton');
 			
 			JToolBarHelper::title('RSForm! Pro <small>['.JText::sprintf('RSFP_EDITING_FORM', $this->form->FormTitle).']</small>','rsform');
 			
-			$this->assignRef('fields', $this->get('fields'));
-			$this->assignRef('quickfields', $this->get('quickfields'));
-			$this->assignRef('pagination', $this->get('fieldspagination'));
+			$this->fields = $this->get('fields');
+			$this->quickfields = $this->get('quickfields');
+			$this->pagination = $this->get('fieldspagination');
 			
-			$lists['Published'] = JHTML::_('select.booleanlist','Published','class="inputbox"',$this->form->Published);
-			$lists['keepdata'] = JHTML::_('select.booleanlist','Keepdata','class="inputbox"',$this->form->Keepdata);
-			$lists['confirmsubmission'] = JHTML::_('select.booleanlist','ConfirmSubmission','class="inputbox"',$this->form->ConfirmSubmission);
-			$lists['ShowThankyou'] = JHTML::_('select.booleanlist','ShowThankyou','class="inputbox" onclick="enableThankyou(this.value);"',$this->form->ShowThankyou);
-			$lists['ShowContinue'] = JHTML::_('select.booleanlist', 'ShowContinue', 'class="inputbox"'.(!$this->form->ShowThankyou ? 'disabled="disabled"' : ''), $this->form->ShowContinue);
-			$lists['UserEmailMode'] = JHTML::_('select.booleanlist', 'UserEmailMode', 'class="inputbox" onclick="enableEmailMode(\'User\', this.value)"', $this->form->UserEmailMode, JText::_('HTML'), JText::_('RSFP_COMP_FIELD_TEXT'));
-			$lists['UserEmailAttach'] = JHTML::_('select.booleanlist', 'UserEmailAttach', 'class="inputbox" onclick="enableAttachFile(this.value)"', $this->form->UserEmailAttach);
-			$lists['AdminEmailMode'] = JHTML::_('select.booleanlist', 'AdminEmailMode', 'class="inputbox" onclick="enableEmailMode(\'Admin\', this.value)"', $this->form->AdminEmailMode, JText::_('HTML'), JText::_('RSFP_COMP_FIELD_TEXT'));
-			$lists['MetaTitle'] = JHTML::_('select.booleanlist', 'MetaTitle', 'class="inputbox"', $this->form->MetaTitle);
-			$lists['TextareaNewLines'] = JHTML::_('select.booleanlist', 'TextareaNewLines', 'class="inputbox"', $this->form->TextareaNewLines);
-			$lists['AjaxValidation'] = JHTML::_('select.booleanlist', 'AjaxValidation', 'class="inputbox"', $this->form->AjaxValidation);
+			$lists['Published'] = $this->renderHTML('select.booleanlist','Published','',$this->form->Published);
+			$lists['ShowFormTitle'] = $this->renderHTML('select.booleanlist','ShowFormTitle','',$this->form->ShowFormTitle);
+			$lists['keepdata'] = $this->renderHTML('select.booleanlist','Keepdata','',$this->form->Keepdata);
+			$lists['confirmsubmission'] = $this->renderHTML('select.booleanlist','ConfirmSubmission','',$this->form->ConfirmSubmission);
+			$lists['ShowThankyou'] = $this->renderHTML('select.booleanlist','ShowThankyou','onclick="enableThankyou(this.value);"',$this->form->ShowThankyou);
+			$lists['ShowContinue'] = $this->renderHTML('select.booleanlist', 'ShowContinue', !$this->form->ShowThankyou ? 'disabled="true"' : '', $this->form->ShowContinue);
+			$lists['UserEmailMode'] = $this->renderHTML('select.booleanlist', 'UserEmailMode', 'onclick="enableEmailMode(\'User\', this.value)"', $this->form->UserEmailMode, JText::_('HTML'), JText::_('RSFP_COMP_FIELD_TEXT'));
+			$lists['UserEmailAttach'] = $this->renderHTML('select.booleanlist', 'UserEmailAttach', 'onclick="enableAttachFile(this.value)"', $this->form->UserEmailAttach);
+			$lists['AdminEmailMode'] = $this->renderHTML('select.booleanlist', 'AdminEmailMode', 'onclick="enableEmailMode(\'Admin\', this.value)"', $this->form->AdminEmailMode, JText::_('HTML'), JText::_('RSFP_COMP_FIELD_TEXT'));
+			$lists['MetaTitle'] = $this->renderHTML('select.booleanlist', 'MetaTitle', '', $this->form->MetaTitle);
+			$lists['TextareaNewLines'] = $this->renderHTML('select.booleanlist', 'TextareaNewLines', '', $this->form->TextareaNewLines);
+			$lists['AjaxValidation'] = $this->renderHTML('select.booleanlist', 'AjaxValidation', '', $this->form->AjaxValidation);
+			$lists['FormLayoutAutogenerate'] = $this->renderHTML('select.booleanlist', 'FormLayoutAutogenerate', 'onclick="changeFormAutoGenerateLayout('.$this->form->FormId.', this.value);"', $this->form->FormLayoutAutogenerate);
 			
-			$this->assignRef('themes', $this->get('themes'));
+			$lists['post_enabled'] 	= $this->renderHTML('select.booleanlist', 'form_post[enabled]', '', $this->form_post->enabled);
+			$lists['post_method'] 	= $this->renderHTML('select.booleanlist', 'form_post[method]', '', $this->form_post->method, JText::_('RSFP_POST_METHOD_POST'), JText::_('RSFP_POST_METHOD_GET'));
+			$lists['post_silent'] 	= $this->renderHTML('select.booleanlist', 'form_post[silent]', '', $this->form_post->silent);
 			
-			$this->assignRef('lang', $this->get('lang'));
+			$this->themes = $this->get('themes');
+			$this->lang = $this->get('lang');
+			
+			// workaround for first time visit
+			$session 	 = JFactory::getSession();
+			$session->set('com_rsform.form.'.$this->form->FormId.'.lang', $this->lang);
+			
 			$lists['Languages'] = JHTML::_('select.genericlist', $this->get('languages'), 'Language', 'onchange="submitbutton(\'changeLanguage\')"', 'value', 'text', $this->lang);
 			
-			$this->assignRef('mappings',$this->get('mappings'));
-			$this->assignRef('mpagination',$this->get('mpagination'));
-			$this->assignRef('conditions',$this->get('conditions'));
-			$this->assignRef('formId',$this->form->FormId);
-			$this->assignRef('emails',$this->get('emails'));
+			$this->mappings = $this->get('mappings');
+			$this->mpagination = $this->get('mpagination');
+			$this->conditions = $this->get('conditions');
+			$this->formId = $this->form->FormId;
+			$this->emails = $this->get('emails');
 			
-			$this->assignRef('lists', $lists);
+			$this->lists = $lists;
 		}
 		elseif ($layout == 'new')
 		{
-			JToolBarHelper::custom('forms.new.steptwo', 'forward', 'forward', RSFormProHelper::isJ16() ? JText::_('JNEXT') : JText::_('Next'), false);
+			$nextIcon = RSFormProHelper::isJ('3.0') ? 'next' : 'forward';
+			
+			JToolBarHelper::custom('forms.new.steptwo', $nextIcon, $nextIcon, JText::_('JNEXT'), false);
 			JToolBarHelper::cancel('forms.cancel');
 		}
 		elseif ($layout == 'new2')
 		{
-			JToolBarHelper::custom('forms.new.stepthree', 'forward', 'forward', RSFormProHelper::isJ16() ? JText::_('JNEXT') : JText::_('Next'), false);
+			$nextIcon = RSFormProHelper::isJ('3.0') ? 'next' : 'forward';
+			
+			JToolBarHelper::custom('forms.new.stepthree', $nextIcon, $nextIcon, JText::_('JNEXT'), false);
 			JToolBarHelper::cancel('forms.cancel');
 			
-			$lists['AdminEmail'] = JHTML::_('select.booleanlist', 'AdminEmail', 'class="inputbox" onclick="changeAdminEmail(this.value)"', 1);
-			$lists['UserEmail'] = JHTML::_('select.booleanlist', 'UserEmail', 'class="inputbox"', 1);
+			$lists['AdminEmail'] = $this->renderHTML('select.booleanlist', 'AdminEmail', 'onclick="changeAdminEmail(this.value)"', 1);
+			$lists['UserEmail'] = $this->renderHTML('select.booleanlist', 'UserEmail', '', 1);
 			$actions = array(
 				JHTML::_('select.option', 'refresh', JText::_('RSFP_SUBMISSION_REFRESH_PAGE')),
 				JHTML::_('select.option', 'thankyou', JText::_('RSFP_SUBMISSION_THANKYOU')),
@@ -120,17 +130,19 @@ class RSFormViewForms extends JView
 			);
 			$lists['SubmissionAction'] = JHTML::_('select.genericlist', $actions, 'SubmissionAction', 'onclick="changeSubmissionAction(this.value)"');
 			
-			$this->assignRef('adminEmail', $this->get('adminEmail'));
-			$this->assignRef('lists', $lists);
-			$this->assignRef('editor', JFactory::getEditor());
+			$this->adminEmail = $this->get('adminEmail');
+			$this->lists = $lists;
+			$this->editor = JFactory::getEditor();
 		}
 		elseif ($layout == 'new3')
 		{
-			JToolBarHelper::custom('forms.new.stepfinal', 'forward', 'forward', JText::_('Finish'), false);
+			$nextIcon = RSFormProHelper::isJ('3.0') ? 'next' : 'forward';
+			
+			JToolBarHelper::custom('forms.new.stepfinal', $nextIcon, $nextIcon, JText::_('Finish'), false);
 			JToolBarHelper::cancel('forms.cancel');
 			
 			$lists['predefinedForms'] = JHTML::_('select.genericlist', $this->get('predefinedforms'), 'predefinedForm', '');
-			$this->assignRef('lists', $lists);
+			$this->lists = $lists;
 		}
 		elseif ($layout == 'component_copy')
 		{
@@ -140,60 +152,63 @@ class RSFormViewForms extends JView
 			$formlist = $this->get('formlist');
 			$lists['forms'] = JHTML::_('select.genericlist', $formlist, 'toFormId', '', 'value', 'text');
 			
-			$this->assign('formId', JRequest::getInt('formId'));
-			$this->assign('cids', JRequest::getVar('cid', array()));
-			$this->assignRef('lists', $lists);
+			$this->formId = JRequest::getInt('formId');
+			$this->cids = JRequest::getVar('cid', array());
+			$this->lists = $lists;
 		}
 		elseif ($layout == 'richtext')
 		{
-			$this->assignRef('editor', JFactory::getEditor());
-			$this->assign('noEditor', JRequest::getInt('noEditor'));
-			$this->assign('formId', JRequest::getInt('formId'));
-			$this->assign('editorName', JRequest::getCmd('opener'));
-			$this->assign('editorText', $this->get('editorText'));
+			$this->editor = JFactory::getEditor();
+			$this->noEditor = JRequest::getInt('noEditor');
+			$this->formId = JRequest::getInt('formId');
+			$this->editorName = JRequest::getCmd('opener');
+			$this->editorText = $this->get('editorText');
 		}
 		elseif ($layout == 'edit_mappings')
 		{
 			$formId = JRequest::getInt('formId');
-			$this->assignRef('mappings',$this->get('mappings'));
-			$this->assignRef('mpagination',$this->get('mpagination'));
-			$this->assignRef('formId',$formId);
+			$this->mappings = $this->get('mappings');
+			$this->mpagination = $this->get('mpagination');
+			$this->formId = $formId;
 		}
 		elseif ($layout == 'edit_conditions')
 		{
 			$formId = JRequest::getInt('formId');
-			$this->assignRef('conditions',$this->get('conditions'));
-			$this->assignRef('formId',$formId);
+			$this->conditions = $this->get('conditions');
+			$this->formId = $formId;
 		}
 		elseif ($layout == 'edit_emails')
 		{
-			$this->assignRef('emails',$this->get('emails'));
+			$this->emails = $this->get('emails');
 		}
 		elseif ($layout == 'show')
 		{
-			$db =& JFactory::getDBO();
-			$lang =& JFactory::getLanguage();
+			$db = JFactory::getDBO();
+			$lang = JFactory::getLanguage();
 			$lang->load('com_rsform', JPATH_SITE);
 			$formId = JRequest::getInt('formId');
 			
 			$db->setQuery("SELECT FormTitle FROM #__rsform_forms WHERE FormId = ".$formId." ");
 			JToolBarHelper::title($db->loadResult(),'rsform');
 			
-			$this->assignRef('formId',$formId);
+			$this->formId = $formId;
 		}
 		elseif ($layout == 'emails')
 		{
-			$this->assignRef('row', $this->get('email'));
-			$lists['mode'] = JHTML::_('select.booleanlist', 'mode', 'class="inputbox" onclick="showMode(this.value);"', $this->row->mode, JText::_('HTML'), JText::_('Text'));
-			$this->assignRef('lists', $lists);
-			$this->assignRef('editor', JFactory::getEditor());
-			$this->assignRef('quickfields', $this->get('quickfields'));
-			$this->assignRef('lang', $this->get('emaillang'));
+			$this->row = $this->get('email');
+			$this->lang = $this->get('emaillang');
+			$lists['mode'] = $this->renderHTML('select.booleanlist', 'mode', 'onclick="showMode(this.value);"', $this->row->mode, JText::_('HTML'), JText::_('Text'));
 			$lists['Languages'] = JHTML::_('select.genericlist', $this->get('languages'), 'ELanguage', 'onchange="submitbutton(\'changeEmailLanguage\')"', 'value', 'text', $this->lang);
+			$this->lists = $lists;
+			$this->editor = JFactory::getEditor();
+			$this->quickfields = $this->get('quickfields');
 		}
 		else
 		{
-			JToolBarHelper::addNewX('forms.add', RSFormProHelper::isJ16() ? JText::_('JTOOLBAR_NEW') : JText::_('New'));
+			$this->addToolbar();
+			$this->sidebar = $this->get('Sidebar');
+			
+			JToolbarHelper::addNew('forms.add', RSFormProHelper::isJ16() ? JText::_('JTOOLBAR_NEW') : JText::_('New'));
 			JToolBarHelper::spacer();
 			JToolBarHelper::custom('forms.copy', 'copy.png', 'copy_f2.png', JText::_('RSFP_DUPLICATE'), false);
 			JToolBarHelper::spacer();
@@ -202,11 +217,11 @@ class RSFormViewForms extends JView
 			JToolBarHelper::publishList('forms.publish', RSFormProHelper::isJ16() ? JText::_('JTOOLBAR_PUBLISH') : JText::_('Publish'));
 			JToolBarHelper::unpublishList('forms.unpublish', RSFormProHelper::isJ16() ? JText::_('JTOOLBAR_UNPUBLISH') : JText::_('Unpublish'));
 		
-			$this->assignRef('forms', $this->get('forms'));
-			$this->assignRef('pagination', $this->get('pagination'));
+			$this->forms = $this->get('forms');
+			$this->pagination = $this->get('pagination');
 		
-			$this->assignRef('sortColumn', $this->get('sortColumn'));
-			$this->assignRef('sortOrder', $this->get('sortOrder'));
+			$this->sortColumn = $this->get('sortColumn');
+			$this->sortOrder = $this->get('sortOrder');
 		}
 		
 		parent::display($tpl);
@@ -214,7 +229,64 @@ class RSFormViewForms extends JView
 	
 	function triggerEvent($event)
 	{
-		$mainframe =& JFactory::getApplication();
-		$mainframe->triggerEvent($event);
+		$app = JFactory::getApplication();
+		$app->triggerEvent($event);
+	}
+	
+	protected function renderHTML() {
+		$args = func_get_args();
+		if (RSFormProHelper::isJ('3.0')) {
+			if ($args[0] == 'select.booleanlist') {
+				// 0 - type
+				// 1 - name
+				// 2 - additional
+				// 3 - value
+				// 4 - yes
+				// 5 - no
+				
+				// get the radio element
+				$radio = JFormHelper::loadFieldType('radio');
+				
+				// setup the properties
+				$name	 	= $this->escape($args[1]);
+				$additional = isset($args[2]) ? (string) $args[2] : '';
+				$value		= $args[3];
+				$yes 	 	= isset($args[4]) ? $this->escape($args[4]) : 'JYES';
+				$no 	 	= isset($args[5]) ? $this->escape($args[5]) : 'JNO';
+				
+				// prepare the xml
+				$element = new SimpleXMLElement('<field name="'.$name.'" type="radio" class="btn-group"><option '.$additional.' value="0">'.$no.'</option><option '.$additional.' value="1">'.$yes.'</option></field>');
+				
+				// run
+				$radio->setup($element, $value);
+				
+				return $radio->input;
+			}
+		} else {
+			if ($args[0] == 'select.booleanlist') {
+				$name	 	= $args[1];
+				$additional = isset($args[2]) ? (string) $args[2] : '';
+				$value		= $args[3];
+				$yes 	 	= isset($args[4]) ? $this->escape($args[4]) : 'JYES';
+				$no 	 	= isset($args[5]) ? $this->escape($args[5]) : 'JNO';
+				
+				return JHtml::_($args[0], $name, $additional, $value, $yes, $no);
+			}
+		}
+	}
+	
+	protected function addToolbar() {
+		static $called;
+		
+		// this is a workaround so if called multiple times it will not duplicate the buttons
+		if (!$called) {
+			// set title
+			JToolBarHelper::title('RSForm! Pro', 'rsform');
+			
+			require_once JPATH_COMPONENT.'/helpers/toolbar.php';
+			RSFormProToolbarHelper::addToolbar('forms');
+			
+			$called = true;
+		}
 	}
 }

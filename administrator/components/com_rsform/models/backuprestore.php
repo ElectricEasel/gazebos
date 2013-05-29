@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class RSFormModelBackupRestore extends JModel
+class RSFormModelBackupRestore extends JModelLegacy
 {
 	var $_data = null;
 	var $_total = 0;
@@ -51,21 +51,40 @@ class RSFormModelBackupRestore extends JModel
 	
 	function getSortColumn()
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option    =  JRequest::getVar('option', 'com_rsform');
 		return $mainframe->getUserStateFromRequest($option.'.forms.filter_order', 'filter_order', 'FormId', 'word');
 	}
 	
 	function getSortOrder()
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option    =  JRequest::getVar('option', 'com_rsform');
 		return $mainframe->getUserStateFromRequest($option.'.forms.filter_order_Dir', 'filter_order_Dir', 'ASC', 'word');
 	}
 	
 	function getIsWritable()
 	{
-		return is_writable(JPATH_SITE.DS.'media');
+		return is_writable(JPATH_SITE.'/media');
+	}
+	
+	public function getRSFieldset() {
+		require_once JPATH_COMPONENT.'/helpers/adapters/fieldset.php';
+		
+		$fieldset = new RSFieldset();
+		return $fieldset;
+	}
+	
+	public function getRSTabs() {
+		require_once JPATH_COMPONENT.'/helpers/adapters/tabs.php';
+		
+		$tabs = new RSTabs('com-rsform-configuration');
+		return $tabs;
+	}
+	
+	public function getSideBar() {
+		require_once JPATH_COMPONENT.'/helpers/toolbar.php';
+
+		return RSFormProToolbarHelper::render();
 	}
 }
-?>

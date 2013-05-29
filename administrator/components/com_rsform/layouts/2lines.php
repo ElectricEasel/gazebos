@@ -2,16 +2,20 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-$out ='<div class="componentheading">{global:formtitle}</div>'."\n";
+if ($this->_form->ShowFormTitle) {
+	$out = '<div class="componentheading">{global:formtitle}</div>'."\n";
+} else {
+	$out = '';
+}
 $out.='{error}'."\n";
-$out.="<div>\n";
+$out.='<div class="form2LinesLayout">'."\n";
 
 $page_num = 0;
 if (!empty($pagefields))
@@ -22,6 +26,11 @@ if (!empty($pagefields))
 
 foreach ($quickfields as $quickfield)
 {
+	// skip...
+	if (in_array($quickfield, $hiddenfields)) {
+		continue;
+	}
+	
 	if (in_array($quickfield, $pagefields))
 	{
 		$page_num++;
@@ -60,8 +69,8 @@ if ($out != $this->_form->FormLayout && $this->_form->FormId)
 	// Clean it
 	// Update the layout
 	$db = JFactory::getDBO();
-	$db->setQuery("UPDATE #__rsform_forms SET FormLayout='".$db->getEscaped($out)."' WHERE FormId=".$this->_form->FormId);
-	$db->query();
+	$db->setQuery("UPDATE #__rsform_forms SET FormLayout='".$db->escape($out)."' WHERE FormId=".$this->_form->FormId);
+	$db->execute();
 }
 
 return $out;

@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -19,7 +19,7 @@ JHTML::_('behavior.calendar');
 <span><?php echo JText::sprintf('RSFP_YOU_ARE_EDITING_IN', $this->lang, RSFormProHelper::translateIcon()); ?></span>
 
 <div id="rsform_container">
-	<div id="state"></div>
+	<div id="state" style="display: none;"><img src="components/com_rsform/assets/images/load.gif" alt="<?php echo JText::_('RSFP_PROCESSING'); ?>" /><?php echo JText::_('RSFP_PROCESSING'); ?></div>
 	
 	<ul id="rsform_maintabs">
 		<li><a href="javascript: void(0);" id="components"><span><?php echo JText::_('RSFP_COMPONENTS_TAB_TITLE'); ?></span></a></li>
@@ -52,79 +52,79 @@ JHTML::_('behavior.calendar');
 			<li><a href="javascript: void(0);" id="formlayout"><span><?php echo JText::_('RSFP_FORM_LAYOUT'); ?></span></a></li>
 			<li><a href="javascript: void(0);" id="formtheme"><span><?php echo JText::_('RSFP_FORM_THEME'); ?></span></a></li>
 			<li><a href="javascript: void(0);" id="cssandjavascript"><span><?php echo JText::_('RSFP_CSS_JS'); ?></span></a></li>
+			<?php $this->triggerEvent('rsfp_bk_onAfterShowFormDesignTabsTab'); ?>
 			<li class="rsform_navtitle"><?php echo JText::_('RSFP_FORM_TAB'); ?></li>
 			<li><a href="javascript: void(0);" id="editform"><span><?php echo JText::_('RSFP_FORM_EDIT'); ?></span></a></li>
 			<li><a href="javascript: void(0);" id="editformattributes"><span><?php echo JText::_('RSFP_FORM_EDIT_ATTRIBUTES'); ?></span></a></li>
 			<li><a href="javascript: void(0);" id="metatags"><span><?php echo JText::_('RSFP_FORM_META_TAGS'); ?></span></a></li>
+			<?php $this->triggerEvent('rsfp_bk_onAfterShowFormFormTabsTab'); ?>
 			<li class="rsform_navtitle"><?php echo JText::_('RSFP_EMAILS_TAB'); ?></li>
 			<li><a href="javascript: void(0);" id="useremails"><span><?php echo JText::_('RSFP_USER_EMAILS'); ?></span></a></li>
 			<li><a href="javascript: void(0);" id="adminemails"><span><?php echo JText::_('RSFP_ADMIN_EMAILS'); ?></span></a></li>
 			<li><a href="javascript: void(0);" id="emails"><span><?php echo JText::_('RSFP_FORM_EMAILS'); ?></span></a></li>
+			<?php $this->triggerEvent('rsfp_bk_onAfterShowFormEmailsTabsTab'); ?>
 			<li class="rsform_navtitle"><?php echo JText::_('RSFP_SCRIPTS_TAB'); ?></li>
 			<li><a href="javascript: void(0);" id="scripts"><span><?php echo JText::_('RSFP_FORM_SCRIPTS'); ?></span></a></li>
 			<li><a href="javascript: void(0);" id="emailscripts"><span><?php echo JText::_('RSFP_EMAIL_SCRIPTS'); ?></span></a></li>
+			<?php $this->triggerEvent('rsfp_bk_onAfterShowFormScriptsTabsTab'); ?>
 			<li class="rsform_navtitle"><?php echo JText::_('RSFP_EXTRAS_TAB'); ?></li>
 			<li><a href="javascript: void(0);" id="mappings"><span><?php echo JText::_('RSFP_FORM_MAPPINGS'); ?></span></a></li>
 			<li><a href="javascript: void(0);" id="conditions"><span><?php echo JText::_('RSFP_CONDITIONAL_FIELDS'); ?></span></a></li>
+			<li><a href="javascript: void(0);" id="postscript"><span><?php echo JText::_('RSFP_POST_TO_LOCATION'); ?></span></a></li>
 			<?php $this->triggerEvent('rsfp_bk_onAfterShowFormEditTabsTab'); ?>
 		</ul>
 		
 		<div id="propertiescontent">
 			<div id="formlayoutdiv">
-				<h1><?php echo JText::_('RSFP_FORM_LAYOUT'); ?></h1>
 				<p><?php echo $this->loadTemplate('layout'); ?></p>
 			</div><!-- formlayout -->
 			<div id="formthemediv">
-				<h1><?php echo JText::_('RSFP_FORM_THEME'); ?></h1>
 				<p><?php echo $this->loadTemplate('theme'); ?></p>
 			</div><!-- formthemediv -->
 			<div id="cssandjavascriptdiv">
-				<h1><?php echo JText::_('RSFP_CSS_JS'); ?></h1>
 				<p><?php echo $this->loadTemplate('cssjs'); ?></p>
 			</div><!-- cssandjavascript -->
+			<?php $this->triggerEvent('rsfp_bk_onAfterShowFormDesignTabs'); ?>
 			<div id="editformdiv">
-				<h1><?php echo JText::_('RSFP_FORM_EDIT'); ?></h1>
 				<p><?php echo $this->loadTemplate('form'); ?></p>
 			</div><!-- editform -->
 			<div id="editformattributesdiv">
-				<h1><?php echo JText::_('RSFP_FORM_EDIT_ATTRIBUTES'); ?></h1>
 				<p><?php echo $this->loadTemplate('formattr'); ?></p>
 			</div><!-- editformattributes -->
 			<div id="metatagsdiv">
-				<h1><?php echo JText::_('RSFP_FORM_META_TAGS'); ?></h1>
 				<p><?php echo $this->loadTemplate('meta'); ?></p>
 			</div><!-- metatags -->
+			<?php $this->triggerEvent('rsfp_bk_onAfterShowFormFormTabs'); ?>
 			<div id="useremailsdiv">
-				<h1><?php echo JText::_('RSFP_USER_EMAILS'); ?></h1>
 				<p><?php echo $this->loadTemplate('user'); ?></p>
 			</div><!-- useremails -->
 			<div id="adminemailsdiv">
-				<h1><?php echo JText::_('RSFP_ADMIN_EMAILS'); ?></h1>
 				<p><?php echo $this->loadTemplate('admin'); ?></p>
 			</div><!-- adminemails -->
 			<div id="emailsdiv">
-				<h1><?php echo JText::_('RSFP_FORM_EMAILS'); ?></h1>
 				<p><?php echo $this->loadTemplate('emails'); ?></p>
 			</div><!-- emails -->
+			<?php $this->triggerEvent('rsfp_bk_onAfterShowFormEmailsTabs'); ?>
 			<div id="scriptsdiv">
-				<h1><?php echo JText::_('RSFP_FORM_SCRIPTS'); ?></h1>
 				<p><?php echo $this->loadTemplate('scripts'); ?></p>
 			</div><!-- scripts -->
 			<div id="emailscriptsdiv">
-				<h1><?php echo JText::_('RSFP_EMAIL_SCRIPTS'); ?></h1>
 				<p><?php echo $this->loadTemplate('emailscripts'); ?></p>
 			</div><!-- emailscripts -->
+			<?php $this->triggerEvent('rsfp_bk_onAfterShowFormScriptsTabs'); ?>
 			<div id="mappingsdiv">
-				<h1><?php echo JText::_('RSFP_FORM_MAPPINGS'); ?></h1>
 				<p><?php echo $this->loadTemplate('mappings'); ?></p>
 			</div><!-- mappings -->
 			<div id="conditionsdiv">
-				<h1><?php echo JText::_('RSFP_CONDITIONAL_FIELDS'); ?></h1>
 				<p><?php echo $this->loadTemplate('conditions'); ?></p>
 			</div>
+			<div id="postscriptdiv">
+				<p><?php echo $this->loadTemplate('post'); ?></p>
+			</div><!-- postscriptdiv -->
 			<?php $this->triggerEvent('rsfp_bk_onAfterShowFormEditTabs'); ?>
 		</div>
 	</div>
+	<div class="rsform_clear_both"></div>
 </div>
 	
 	<input type="hidden" name="tabposition" id="tabposition" value="0" />
@@ -134,88 +134,91 @@ JHTML::_('behavior.calendar');
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="option" value="com_rsform" />
 	<input type="hidden" name="Lang" value="<?php echo $this->form->Lang; ?>" />
+	<?php if (JRequest::getVar('tmpl') == 'component') { ?>
+	<input type="hidden" name="tmpl" value="component" />
+	<?php } ?>
 </form>
 	
 <script type="text/javascript">
-jQuery(document).ready(function(){
-	jQuery('#rsform_tab2').formTabs(<?php echo $this->tab; ?>);
-	jQuery('#rsform_textboxdiv').formTabs(0);
+RSFormPro.$(document).ready(function(){
+	RSFormPro.$('#rsform_tab2').formTabs(<?php echo $this->tab; ?>);
+	RSFormPro.$('#rsform_textboxdiv').formTabs(0);
 	<?php if (!$this->tabposition) { ?>
-	jQuery("#rsform_tab1").show();
-	jQuery("#rsform_tab2").hide();
-	jQuery("#properties").removeClass('active');
-	jQuery("#components").addClass('active');
+	RSFormPro.$("#rsform_tab1").show();
+	RSFormPro.$("#rsform_tab2").hide();
+	RSFormPro.$("#properties").removeClass('active');
+	RSFormPro.$("#components").addClass('active');
 	<?php } else { ?>
-	jQuery("#rsform_tab2").show();
-	jQuery("#rsform_tab1").hide();
-	jQuery("#properties").addClass('active');
-	jQuery("#components").removeClass('active');
+	RSFormPro.$("#rsform_tab2").show();
+	RSFormPro.$("#rsform_tab1").hide();
+	RSFormPro.$("#properties").addClass('active');
+	RSFormPro.$("#components").removeClass('active');
 	<?php } ?>
 });
 
-jQuery.formTabs = {
+RSFormPro.$.formTabs = {
 	tabTitles: {},
 	tabContents: {},
 	
 	build: function (startindex) {
 		this.each(function (index, el) {
-			var tid = jQuery(el).attr('id');
-			jQuery.formTabs.grabElements(el,tid);
-			jQuery.formTabs.makeTitlesClickable(tid);
-			jQuery.formTabs.setAllContentsInactive(tid);
-			jQuery.formTabs.setTitleActive(startindex,tid);
-			jQuery.formTabs.setContentActive(startindex,tid);
+			var tid = RSFormPro.$(el).attr('id');
+			RSFormPro.$.formTabs.grabElements(el,tid);
+			RSFormPro.$.formTabs.makeTitlesClickable(tid);
+			RSFormPro.$.formTabs.setAllContentsInactive(tid);
+			RSFormPro.$.formTabs.setTitleActive(startindex,tid);
+			RSFormPro.$.formTabs.setContentActive(startindex,tid);
 		});
 	},
 	
 	grabElements: function(el,tid) {
-		var children = jQuery(el).children();
+		var children = RSFormPro.$(el).children();
 		children.each(function(index, child) {			
 			if (index == 0)
-				jQuery.formTabs.tabTitles[tid] = jQuery(child).find('a');
+				RSFormPro.$.formTabs.tabTitles[tid] = RSFormPro.$(child).find('a');
 			else if (index == 1)
-				jQuery.formTabs.tabContents[tid] = jQuery(child).children();
+				RSFormPro.$.formTabs.tabContents[tid] = RSFormPro.$(child).children();
 		});
 	},
 	
 	setAllTitlesInactive: function (tid) {
 		this.tabTitles[tid].each(function(index, title) {
-			jQuery(title).removeClass('active');
+			RSFormPro.$(title).removeClass('active');
 		});
 	},
 	
 	setTitleActive: function (index,tid) {
 		index = parseInt(index);
 		if (tid == 'rsform_tab2') document.getElementById('ptab').value = index;
-		jQuery(this.tabTitles[tid][index]).addClass('active');
+		RSFormPro.$(this.tabTitles[tid][index]).addClass('active');
 	},
 	
 	setAllContentsInactive: function (tid) {
 		this.tabContents[tid].each(function(index, content) {
-			jQuery(content).hide();
+			RSFormPro.$(content).hide();
 		});
 	},
 	
 	setContentActive: function (index,tid) {
 		index = parseInt(index);
-		jQuery(this.tabContents[tid][index]).show();
+		RSFormPro.$(this.tabContents[tid][index]).show();
 	},
 	
 	makeTitlesClickable: function (tid) {
 		this.tabTitles[tid].each(function(index, title) {
-			jQuery(title).click(function () {
-				jQuery.formTabs.setAllTitlesInactive(tid);
-				jQuery.formTabs.setTitleActive(index,tid);
+			RSFormPro.$(title).click(function () {
+				RSFormPro.$.formTabs.setAllTitlesInactive(tid);
+				RSFormPro.$.formTabs.setTitleActive(index,tid);
 				
-				jQuery.formTabs.setAllContentsInactive(tid);
-				jQuery.formTabs.setContentActive(index,tid);
+				RSFormPro.$.formTabs.setAllContentsInactive(tid);
+				RSFormPro.$.formTabs.setContentActive(index,tid);
 			});
 		});
 	}
 }
 
-jQuery.fn.extend({
-	formTabs: jQuery.formTabs.build
+RSFormPro.$.fn.extend({
+	formTabs: RSFormPro.$.formTabs.build
 });
 
 function submitbutton(pressbutton)
@@ -255,7 +258,7 @@ function submitbutton(pressbutton)
 			alert('<?php echo JText::_('RSFP_UNIQUE_NAME_MSG', true);?>');
 		else
 		{
-			if (jQuery('#properties').hasClass('active'))
+			if (RSFormPro.$('#properties').hasClass('active'))
 				document.getElementById('tabposition').value = 1;	
 			submitform(pressbutton);
 		}
@@ -286,8 +289,8 @@ function listItemTask(cb, task)
 {
 	if (task == 'orderdown' || task == 'orderup')
 	{
-		var table = jQuery('#componentPreview');
-		currentRow = jQuery(document.getElementById(cb)).parent().parent();		
+		var table = RSFormPro.$('#componentPreview');
+		currentRow = RSFormPro.$(document.getElementById(cb)).parent().parent();		
 		if (task == 'orderdown')
 		{
 			try { currentRow.insertAfter(currentRow.next()); }
@@ -303,11 +306,11 @@ function listItemTask(cb, task)
 		return;
 	}
 	
-	document.getElementById('state').innerHTML='Processing...';
-	document.getElementById('state').style.color='rgb(255,0,0)';
+	stateLoading();
 	
 	xml=buildXmlHttp();
 	var url = 'index.php?option=com_rsform&task=' + task + '&format=raw&randomTime=' + Math.random();
+	
 	xml.open("POST", url, true);
 	
 	params = new Array();
@@ -321,18 +324,29 @@ function listItemTask(cb, task)
 	xml.setRequestHeader("Content-length", params.length);
 	xml.setRequestHeader("Connection", "close");
 
+	switch (task) {
+		case 'components.unpublish':
+		case 'components.publish':
+			var theId = 'publish' + cb;
+		break;
+		
+		case 'components.unsetrequired':
+		case 'components.setrequired':
+			var theId = 'required' + cb;
+		break;
+	}
+	
 	xml.send(params);
 	xml.onreadystatechange=function()
 	{
 		if(xml.readyState==4)
 		{
-			var published_cell = jQuery(document.getElementById(cb)).parent().parent().children()[7];
-			jQuery(published_cell).html(xml.responseText);
+			var cell = document.getElementById(theId);
+			RSFormPro.$(cell).html(xml.responseText);
 			
-			document.getElementById('state').innerHTML='Status: ok';
-			document.getElementById('state').style.color='';
+			stateDone();
 			
-			if (document.getElementById('FormLayoutAutogenerate').checked==true)
+			if (document.getElementById('FormLayoutAutogenerate1').checked==true)
 				generateLayout(<?php echo $this->form->FormId; ?>, 'no');
 		}
 	}
@@ -342,8 +356,8 @@ function orderMapping(mp, task)
 {
 	if (task == 'orderdown' || task == 'orderup')
 	{
-		var table = jQuery('#mappingTable');
-		currentRow = jQuery(document.getElementById(mp)).parent().parent();		
+		var table = RSFormPro.$('#mappingTable');
+		currentRow = RSFormPro.$(document.getElementById(mp)).parent().parent();		
 		if (task == 'orderdown')
 		{
 			try { currentRow.insertAfter(currentRow.next()); }
@@ -397,12 +411,12 @@ function enableEmailMode(type, value)
 	// HTML
 	if (value == 1)
 	{
-		document.getElementById(id).href = 'index.php?option=com_rsform&task=richtext.show&opener=' + opener + '&tmpl=component&formId=<?php echo $this->form->FormId; ?>';
+		document.getElementById(id).setAttribute('onclick', "openRSModal('index.php?option=com_rsform&task=richtext.show&opener=" + opener + "&formId=<?php echo $this->form->FormId; ?>&tmpl=component')");
 	}
 	// Text
 	else
 	{
-		document.getElementById(id).href = 'index.php?option=com_rsform&task=richtext.show&opener=' + opener + '&tmpl=component&formId=<?php echo $this->form->FormId; ?>&noEditor=1';
+		document.getElementById(id).setAttribute('onclick', "openRSModal('index.php?option=com_rsform&task=richtext.show&opener=" + opener + "&formId=<?php echo $this->form->FormId; ?>&tmpl=component&noEditor=1')");
 	}
 }
 
@@ -426,6 +440,8 @@ function RStranslateText(thetext)
 		return '<?php echo JText::_('RSFP_COMP_FIELD_VALIDATIONEXTRA', true); ?>';
 	else if (thetext == 'regex')
 		return '<?php echo JText::_('RSFP_COMP_FIELD_VALIDATIONEXTRAREGEX', true); ?>';
+	else if (thetext == 'sameas')
+		return '<?php echo JText::_('RSFP_COMP_FIELD_VALIDATIONEXTRASAMEAS', true); ?>';
 }
 
 toggleQuickAdd();

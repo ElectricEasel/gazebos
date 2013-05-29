@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class RSFormModelMappings extends JModel
+class RSFormModelMappings extends JModelLegacy
 {
 	var $_data = null;
 	var $_total = 0;
@@ -29,7 +29,7 @@ class RSFormModelMappings extends JModel
 	function getMapping()
 	{
 		$mid = JRequest::getInt('cid',0);
-		$row =& JTable::getInstance('RSForm_Mappings', 'Table');
+		$row = JTable::getInstance('RSForm_Mappings', 'Table');
 		$row->load($mid);
 		
 		return $row;
@@ -38,7 +38,7 @@ class RSFormModelMappings extends JModel
 	function save()
 	{
 		$post	= JRequest::get('post', JREQUEST_ALLOWRAW);
-		$row	=& JTable::getInstance('RSForm_Mappings', 'Table');
+		$row	= JTable::getInstance('RSForm_Mappings', 'Table');
 		
 		if (!$row->bind($post))
 		{
@@ -55,7 +55,7 @@ class RSFormModelMappings extends JModel
 		if (!empty($post))
 		foreach ($post as $key => $value)
 		{
-			$value = trim($value);
+			//$value = trim($value);
 			if (empty($value)) continue;
 			
 			if (substr($key,0,2) == 'f_')
@@ -102,7 +102,7 @@ class RSFormModelMappings extends JModel
 	function remove()
 	{
 		$mid	= JRequest::getInt('mid');
-		$row	=& JTable::getInstance('RSForm_Mappings', 'Table');
+		$row	= JTable::getInstance('RSForm_Mappings', 'Table');
 		$row->load($mid);
 		$formId = $row->formId;
 		
@@ -112,24 +112,24 @@ class RSFormModelMappings extends JModel
 	
 	function getColumns($config)
 	{
-		$db = $this->mappingDBO($config);
+		$db 	= $this->mappingDBO($config);
 		$tables = $db->getTableList();
-		$table = isset($config['table']) ? $config['table'] : '';
+		$table 	= isset($config['table']) ? $config['table'] : '';
 		
-		if (empty($table)) return array();
-		if (!in_array($table,$tables)) return array();
-		$columns = $db->getTableFields(RSFormProHelper::isJ16() ? $table : "`".$table."`");
-		
-		return $columns;
+		if (empty($table) || !in_array($table,$tables)) {
+			return false;
+		} else {
+			return $db->getTableColumns($table);
+		}
 	}
 	
 	function getFields()
 	{
-		$db		=& JFactory::getDBO();
+		$db		= JFactory::getDBO();
 		$formId	= JRequest::getInt('formId');
 		
 		$db->setQuery("SELECT p.PropertyValue FROM #__rsform_components c LEFT JOIN #__rsform_properties p ON (c.ComponentId=p.ComponentId) WHERE c.FormId='".(int) $formId."' AND p.PropertyName='NAME' ORDER BY c.Order");
-		return $db->loadResultArray();
+		return $db->loadColumn();
 	}
 	
 	function getMappingTables($config)
@@ -146,25 +146,41 @@ class RSFormModelMappings extends JModel
 	
 	function mappingDBO($config)
 	{
-		$database =& JFactory::getDBO();
+		$database = JFactory::getDBO();
 		if ($config['connection'])
 		{
 			$options = array(
+				'driver' => 'mysql',
 				'host' => 	  $config['host'],
 				'user' => 	  $config['username'],
 				'password' => $config['password'],
 				'database' => $config['database']
-				);
+			);
 			
+			if (!strlen($config['database'])) {
+				return 'Please select a database first.';
+			}
 			
-			$database2 = JDatabase::getInstance($options);
+			if (RSFormProHelper::isJ('3.0')) {
+				$database2 = JDatabaseDriver::getInstance($options);
+			} else {
+				$database2 = JDatabase::getInstance($options);
+			}
 			
-			if (is_a($database2,'JException'))
+			try {
+				$database2->connect();
+			} catch (RuntimeException $e) {
+				return $e->getMessage();
+			}
+			
+			if (is_a($database2,'JException') || is_a($database2,'JError'))
 				return $database2->getMessage();
+			
+			if (RSFormProHelper::isJ16() && $database2->getErrorNum())
+				return $database2->getErrorMsg();
 			
 			return $database2;
 		}
 		return $database;
 	}
 }
-?>

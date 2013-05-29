@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -13,7 +13,7 @@ jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.path');
 
-class RSFormModelFiles extends JModel
+class RSFormModelFiles extends JModelLegacy
 {
 	var $_folder = null;
 	var $_db;
@@ -27,7 +27,7 @@ class RSFormModelFiles extends JModel
 		if (is_dir(JRequest::getVar('folder')))
 		{
 			$this->_folder = JRequest::getVar('folder');
-			if (substr($this->_folder, -1) == DS)
+			if (substr($this->_folder, -1) == '/')
 				$this->_folder = substr($this->_folder, 0, -1);
 		}
 		else
@@ -43,7 +43,7 @@ class RSFormModelFiles extends JModel
 		{
 			$element = new stdClass();
 			$element->name = $folder;
-			$element->fullpath = $this->_folder.DS.$folder;
+			$element->fullpath = $this->_folder.'/'.$folder;
 			$folders[] = $element;
 		}
 		
@@ -59,7 +59,7 @@ class RSFormModelFiles extends JModel
 		{
 			$element = new stdClass();
 			$element->name = $file;
-			$element->fullpath = $this->_folder.DS.$file;
+			$element->fullpath = $this->_folder.'/'.$file;
 			$element->published = 1;
 			$files[] = $element;
 		}
@@ -69,7 +69,7 @@ class RSFormModelFiles extends JModel
 	
 	function getElements()
 	{		
-		$elements = explode(DS, $this->_folder);
+		$elements = explode('/', $this->_folder);
 		$navigation_path = '';
 		
 		if(!empty($elements))
@@ -80,7 +80,7 @@ class RSFormModelFiles extends JModel
 				$newelement->name = $element;
 				$newelement->fullpath = $navigation_path;
 				$elements[$i] = $newelement;
-				$navigation_path .= DS;
+				$navigation_path .= '/';
 			}
 		
 		return $elements;
@@ -93,10 +93,10 @@ class RSFormModelFiles extends JModel
 	
 	function getPrevious()
 	{
-		$elements = explode(DS, $this->_folder);
+		$elements = explode('/', $this->_folder);
 		if (count($elements) > 1)
 			array_pop($elements);
-		return implode(DS, $elements);
+		return implode('/', $elements);
 	}
 	
 	function upload()
@@ -104,7 +104,7 @@ class RSFormModelFiles extends JModel
 		$files = JRequest::get('files');
 		$upload = $files['upload'];
 		if (!$files['error'])
-			return JFile::upload($upload['tmp_name'], $this->getCurrent().DS.JFile::getName($upload['name']));
+			return JFile::upload($upload['tmp_name'], $this->getCurrent().'/'.JFile::getName($upload['name']));
 		else
 			return false;
 	}

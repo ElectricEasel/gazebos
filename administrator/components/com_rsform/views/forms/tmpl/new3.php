@@ -2,13 +2,13 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<form method="post" action="index.php?option=com_rsform&amp;task=forms.new.stepfinal" name="adminForm">
+<form method="post" action="index.php?option=com_rsform&amp;task=forms.new.stepfinal" name="adminForm" id="adminForm">
 	<fieldset>
 		<h3><?php echo JText::_('RSFP_NEW_FORM_STEP_3'); ?></h3>
 		<p><?php echo JText::_('RSFP_NEW_FORM_STEP_3_DESC'); ?></p>
@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 		</table>
 		
-		<button type="submit"><?php echo JText::_('Finish'); ?></button>
+		<button class="rs_button" type="submit"><?php echo JText::_('Finish'); ?></button>
 	</fieldset>
 	
 	<input type="hidden" name="option" value="com_rsform" />

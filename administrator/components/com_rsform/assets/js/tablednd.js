@@ -1,8 +1,8 @@
 /**
- * TableDnD plug-in for JQuery, allows you to drag and drop table rows
+ * TableDnD plug-in for RSFormPro.$, allows you to drag and drop table rows
  * You can set up various options to control how the system will work
  * Copyright (c) Denis Howlett <denish@isocra.com>
- * Licensed like jQuery, see http://docs.jquery.com/License.
+ * Licensed like RSFormPro.$, see http://docs.RSFormPro.$.com/License.
  *
  * Configuration options:
  * 
@@ -10,7 +10,7 @@
  *     This is the style that is assigned to the row during drag. There are limitations to the styles that can be
  *     associated with a row (such as you can't assign a border--well you can, but it won't be
  *     displayed). (So instead consider using onDragClass.) The CSS style to apply is specified as
- *     a map (as used in the jQuery css(...) function).
+ *     a map (as used in the RSFormPro.$ css(...) function).
  * onDropStyle
  *     This is the style that is assigned to the row when it is dropped. As for onDragStyle, there are limitations
  *     to what you can do. Also this replaces the original style, so again consider using onDragClass which
@@ -76,7 +76,7 @@
  *                         Improved the serialize method to use a default (and settable) regular expression.
  *                         Added tableDnDupate() and tableDnDSerialize() to be called when you are outside the table
  */
-jQuery.tableDnD = {
+RSFormPro.$.tableDnD = {
     /** Keep hold of the current table being dragged */
     currentTable : null,
     /** Keep hold of the current drag object if any */
@@ -92,7 +92,7 @@ jQuery.tableDnD = {
 
         this.each(function() {
             // This is bound to each matching table, set up the defaults and override with user options
-            this.tableDnDConfig = jQuery.extend({
+            this.tableDnDConfig = RSFormPro.$.extend({
                 onDragStyle: null,
                 onDropStyle: null,
 				// Add in the default class for whileDragging
@@ -105,14 +105,14 @@ jQuery.tableDnD = {
                 dragHandle: null // If you give the name of a class here, then only Cells with this class will be draggable
             }, options || {});
             // Now make the rows draggable
-            jQuery.tableDnD.makeDraggable(this);
+            RSFormPro.$.tableDnD.makeDraggable(this);
         });
 
         // Now we need to capture the mouse up and mouse move event
         // We can use bind so that we don't interfere with other event handlers
-        jQuery(document)
-            .bind('mousemove', jQuery.tableDnD.mousemove)
-            .bind('mouseup', jQuery.tableDnD.mouseup);
+        RSFormPro.$(document)
+            .bind('mousemove', RSFormPro.$.tableDnD.mousemove)
+            .bind('mouseup', RSFormPro.$.tableDnD.mouseup);
 
         // Don't break the chain
         return this;
@@ -123,13 +123,13 @@ jQuery.tableDnD = {
         var config = table.tableDnDConfig;
 		if (table.tableDnDConfig.dragHandle) {
 			// We only need to add the event to the specified cells
-			var cells = jQuery("td."+table.tableDnDConfig.dragHandle, table);
+			var cells = RSFormPro.$("td."+table.tableDnDConfig.dragHandle, table);
 			cells.each(function() {
 				// The cell is bound to "this"
-                jQuery(this).mousedown(function(ev) {
-                    jQuery.tableDnD.dragObject = this.parentNode;
-                    jQuery.tableDnD.currentTable = table;
-                    jQuery.tableDnD.mouseOffset = jQuery.tableDnD.getMouseOffset(this, ev);
+                RSFormPro.$(this).mousedown(function(ev) {
+                    RSFormPro.$.tableDnD.dragObject = this.parentNode;
+                    RSFormPro.$.tableDnD.currentTable = table;
+                    RSFormPro.$.tableDnD.mouseOffset = RSFormPro.$.tableDnD.getMouseOffset(this, ev);
                     if (config.onDragStart) {
                         // Call the onDrop method if there is one
                         config.onDragStart(table, this);
@@ -139,16 +139,16 @@ jQuery.tableDnD = {
 			})
 		} else {
 			// For backwards compatibility, we add the event to the whole row
-	        var rows = jQuery("tr", table); // get all the rows as a wrapped set
+	        var rows = RSFormPro.$("tr", table); // get all the rows as a wrapped set
 	        rows.each(function() {
 				// Iterate through each row, the row is bound to "this"
-				var row = jQuery(this);
+				var row = RSFormPro.$(this);
 				if (! row.hasClass("nodrag")) {
 	                row.mousedown(function(ev) {
 	                    if (ev.target.tagName == "TD") {
-	                        jQuery.tableDnD.dragObject = this;
-	                        jQuery.tableDnD.currentTable = table;
-	                        jQuery.tableDnD.mouseOffset = jQuery.tableDnD.getMouseOffset(this, ev);
+	                        RSFormPro.$.tableDnD.dragObject = this;
+	                        RSFormPro.$.tableDnD.currentTable = table;
+	                        RSFormPro.$.tableDnD.mouseOffset = RSFormPro.$.tableDnD.getMouseOffset(this, ev);
 	                        if (config.onDragStart) {
 	                            // Call the onDrop method if there is one
 	                            config.onDragStart(table, this);
@@ -165,7 +165,7 @@ jQuery.tableDnD = {
 		this.each(function() {
 			// this is now bound to each matching table
 			if (this.tableDnDConfig) {
-				jQuery.tableDnD.makeDraggable(this);
+				RSFormPro.$.tableDnD.makeDraggable(this);
 			}
 		})
 	},
@@ -219,14 +219,14 @@ jQuery.tableDnD = {
     },
 
     mousemove: function(ev) {
-        if (jQuery.tableDnD.dragObject == null) {
+        if (RSFormPro.$.tableDnD.dragObject == null) {
             return;
         }
 
-        var dragObj = jQuery(jQuery.tableDnD.dragObject);
-        var config = jQuery.tableDnD.currentTable.tableDnDConfig;
-        var mousePos = jQuery.tableDnD.mouseCoords(ev);
-        var y = mousePos.y - jQuery.tableDnD.mouseOffset.y;
+        var dragObj = RSFormPro.$(RSFormPro.$.tableDnD.dragObject);
+        var config = RSFormPro.$.tableDnD.currentTable.tableDnDConfig;
+        var mousePos = RSFormPro.$.tableDnD.mouseCoords(ev);
+        var y = mousePos.y - RSFormPro.$.tableDnD.mouseOffset.y;
         //auto scroll the window
 	    var yOffset = window.pageYOffset;
 	 	if (document.all) {
@@ -253,11 +253,11 @@ jQuery.tableDnD = {
         }
 
 
-        if (y != jQuery.tableDnD.oldY) {
+        if (y != RSFormPro.$.tableDnD.oldY) {
             // work out if we're going up or down...
-            var movingDown = y > jQuery.tableDnD.oldY;
+            var movingDown = y > RSFormPro.$.tableDnD.oldY;
             // update the old value
-            jQuery.tableDnD.oldY = y;
+            RSFormPro.$.tableDnD.oldY = y;
             // update the style to show we're dragging
 			if (config.onDragClass) {
 				dragObj.addClass(config.onDragClass);
@@ -266,14 +266,14 @@ jQuery.tableDnD = {
 			}
             // If we're over a row then move the dragged row to there so that the user sees the
             // effect dynamically
-            var currentRow = jQuery.tableDnD.findDropTargetRow(dragObj, y);
+            var currentRow = RSFormPro.$.tableDnD.findDropTargetRow(dragObj, y);
             if (currentRow) {
                 // TODO worry about what happens when there are multiple TBODIES
-                if (movingDown && jQuery.tableDnD.dragObject != currentRow) {
-                    try { jQuery.tableDnD.dragObject.parentNode.insertBefore(jQuery.tableDnD.dragObject, currentRow.nextSibling); }
+                if (movingDown && RSFormPro.$.tableDnD.dragObject != currentRow) {
+                    try { RSFormPro.$.tableDnD.dragObject.parentNode.insertBefore(RSFormPro.$.tableDnD.dragObject, currentRow.nextSibling); }
 					catch (dnd_e) {  }
-                } else if (! movingDown && jQuery.tableDnD.dragObject != currentRow) {
-					try { jQuery.tableDnD.dragObject.parentNode.insertBefore(jQuery.tableDnD.dragObject, currentRow); }
+                } else if (! movingDown && RSFormPro.$.tableDnD.dragObject != currentRow) {
+					try { RSFormPro.$.tableDnD.dragObject.parentNode.insertBefore(RSFormPro.$.tableDnD.dragObject, currentRow); }
 					catch (dnd_e) { }
                 }
             }
@@ -284,7 +284,7 @@ jQuery.tableDnD = {
 
     /** We're only worried about the y position really, because we can only move rows up and down */
     findDropTargetRow: function(draggedRow, y) {
-        var rows = jQuery.tableDnD.currentTable.rows;
+        var rows = RSFormPro.$.tableDnD.currentTable.rows;
         for (var i=0; i<rows.length; i++) {
             var row = rows[i];
             var rowY    = this.getPosition(row).y;
@@ -298,7 +298,7 @@ jQuery.tableDnD = {
                 // that's the row we're over
 				// If it's the same as the current row, ignore it
 				if (row == draggedRow) {return null;}
-                var config = jQuery.tableDnD.currentTable.tableDnDConfig;
+                var config = RSFormPro.$.tableDnD.currentTable.tableDnDConfig;
                 if (config.onAllowDrop) {
                     if (config.onAllowDrop(draggedRow, row)) {
                         return row;
@@ -307,7 +307,7 @@ jQuery.tableDnD = {
                     }
                 } else {
 					// If a row has nodrop class, then don't allow dropping (inspired by John Tarr and Famic)
-                    var nodrop = jQuery(row).hasClass("nodrop");
+                    var nodrop = RSFormPro.$(row).hasClass("nodrop");
                     if (! nodrop) {
                         return row;
                     } else {
@@ -321,28 +321,28 @@ jQuery.tableDnD = {
     },
 
     mouseup: function(e) {
-        if (jQuery.tableDnD.currentTable && jQuery.tableDnD.dragObject) {
-            var droppedRow = jQuery.tableDnD.dragObject;
-            var config = jQuery.tableDnD.currentTable.tableDnDConfig;
+        if (RSFormPro.$.tableDnD.currentTable && RSFormPro.$.tableDnD.dragObject) {
+            var droppedRow = RSFormPro.$.tableDnD.dragObject;
+            var config = RSFormPro.$.tableDnD.currentTable.tableDnDConfig;
             // If we have a dragObject, then we need to release it,
             // The row will already have been moved to the right place so we just reset stuff
 			if (config.onDragClass) {
-	            jQuery(droppedRow).removeClass(config.onDragClass);
+	            RSFormPro.$(droppedRow).removeClass(config.onDragClass);
 			} else {
-	            jQuery(droppedRow).css(config.onDropStyle);
+	            RSFormPro.$(droppedRow).css(config.onDropStyle);
 			}
-            jQuery.tableDnD.dragObject   = null;
+            RSFormPro.$.tableDnD.dragObject   = null;
             if (config.onDrop) {
                 // Call the onDrop method if there is one
-                config.onDrop(jQuery.tableDnD.currentTable, droppedRow);
+                config.onDrop(RSFormPro.$.tableDnD.currentTable, droppedRow);
             }
-            jQuery.tableDnD.currentTable = null; // let go of the table too
+            RSFormPro.$.tableDnD.currentTable = null; // let go of the table too
         }
     },
 
     serialize: function() {
-        if (jQuery.tableDnD.currentTable) {
-            return jQuery.tableDnD.serializeTable(jQuery.tableDnD.currentTable);
+        if (RSFormPro.$.tableDnD.currentTable) {
+            return RSFormPro.$.tableDnD.serializeTable(RSFormPro.$.tableDnD.currentTable);
         } else {
             return "Error: No Table id set, you need to set an id on your table and every row";
         }
@@ -368,17 +368,17 @@ jQuery.tableDnD = {
         var result = "";
         this.each(function() {
 			// this is now bound to each matching table
-			result += jQuery.tableDnD.serializeTable(this);
+			result += RSFormPro.$.tableDnD.serializeTable(this);
 		});
         return result;
     }
 
 }
 
-jQuery.fn.extend(
+RSFormPro.$.fn.extend(
 	{
-		tableDnD : jQuery.tableDnD.build,
-		tableDnDUpdate : jQuery.tableDnD.updateTables,
-		tableDnDSerialize: jQuery.tableDnD.serializeTables
+		tableDnD : RSFormPro.$.tableDnD.build,
+		tableDnDUpdate : RSFormPro.$.tableDnD.updateTables,
+		tableDnDSerialize: RSFormPro.$.tableDnD.serializeTables
 	}
 );

@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -12,12 +12,55 @@ function RSFormBuildRoute(&$query)
 {
 	$segments = array();
 	
-	$view = isset($query['view']) ? $query['view'] : 'rsform';
+	$view 	= isset($query['view']) ? $query['view'] : 'rsform';
+	$layout = isset($query['layout']) ? $query['layout'] : 'default';
+	
+	// is this a menu item ?
+	if (isset($query['Itemid'])) {
+		$app 	= JFactory::getApplication();
+		$menu 	= $app->getMenu();
+		// found the menu item based on itemid
+		if ($item = $menu->getItem($query['Itemid'])) {
+			// the itemid belongs to rsform
+			if (isset($item->component) && $item->component == 'com_rsform' && isset($item->query)) {
+				// we've got a match
+				if (isset($item->query['view']) && $item->query['view'] == $view) {
+					switch ($view) {
+						// form menu item
+						case 'rsform':
+							// if it's the same formId point to the menu item directly
+							if (isset($item->query['formId']) && isset($query['formId']) && $item->query['formId'] == $query['formId']) {
+								unset($query['view']);
+								unset($query['formId']);
+								
+								// if we have a task append it
+								if (isset($query['task']) && $query['task'] == 'confirm') {
+									$segments[] = 'confirm-submission';
+									unset($query['task']);
+								}
+								
+								return $segments;
+							}
+						break;
+						
+						// submissions menu item
+						case 'submissions':
+							// submissions are only accessible through the menu, point to that
+							if ($layout == 'default') {
+								unset($query['view']);
+								return $segments;
+							}
+							// otherwise we continue with the logic below to show a submission {detail}
+						break;
+					}
+				}
+			}
+		}
+	}
 	
 	switch ($view)
 	{
 		case 'submissions':
-			$layout = isset($query['layout']) ? $query['layout'] : 'default';
 			switch ($layout)
 			{
 				case 'view':
@@ -100,4 +143,3 @@ function RSFormParseRoute($segments)
 	
 	return $query;
 }
-?>

@@ -38,12 +38,12 @@ if (!defined("K_TCPDF_EXTERNAL_CONFIG")) {
 	/**
 	 * installation path (/var/www/tcpdf/)
 	 */
-	define ("K_PATH_MAIN", "D:/Inetpub/wwwroot/_OPENSOURCE/tcpdf/");
+	define ("K_PATH_MAIN", JPATH_SITE.'/libraries/tcpdf/');
 
 	/**
 	 * url path (http://localhost/tcpdf/)
 	 */
-	define ("K_PATH_URL", "http://localhost/_OPENSOURCE/tcpdf/");
+	define ("K_PATH_URL", JURI::root().'libraries/tcpdf/');
 
 	/**
 	 * path for PDF fonts

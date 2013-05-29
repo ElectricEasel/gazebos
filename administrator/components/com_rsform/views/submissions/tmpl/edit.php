@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php if ($header == 'confirmed') { ?>
 				<?php echo JHTML::_('select.booleanlist','formStatic['.$header.']','class="inputbox"',$this->staticFields->$header); ?>
 				<?php } else { ?>
-				<input class="inputbox" type="text" name="formStatic[<?php echo $header; ?>]" value="<?php echo $this->staticFields->$header; ?>" size="105" />
+				<input class="rs_inp rs_80" type="text" name="formStatic[<?php echo $header; ?>]" value="<?php echo $this->escape($this->staticFields->$header); ?>" size="105" />
 				<?php } ?>
 			</td>
 		</tr>

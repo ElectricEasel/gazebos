@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -10,7 +10,11 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $out ='<fieldset class="formFieldset">'."\n";
-$out.='<legend>{global:formtitle}</legend>'."\n";
+
+if ($this->_form->ShowFormTitle) {
+	$out.='<legend>{global:formtitle}</legend>'."\n";
+}
+
 $out.='{error}'."\n";
 
 $page_num = 0;
@@ -19,6 +23,11 @@ $out.='<ol class="formContainer" id="rsform_'.$formId.'_page_'.$page_num.'">'."\
 
 foreach ($quickfields as $quickfield)
 {
+	// skip...
+	if (in_array($quickfield, $hiddenfields)) {
+		continue;
+	}
+	
 	if (in_array($quickfield, $pagefields))
 	{
 		$page_num++;
@@ -55,8 +64,8 @@ if ($out != $this->_form->FormLayout && $this->_form->FormId)
 	// Clean it
 	// Update the layout
 	$db = JFactory::getDBO();
-	$db->setQuery("UPDATE #__rsform_forms SET FormLayout='".$db->getEscaped($out)."' WHERE FormId=".$this->_form->FormId);
-	$db->query();
+	$db->setQuery("UPDATE #__rsform_forms SET FormLayout='".$db->escape($out)."' WHERE FormId=".$this->_form->FormId);
+	$db->execute();
 }
 	
 return $out;

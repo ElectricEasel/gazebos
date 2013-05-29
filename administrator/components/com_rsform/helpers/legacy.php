@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -19,7 +19,7 @@ class RSAdapter
 		$this->jconfig = JFactory::getConfig();
 
 		// Define tables
-		$prefix = $this->jconfig->getValue('config.dbprefix');
+		$prefix = $this->jconfig->get('dbprefix');
         $this->tbl_rsform_config                    = $prefix.'rsform_config';
         $this->tbl_rsform_components                = $prefix.'rsform_components';
         $this->tbl_rsform_component_types           = $prefix.'rsform_component_types';
@@ -38,13 +38,13 @@ class RSAdapter
 		foreach ($config as $item => $value)
 			$this->config[$item] = $value;
 		
-		$this->config['list_limit'] 	= $this->jconfig->getValue('config.list_limit');
+		$this->config['list_limit'] 	= $this->jconfig->get('list_limit');
         $this->config['absolute_path']  = JPATH_SITE;
         $this->config['live_site'] 		= JURI :: root();
-        $this->config['mail_from'] 		= $this->jconfig->getValue('config.mailfrom');
-        $this->config['sitename'] 		= $this->jconfig->getValue('config.sitename');
+        $this->config['mail_from'] 		= $this->jconfig->get('mailfrom');
+        $this->config['sitename'] 		= $this->jconfig->get('sitename');
         $this->config['dbprefix'] 		= $prefix;
-        $this->config['db'] 			= $this->jconfig->getValue('config.db');
+        $this->config['db'] 			= $this->jconfig->get('db');
         $this->config['component_ids']  = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
 		$this->config['absolute_path']  = JPATH_SITE;
 	}
@@ -68,7 +68,7 @@ class RSAdapter
 	
 	function redirect($url, $msg=null)
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
     	$mainframe->redirect($url, $msg);
 	}
 	
@@ -80,7 +80,7 @@ class RSAdapter
 	
 	function registerEvent($event, $function)
     {
-    	$mainframe =& JFactory::getApplication();
+    	$mainframe = JFactory::getApplication();
     	$mainframe->registerEvent( $event, $function );
     }
 	
@@ -89,7 +89,7 @@ class RSAdapter
 		if ($formId = JRequest::getInt('formId'))
 			return $formId;
     	
-		$config =& JComponentHelper::getParams( 'com_rsform' );
+		$config = JComponentHelper::getParams( 'com_rsform' );
 		return $config->get($var);
     }
 	
@@ -122,7 +122,7 @@ class RSAdapter
     
     function menuAddNewX($task = 'new', $alt = 'New')
     {
-    	JToolBarHelper::addNewX($task, $alt);
+    	JToolbarHelper::addNew($task, $alt);
     }
     
     function menuDeleteList($msg = '',$task = 'remove',$alt = 'Delete')
@@ -190,7 +190,7 @@ class RSAdapter
 	
 	function addHeadTag($str, $type, $destination = 'head')
     {
-    	$document =& JFactory::getDocument();
+    	$document = JFactory::getDocument();
     	switch($type)
     	{
     		case 'css':
@@ -210,10 +210,10 @@ class RSAdapter
 }
 
 // Global product constants                        
-define('_RSFORM_BACKEND_ABS_PATH', JPATH_ADMINISTRATOR.DS.'components'.DS.'com_rsform');
+define('_RSFORM_BACKEND_ABS_PATH', JPATH_ADMINISTRATOR.'/components/com_rsform');
 define('_RSFORM_BACKEND_REL_PATH', JURI::root(true).'/administrator/components/com_rsform');
 
-define('_RSFORM_FRONTEND_ABS_PATH', JPATH_SITE.DS.'components'.DS.'com_rsform');
+define('_RSFORM_FRONTEND_ABS_PATH', JPATH_SITE.'/components/com_rsform');
 define('_RSFORM_FRONTEND_REL_PATH', JURI::root(true).'/components/com_rsform');
 
 // Global script constants
@@ -221,10 +221,10 @@ define('_RSFORM_BACKEND_SCRIPT_PATH', JURI::root().'administrator/index.php');
 define('_RSFORM_FRONTEND_SCRIPT_PATH', JURI::root(true).'/index.php');
 
 // Other paths
-define('_RSFORM_JOOMLA_XML_PATH', JPATH_SITE.DS.'libraries'.DS.'domit'.DS.'xml_domit_lite_include.php');
+define('_RSFORM_JOOMLA_XML_PATH', JPATH_SITE.'/libraries/domit/xml_domit_lite_include.php');
 
 // Joomla! 1.5 Language
-$lg = &JFactory::getLanguage();
+$lg = JFactory::getLanguage();
 // Not used anymore
 $backwardLang = 'default';
 	
@@ -252,7 +252,7 @@ function RSpreviewComponent($formId, $componentId)
 function RSresolveComponentName($componentName, $formId)
 {
 	$db = JFactory::getDBO();
-	$db->setQuery("SELECT p.ComponentId FROM #__rsform_properties p LEFT JOIN #__rsform_components c ON c.ComponentId = p.ComponentId WHERE p.PropertyValue='".$db->getEscaped($componentName)."' AND p.PropertyName='NAME' and c.FormId='".(int) $formId."'");
+	$db->setQuery("SELECT p.ComponentId FROM #__rsform_properties p LEFT JOIN #__rsform_components c ON c.ComponentId = p.ComponentId WHERE p.PropertyValue='".$db->escape($componentName)."' AND p.PropertyName='NAME' and c.FormId='".(int) $formId."'");
 	
 	return $db->loadResult();
 }
@@ -330,7 +330,7 @@ if (!function_exists('RScleanVar'))
 	{
 		$db = JFactory::getDBO();
 		$string = $html ? htmlentities($string,ENT_COMPAT,'UTF-8') : $string;
-		$string = get_magic_quotes_gpc() ? $db->getEscaped(stripslashes($string)) : $db->getEscaped($string);
+		$string = get_magic_quotes_gpc() ? $db->escape(stripslashes($string)) : $db->escape($string);
 		return $string;
 	}
 }
@@ -389,7 +389,7 @@ function RSresolveComponentTypeId($componentTypeId)
 function RSgetComponentTypeIdByName($componentName,$formId)
 {
 	$db = JFactory::getDBO();	
-	$db->setQuery("SELECT #__rsform_components.ComponentTypeId FROM #__rsform_components LEFT JOIN #__rsform_properties ON #__rsform_properties.ComponentId = #__rsform_components.ComponentId WHERE #__rsform_properties.PropertyName='NAME' AND #__rsform_properties.PropertyValue='".$db->getEscaped($componentName)."' AND #__rsform_components.FormId='".(int) $formId."'");
+	$db->setQuery("SELECT #__rsform_components.ComponentTypeId FROM #__rsform_components LEFT JOIN #__rsform_properties ON #__rsform_properties.ComponentId = #__rsform_components.ComponentId WHERE #__rsform_properties.PropertyName='NAME' AND #__rsform_properties.PropertyValue='".$db->escape($componentName)."' AND #__rsform_components.FormId='".(int) $formId."'");
 	return $db->loadResult();
 }
 
@@ -439,4 +439,3 @@ function RSgetFormLayoutName($formId)
 	$db->setQuery("SELECT FormLayoutName FROM #__rsform_forms WHERE FormId='".(int) $formId."'");
 	return $db->loadResult();
 }
-?>

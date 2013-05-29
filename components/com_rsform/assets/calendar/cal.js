@@ -32,13 +32,16 @@ if(A){A.removeChild(this.maskEl);}this.maskEl=null;this.__rendered=false;}},dest
 /* rsform pro */
 function rsfp_init(formId, calendarParams)
 {
+	if (typeof RSFormProCalendars[formId] == 'undefined') {
+		RSFormProCalendars[formId] = {};
+	}
+		
 	calendarLayouts = calendarParams.layouts;
 	calendarFormats = calendarParams.formats;
 	calendarValues  = calendarParams.values;
 	calendarExtra   = calendarParams.extra;
 	
-	function handleText(type,args,obj)
-	{
+	function handleText(type, args, calendar) {
 		var dates = args[0];
 		var date = dates[0];
 		var year = date[0], month = date[1], day = date[2];
@@ -48,70 +51,169 @@ function rsfp_init(formId, calendarParams)
 
 		var myDate = new Date();
 		// Bugfix for Joomla! Calendar
-		if (typeof(myDate.__msh_oldSetFullYear) == 'function')
-			myDate.__msh_oldSetFullYear(year,month-1,day);
-		else
-			myDate.setFullYear(year,month-1,day);
-
-		if (typeof(rsfp_onSelectDate) == 'function')
-		{
-			result = rsfp_onSelectDate(myDate.format(obj.RSdateFormat), type, args, obj);
+		if (typeof myDate.__msh_oldSetFullYear == 'function') {
+			myDate.__msh_oldSetFullYear(year, month-1, day);
+		} else {
+			myDate.setFullYear(year, month-1, day);
+		}
+		
+		if (typeof rsfp_onSelectDate == 'function') {
+			result = rsfp_onSelectDate(myDate.format(calendar.myFormat), type, args, calendar);
 			if (!result)
 				return false;
 		}
 		
-		var txtDate = document.getElementById("txt" + obj.myid);
-		txtDate.value = myDate.format(obj.RSdateFormat);
+		var txtDate = document.getElementById("txt" + calendar.myid);
+		txtDate.value = myDate.format(calendar.myFormat);
 		
-		var hiddenDate = document.getElementById("hidden" + obj.myid);
+		var hiddenDate = document.getElementById("hidden" + calendar.myid);
 		hiddenDate.value = myDate.format('mm/dd/yyyy');
+		
+		if (typeof calendar.rule == 'function') {
+			calendar.rule(myDate);
+		}
 	}
 
-	function handleClose(type,args,obj){
-		obj.hide();
+	function handleClose(type, args, calendar) {
+		calendar.hide();
 	}
 
-	var Cal = Array();
-	for(i=0;i<calendarLayouts.length;i++)
-	{		
-		Cal[i] = new rsf_CALENDAR.widget.Calendar("cal"+ formId + '_' + i,"cal" + formId + '_' + i + "Container");		
-		Cal[i].cfg.setProperty("navigator", true);
-		Cal[i].cfg.setProperty("MONTHS_SHORT", MONTHS_SHORT);
-		Cal[i].cfg.setProperty("MONTHS_LONG", MONTHS_LONG);
-		Cal[i].cfg.setProperty("WEEKDAYS_1CHAR", WEEKDAYS_1CHAR);
-		Cal[i].cfg.setProperty("WEEKDAYS_SHORT", WEEKDAYS_SHORT);
-		Cal[i].cfg.setProperty("WEEKDAYS_MEDIUM", WEEKDAYS_MEDIUM);
-		Cal[i].cfg.setProperty("WEEKDAYS_LONG", WEEKDAYS_LONG);
-		Cal[i].cfg.setProperty("START_WEEKDAY", START_WEEKDAY);
-
-		for (j in calendarExtra[i])
-			Cal[i].cfg.setProperty(j, calendarExtra[i][j]);
+	var calendarNames = {};
+	// init calendars first...
+	for (i=0; i<calendarLayouts.length; i++) {
+		var myId 		= 'cal' + formId + '_' + i;
+		var txtDate 	= document.getElementById('txt' + myId);
+		var hiddenDate 	= document.getElementById('hidden' + myId);
+		var myName 		= txtDate.name.substring(5, txtDate.name.length - 1);
 		
-		Cal[i].myid = 'cal' + formId + '_' + i;
-		Cal[i].RSdateFormat = calendarFormats[i];
-		Cal[i].selectEvent.subscribe(handleText, Cal[i], true);
+		calendarNames[i] = myName;
 		
-		// Set the value
-		// change the page
-		if (calendarValues[i]!='')
-		{			
-			Cal[i].select(calendarValues[i]);
-			calendarValues[i] = calendarValues[i].split('/');
-			if (calendarValues[i].length == 3)
-			{
-				calendarValues[i] = calendarValues[i][0] + '/' + calendarValues[i][2];
-				Cal[i].cfg.setProperty('pagedate', calendarValues[i]);
+		RSFormProCalendars[formId][myName] = new rsf_CALENDAR.widget.Calendar(myId, myId + 'Container');
+		var currentCalendar = RSFormProCalendars[formId][myName];
+		
+		// set the id
+		currentCalendar.myid = myId;
+		currentCalendar.myId = myId;
+		
+		// set the date format
+		currentCalendar.myFormat 	 = calendarFormats[i];
+		currentCalendar.RSdateFormat = currentCalendar.myFormat;
+		
+		// set navigator
+		currentCalendar.cfg.setProperty('navigator', typeof rsfp_navConfig == 'undefined' ? true : rsfp_navConfig);
+		
+		// set language strings
+		currentCalendar.cfg.setProperty("MONTHS_SHORT", MONTHS_SHORT);
+		currentCalendar.cfg.setProperty("MONTHS_LONG", MONTHS_LONG);
+		currentCalendar.cfg.setProperty("WEEKDAYS_1CHAR", WEEKDAYS_1CHAR);
+		currentCalendar.cfg.setProperty("WEEKDAYS_SHORT", WEEKDAYS_SHORT);
+		currentCalendar.cfg.setProperty("WEEKDAYS_MEDIUM", WEEKDAYS_MEDIUM);
+		currentCalendar.cfg.setProperty("WEEKDAYS_LONG", WEEKDAYS_LONG);
+		currentCalendar.cfg.setProperty("START_WEEKDAY", START_WEEKDAY);
+		
+		currentCalendar.selectEvent.subscribe(handleText, currentCalendar, true);
+		if (calendarLayouts[i] == 'POPUP') {
+			currentCalendar.selectEvent.subscribe(handleClose, currentCalendar, true);
+		}
+		
+		for (j in calendarExtra[i]) {
+			if (j == 'rule') {				
+				var rule 			= calendarExtra[i][j].split('|');
+				var operation 		= rule[0];
+				var otherCalendarId = rule[1];
+				
+				currentCalendar.otherCalendarId = otherCalendarId;
+				
+				if (operation == 'min') {
+					currentCalendar.rule = function(theDate) {
+						var otherCalendar   = RSFormProCalendars[formId][this.otherCalendarId];
+						var minDate = new Date(theDate.getFullYear(), theDate.getMonth(), theDate.getDate()+1);
+						
+						if (otherCalendar) {
+							otherCalendar.cfg.setProperty('mindate', minDate.format('mm/dd/yyyy'));
+							
+							// make sure current selection is still valid, otherwise empty it
+							var hiddenDate = document.getElementById('hidden' + otherCalendar.myId);
+							var txtDate    = document.getElementById('txt' + otherCalendar.myId);
+							
+							if (hiddenDate.value.length > 0) {
+								var parts = hiddenDate.value.split('/');
+								if (parts.length == 3) {
+									var d = parseInt(parts[1]);
+									var m = parseInt(parts[0]);
+									var y = parseInt(parts[2]);
+									
+									var currentDate = new Date(y, m-1, d);
+									
+									if (currentDate.getTime() < minDate.getTime()) {
+										hiddenDate.value = '';
+										txtDate.value 	 = '';
+									}
+								}
+							}
+							
+							otherCalendar.render();
+						}
+					}
+				} else if (operation == 'max') {
+					currentCalendar.rule = function(theDate) {
+						var otherCalendar = RSFormProCalendars[formId][this.otherCalendarId];
+						var maxDate = new Date(theDate.getFullYear(), theDate.getMonth(), theDate.getDate()-1);
+						
+						if (otherCalendar) {
+							otherCalendar.cfg.setProperty('maxdate', maxDate.format('mm/dd/yyyy'));
+							
+							// make sure current selection is still valid, otherwise empty it
+							var hiddenDate = document.getElementById('hidden' + otherCalendar.myId);
+							var txtDate    = document.getElementById('txt' + otherCalendar.myId);
+							
+							if (hiddenDate.value.length > 0) {
+								var parts = hiddenDate.value.split('/');
+								if (parts.length == 3) {
+									var d = parseInt(parts[1]);
+									var m = parseInt(parts[0]);
+									var y = parseInt(parts[2]);
+									
+									var currentDate = new Date(y, m-1, d);
+									
+									if (currentDate.getTime() > maxDate.getTime()) {
+										hiddenDate.value = '';
+										txtDate.value 	 = '';
+									}
+								}
+							}
+							
+							otherCalendar.render();
+						}
+					}
+				}
+				
+				continue;
+			}
+			currentCalendar.cfg.setProperty(j, calendarExtra[i][j]);
+		}
+		
+		// setup done
+	}
+	
+	// change the values & render the calendars
+	for (i=0; i<calendarValues.length; i++) {
+		var currentCalendar = RSFormProCalendars[formId][calendarNames[i]];
+		var calendarValue = calendarValues[i];
+		
+		if (calendarValue != '') {
+			currentCalendar.select(calendarValue);
+			
+			var parts = calendarValue.split('/');
+			if (parts.length == 3) {
+				var m = parseInt(parts[0]);
+				var y = parseInt(parts[2]);
+				currentCalendar.cfg.setProperty('pagedate', m + '/' + y);
 			}
 		}
-
-		switch(calendarLayouts[i])
-		{
-			case 'POPUP':
-				Cal[i].selectEvent.subscribe(handleClose, Cal[i], true);
-			break;
-		}
-
-		Cal[i].render();
+		
+		// render the calendar
+		currentCalendar.render();
 	}
 }
 
@@ -210,18 +312,6 @@ RSdateFormat.masks = {
 	isoTime:         "HH:MM:ss",
 	isoDateTime:     "yyyy-mm-dd'T'HH:MM:ss",
 	isoFullDateTime: "yyyy-mm-dd'T'HH:MM:ss.lo"
-};
-
-// Internationalization strings
-RSdateFormat.i18n = {
-	dayNames: [
-		"Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat",
-		"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-	],
-	monthNames: [
-		"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-		"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-	]
 };
 
 // For convenience...

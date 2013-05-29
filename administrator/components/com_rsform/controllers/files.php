@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -17,18 +17,18 @@ class RSFormControllerFiles extends RSFormController
 		parent::__construct();
 	}
 	
-	function display()
+	function display($cachable = false, $urlparams = false)
 	{
 		JRequest::setVar('view', 'files');
 		JRequest::setVar('layout', 'default');
 		
-		parent::display();
+		parent::display($cachable, $urlparams);
 	}
 	
 	function upload()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		JSession::checkToken() or jexit('Invalid Token');
 
 		// Get the model
 		$model = $this->getModel('files');

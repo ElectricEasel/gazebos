@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -103,122 +103,33 @@ function toggleCheckColumns()
 </script>
 
 <form action="index.php?option=com_rsform" method="post" id="adminForm" name="adminForm">
-	<?php echo $this->tabs->startPane('export'); ?>
-	<?php echo $this->tabs->startPanel(JText::_('RSFP_EXPORT_SELECT_FIELDS'), 'export-fields'); ?>
-	<table class="adminform" border="0">
-	<tr>
-		<td>
-			<input type="radio" name="ExportRows" id="ExportRowsAll" value="0" <?php echo $this->exportAll ? 'checked="checked"' : ''; ?> />
-			<label for="ExportRowsAll"><?php echo JText::_('RSFP_EXPORT_ALL_ROWS'); ?></label>
-			<input type="radio" name="ExportRows" id="ExportRowsSelected" value="<?php echo implode(',', $this->exportSelected); ?>" <?php echo !$this->exportAll ? 'checked="checked"' : ''; ?> />
-			<label for="ExportRowsSelected"><?php echo JText::_('RSFP_EXPORT_SELECTED_ROWS'); ?> (<?php echo $this->exportSelectedCount; ?>) </label>
-		</td>
-	</tr>
-	<tr>
-		<td>
-		<table class="adminlist" style="width: 500px" width="500">
-			<tr>
-				<td><input type="checkbox" onclick="toggleCheckColumns();" id="checkColumns" /></td>
-				<td colspan="2"><label for="checkColumns"><strong><?php echo JText::_('RSFP_CHECK_ALL'); ?></strong></label></td>
-			</tr>
-			<thead>
-			<tr>
-				<th class="title" width="5" nowrap="nowrap"><?php echo JText::_('RSFP_EXPORT'); ?></th>
-				<th class="title"><?php echo JText::_('RSFP_EXPORT_SUBMISSION_INFO'); ?></th>
-				<th class="title" width="5" nowrap="nowrap"><?php echo JText::_('RSFP_EXPORT_COLUMN_ORDER'); ?></th>
-			</tr>
-			</thead>
-			<?php $k = 0; ?>
-			<?php $i = 1; ?>
-			<?php foreach ($this->staticHeaders as $header) { ?>
-			<tr class="row<?php echo $k; ?>">
-				<td><input type="checkbox" onchange="updateCSVPreview();" name="ExportSubmission[<?php echo $header; ?>]" id="header<?php echo $i; ?>" value="<?php echo $header; ?>" <?php echo $this->isHeaderEnabled($header, 1) ? 'checked="checked"' : ''; ?> /></td>
-				<td><label for="header<?php echo $i; ?>"><?php echo JText::_('RSFP_'.$header); ?></label></td>
-				<td><input type="text" onkeyup="updateCSVPreview();" style="text-align: center" name="ExportOrder[<?php echo $header; ?>]" value="<?php echo $i; ?>" size="3"/></td>
-			</tr>
-			<?php $i++; ?>
-			<?php $k=1-$k; ?>
-			<?php } ?>
-			<thead>
-			<tr>
-				<th class="title" width="5" nowrap="nowrap"><?php echo JText::_('RSFP_EXPORT'); ?></th>
-				<th class="title"><?php echo JText::_('RSFP_EXPORT_COMPONENTS'); ?></th>
-				<th class="title" width="5" nowrap="nowrap"><?php echo JText::_('RSFP_EXPORT_COLUMN_ORDER'); ?></th>
-			</tr>
-			</thead>
-			<?php foreach ($this->headers as $header) { ?>
-			<tr class="row<?php echo $k; ?>">
-				<td><input type="checkbox" onchange="updateCSVPreview();" name="ExportComponent[<?php echo $header; ?>]" id="header<?php echo $i; ?>" value="<?php echo $header; ?>" <?php echo $this->isHeaderEnabled($header, 0) ? 'checked="checked"' : ''; ?> /></td>
-				<td><label for="header<?php echo $i; ?>">
-					<?php if ($header == '_STATUS') echo JText::_('RSFP_PAYPAL_STATUS'); elseif ($header == '_ANZ_STATUS') echo JText::_('RSFP_ANZ_STATUS'); else echo $header; ?>
-				</label></td>
-				<td><input type="text" onkeyup="updateCSVPreview();" style="text-align: center" name="ExportOrder[<?php echo $header; ?>]" value="<?php echo $i; ?>" size="3" /></td>
-			</tr>
-			<?php $i++; ?>
-			<?php $k=1-$k; ?>
-			<?php } ?>
-		</table>
-		</td>
-	</tr>
-	<tr>
-		<td><input type="button" onclick="submitbutton('submissions.export.task');" name="Export" value="<?php echo JText::_('RSFP_EXPORT');?>" /></td>
-	</tr>
-	</table>
-	<?php echo $this->tabs->endPanel(); ?>
-	<?php echo $this->tabs->startPanel(JText::_($this->exportType == 'csv' ? 'RSFP_EXPORT_CSV_OPTIONS' : 'RSFP_EXPORT_OPTIONS'), 'export-options'); ?>
-	<table class="admintable">
-	<tr>
-		<td width="200" style="width: 200px;" align="right" class="key">
-			<span class="hasTip" title="<?php echo JText::_('RSFP_EXPORT_HEADERS_DESC'); ?>">
-				<?php echo JText::_('RSFP_EXPORT_HEADERS');?>
-			</span>
-		</td>
-		<td>
-			<input type="checkbox" style="text-align: center" onchange="updateCSVPreview();" name="ExportHeaders" value="1" checked="checked" />
-		</td>
-	</tr>
-	<?php if ($this->exportType == 'csv') { ?>
-	<tr>
-		<td width="200" style="width: 200px;" align="right" class="key">
-			<span class="hasTip" title="<?php echo JText::_('RSFP_EXPORT_DELIMITER_DESC'); ?>">
-				<?php echo JText::_('RSFP_EXPORT_DELIMITER');?>
-			</span>
-		</td>
-		<td>
-			<input type="text" style="text-align: center" onkeyup="updateCSVPreview();" name="ExportDelimiter" value="," size="5" />
-		</td>
-	</tr>
-	<tr>
-		<td width="200" style="width: 200px;" align="right" class="key">
-			<span class="hasTip" title="<?php echo JText::_('RSFP_EXPORT_ENCLOSURE_DESC'); ?>">
-				<?php echo JText::_('RSFP_EXPORT_ENCLOSURE');?>
-			</span>
-		</td>
-		<td>
-			<input type="text" style="text-align: center" onkeyup="updateCSVPreview();" name="ExportFieldEnclosure" value="&quot;" size="5" />
-		</td>
-	</tr>
-	<?php } ?>
-	</table>
-	<?php echo $this->tabs->endPanel(); ?>
-	<?php if ($this->exportType == 'csv') { ?>
-		<?php echo $this->tabs->startPanel(JText::_('Preview'), 'export-preview'); ?>
-		<table class="adminform" border="0">
-		<tr>
-			<td><?php echo JText::_('RSFP_EXPORT_PREVIEW_DESC'); ?></td>
-		</tr>
-		<tr>
-			<td>
-			<div id="previewExportDiv">
-			<pre id="headersPre"><?php echo implode(',', $this->staticHeaders); ?><?php if (count($this->headers)) { ?>,<?php echo implode(',', $this->headers); ?><?php } ?></pre>
-			<pre id="rowPre">&quot;<?php echo implode('&quot;,&quot;', $this->previewArray); ?>&quot;</pre>
-			</div>
-			</td>
-		</tr>
-		</table>
-		<?php echo $this->tabs->endPanel(); ?>
-	<?php } ?>
-	<?php echo $this->tabs->endPane(); ?>
+	<?php
+	// add the tab title
+	$this->tabs->addTitle(JText::_('RSFP_EXPORT_SELECT_FIELDS'), 'export-fields');
+	// prepare the content
+	$content = $this->loadTemplate('fields');
+	// add the tab content
+	$this->tabs->addContent($content);
+
+	// add the tab title
+	$this->tabs->addTitle(JText::_($this->exportType == 'csv' ? 'RSFP_EXPORT_CSV_OPTIONS' : 'RSFP_EXPORT_OPTIONS'), 'export-options');
+	// prepare the content
+	$content = $this->loadTemplate('options');
+	// add the tab content
+	$this->tabs->addContent($content);
+	
+	if ($this->exportType == 'csv') {
+		// add the tab title
+		$this->tabs->addTitle(JText::_('PREVIEW'), 'export-preview');
+		// prepare the content
+		$content = $this->loadTemplate('preview');
+		// add the tab content
+		$this->tabs->addContent($content);
+	}
+	
+	// render tabs
+	$this->tabs->render();
+	?>
 	
 	<input type="hidden" name="task" value="submissions.export.task" />
 	<input type="hidden" name="exportType" value="<?php echo $this->exportType; ?>" />

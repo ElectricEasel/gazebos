@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -18,7 +18,7 @@ class RSFormControllerRichtext extends RSFormController
 		
 		$this->registerTask('apply', 'save');
 		
-		$this->_db =& JFactory::getDBO();
+		$this->_db = JFactory::getDBO();
 	}
 	
 	function show()
@@ -31,7 +31,7 @@ class RSFormControllerRichtext extends RSFormController
 	
 	function save()
 	{
-		$db 	=& JFactory::getDBO();
+		$db 	= JFactory::getDBO();
 		$formId = JRequest::getInt('formId');
 		$opener = JRequest::getCmd('opener');
 		$value  = JRequest::getVar($opener, '', 'post', 'none', JREQUEST_ALLOWRAW);
@@ -45,14 +45,14 @@ class RSFormControllerRichtext extends RSFormController
 		}
 		else
 		{
-			$db->setQuery("UPDATE #__rsform_forms SET `".$opener."`='".$db->getEscaped($value)."' WHERE FormId='".$formId."'");
-			$db->query();
+			$db->setQuery("UPDATE #__rsform_forms SET `".$opener."`='".$db->escape($value)."' WHERE FormId='".$formId."'");
+			$db->execute();
 		}
 		
 		if ($this->getTask() == 'apply')
 			return $this->setRedirect('index.php?option=com_rsform&task=richtext.show&opener='.$opener.'&formId='.$formId.'&tmpl=component');
 		
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addScriptDeclaration("window.close();");
 	}
 	
