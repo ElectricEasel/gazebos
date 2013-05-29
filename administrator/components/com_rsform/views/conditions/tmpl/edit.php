@@ -2,22 +2,22 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
 defined('_JEXEC') or die('Restricted access');
 ?>
 <script type="text/javascript">
-if (window.parent.showConditions)
-	window.parent.showConditions(<?php echo $this->formId; ?>);
+if (window.opener && window.opener.showConditions)
+	window.opener.showConditions(<?php echo $this->formId; ?>);
 	
 <?php if ($this->close) { ?>
 rsform_close_box();
 <?php } ?>
 
 function rsform_add_condition() {
-	var $ = jQuery;
+	var $ = RSFormPro.$;
 	<?php if (!$this->optionFields) { ?>
 	alert('<?php echo JText::_('RSFP_CONDITION_PLEASE_ADD_OPTIONS', true); ?>');
 	<?php } else { ?>
@@ -83,10 +83,10 @@ function rsform_add_condition() {
 }
 
 function rsform_get_field_value(id) {
-	var fields = new Array();
+	var fields = [];
 	
 <?php foreach ($this->optionFields as $field) { ?>
-	fields['<?php echo $field->ComponentId; ?>'] = new Array();
+	fields['<?php echo $field->ComponentId; ?>'] = [];
 	<?php foreach ($field->PropertyValue as $value) { ?>
 	fields['<?php echo $field->ComponentId; ?>'].push({'value': '<?php echo addslashes($value[0]); ?>', 'text': '<?php echo addslashes($value[1]); ?>'});
 	<?php } ?>
@@ -97,10 +97,10 @@ function rsform_get_field_value(id) {
 
 function rsform_change_field() {
 	
-	var $ = jQuery;
+	var $ = RSFormPro.$;
 	
-	parent = $(this).parent('p');
-	values = parent.find('select')[2];
+	//parent = $(this).parent('p');
+	values = $(this).parent().children('select')[2];
 	values.options.length = 0;
 	
 	selected_values = rsform_get_field_value(this.value);
@@ -117,11 +117,7 @@ function rsform_change_field() {
 }
 
 function rsform_close_box() {
-	<?php if (RSFormProHelper::isJ16()) { ?>
-	window.parent.SqueezeBox.close();
-	<?php } else { ?>
-	window.parent.document.getElementById('sbox-window').close();
-	<?php } ?>
+	window.close();
 }
 </script>
 
@@ -131,13 +127,16 @@ function rsform_close_box() {
 }
 </style>
 
+<p><?php echo JText::sprintf('RSFP_YOU_ARE_EDITING_CONDITIONS_IN', $this->escape($this->lang)); ?></p>
 <form name="adminForm" id="adminForm" method="post" action="index.php">
 	<div id="rsform_conditions">
 	<p>
-		<button onclick="submitform('apply');" type="button">Apply</button>
-		<button onclick="submitform('save');" type="button">Save</button>
-		<button onclick="rsform_close_box();" type="button">Close</button>
+		<button class="rs_button rs_left" onclick="submitform('apply');" type="button"><?php echo JText::_('JAPPLY'); ?></button>
+		<button class="rs_button rs_left" onclick="submitform('save');" type="button"><?php echo JText::_('JSAVE'); ?></button>
+		<button class="rs_button rs_left" onclick="rsform_close_box();" type="button"><?php echo JText::_('JCANCEL'); ?></button>
 	</p>
+	<p><br /><br /></p>
+	<span class="rsform_clear_both"></span>
 	<p>
 		<?php echo JText::sprintf('RSFP_SHOW_FIELD_IF_THE_FOLLOWING_MATCH', $this->lists['action'], $this->lists['block'], $this->lists['allfields'], $this->lists['condition']); ?> <a href="javascript: void(0);" onclick="rsform_add_condition();"><img class="rsform_align_middle" src="components/com_rsform/assets/images/add.png" alt="" /></a>
 	</p>
@@ -157,7 +156,7 @@ function rsform_close_box() {
 			<?php } ?>
 			</select>
 			<span class="rsform_spacer">&nbsp;</span>
-			<a href="javascript:void(0);" onclick="jQuery(this).parent('p').remove();"><img class="rsform_align_middle" src="components/com_rsform/assets/images/close.png" /></a>
+			<a href="javascript:void(0);" onclick="RSFormPro.$(this).parent('p').remove();"><img class="rsform_align_middle" src="components/com_rsform/assets/images/close.png" /></a>
 		</p>
 		<?php } ?>
 	<?php } ?>
@@ -173,3 +172,9 @@ function rsform_close_box() {
 	<input type="hidden" name="id" value="<?php echo (int) $this->condition->id; ?>" />
 	<input type="hidden" name="lang_code" value="<?php echo $this->escape($this->lang); ?>" />
 </form>
+
+<script type="text/javascript">
+var detail_component_ids = document.getElementsByName('detail_component_id[]');
+for (var i=0; i<detail_component_ids.length; i++)
+	detail_component_ids[i].onchange = rsform_change_field;
+</script>

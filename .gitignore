@@ -11,4 +11,5 @@ cache/*
 logs/*
 sitemap.xml
 sitemap_images.xml
+administrator/components/com_sh404sef/logs/*
 components/com_sh404sef/cache/*

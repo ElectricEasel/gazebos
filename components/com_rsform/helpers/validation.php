@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -11,12 +11,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class RSFormProValidations
 {
-	function none($value,$extra=null,$data=null)
+	public static function none($value,$extra=null,$data=null)
 	{
 		return true;
 	}
 
-	function alpha($param,$extra=null,$data=null)
+	public static function alpha($param,$extra=null,$data=null)
 	{
 		if(strpos($param,"\n") !== false) 
 			$param = str_replace(array("\r","\n"),'',$param);
@@ -28,7 +28,7 @@ class RSFormProValidations
 		return true;
 	}
 	
-	function numeric($param,$extra=null,$data=null)
+	public static function numeric($param,$extra=null,$data=null)
 	{
 		if(strpos($param,"\n") !== false) 
 			$param = str_replace(array("\r","\n"),'',$param);
@@ -40,7 +40,7 @@ class RSFormProValidations
 		return true;
 	}
 	
-	function alphanumeric($param,$extra = null,$data=null)
+	public static function alphanumeric($param,$extra = null,$data=null)
 	{
 		if(strpos($param,"\n") !== false) 
 			$param = str_replace(array("\r","\n"),'',$param);
@@ -52,7 +52,21 @@ class RSFormProValidations
 		return true;
 	}
 	
-	function email($email,$extra=null,$data=null)
+	public static function alphaaccented($value, $extra=null, $data=null) {
+		if (preg_match('#[^[:alpha:] ]#u', $value)) {
+			return false;
+		}
+		return true;
+	}
+	
+	public static function alphanumericaccented($value, $extra=null, $data=null) {
+		if (preg_match('#[^[:alpha:]0-9 ]#u', $value)) {
+			return false;
+		}
+		return true;
+	}
+	
+	public static function email($email,$extra=null,$data=null)
 	{
 		jimport('joomla.mail.helper');
 		
@@ -60,7 +74,7 @@ class RSFormProValidations
 		return JMailHelper::isEmailAddress($email);
 	}
 	
-	function emaildns($email,$extra=null,$data=null)
+	public static function emaildns($email,$extra=null,$data=null)
 	{
 		// Check if it's an email address format
 		if (!RSFormProValidations::email($email,$extra,$data))
@@ -87,38 +101,38 @@ class RSFormProValidations
 		return checkdnsrr($domain, substr(PHP_OS, 0, 3) == 'WIN' ? 'A' : 'MX');
 	}
 	
-	function uniquefield($value, $extra=null,$data=null)
+	public static function uniquefield($value, $extra=null,$data=null)
 	{
-		$db 	=& JFactory::getDBO();
+		$db 	= JFactory::getDBO();
 		$form   = JRequest::getVar('form');
 		$formId = (int) @$form['formId'];
 		
-		$db->setQuery("SELECT `SubmissionValueId` FROM #__rsform_submission_values WHERE FormId='".$formId."' AND `FieldName`='".$db->getEscaped($data['NAME'])."' AND `FieldValue`='".$db->getEscaped($value)."'");
+		$db->setQuery("SELECT `SubmissionValueId` FROM #__rsform_submission_values WHERE FormId='".$formId."' AND `FieldName`='".$db->escape($data['NAME'])."' AND `FieldValue`='".$db->escape($value)."'");
 		return $db->loadResult() ? false : true;
 	}
 	
-	function uniquefielduser($value, $extra=null,$data=null)
+	public static function uniquefielduser($value, $extra=null,$data=null)
 	{
-		$db 	=& JFactory::getDBO();
+		$db 	= JFactory::getDBO();
 		$form   = JRequest::getVar('form');
 		$formId = (int) @$form['formId'];
-		$user	=& JFactory::getUser();
+		$user	= JFactory::getUser();
 		
-		$db->setQuery("SELECT sv.`SubmissionValueId` FROM #__rsform_submission_values sv LEFT JOIN #__rsform_submissions s ON (sv.SubmissionId=s.SubmissionId) WHERE sv.FormId='".$formId."' AND sv.`FieldName`='".$db->getEscaped($data['NAME'])."' AND sv.`FieldValue`='".$db->getEscaped($value)."' AND (".($user->get('guest') ? "s.`UserIp`='".$db->getEscaped($_SERVER['REMOTE_ADDR'])."'" : "s.`UserId`='".(int) $user->get('id')."'").")");
+		$db->setQuery("SELECT sv.`SubmissionValueId` FROM #__rsform_submission_values sv LEFT JOIN #__rsform_submissions s ON (sv.SubmissionId=s.SubmissionId) WHERE sv.FormId='".$formId."' AND sv.`FieldName`='".$db->escape($data['NAME'])."' AND sv.`FieldValue`='".$db->escape($value)."' AND (".($user->get('guest') ? "s.`UserIp`='".$db->escape($_SERVER['REMOTE_ADDR'])."'" : "s.`UserId`='".(int) $user->get('id')."'").")");
 		return $db->loadResult() ? false : true;
 	}
 	
-	function uszipcode($value)
+	public static function uszipcode($value)
 	{
 		return preg_match("/^([0-9]{5})(-[0-9]{4})?$/i",$value);
 	}
 	
-	function phonenumber($value)
+	public static function phonenumber($value)
 	{
 		return preg_match("/\(?\b[0-9]{3}\)?[-. ]?[0-9]{3}[-. ]?[0-9]{4}\b/i", $value);
 	}
 	
-	function creditcard($value,$extra=null,$data=null)
+	public static function creditcard($value,$extra=null,$data=null)
 	{
 		$value = preg_replace ('/[^0-9]+/', '', $value);
 		if (!$value)
@@ -142,7 +156,7 @@ class RSFormProValidations
 		return false;
 	}
 
-	function custom($param,$extra=null,$data=null)
+	public static function custom($param,$extra=null,$data=null)
 	{
 		if(strpos($param,"\n") !== FALSE) 
 			$param = str_replace(array("\r","\n"),'',$param);
@@ -154,7 +168,7 @@ class RSFormProValidations
 		return true;
 	}
 
-	function password($param,$extra=null,$data=null)
+	public static function password($param,$extra=null,$data=null)
 	{
 		if ($data['DEFAULTVALUE'] == $param)
 			return true;
@@ -162,12 +176,12 @@ class RSFormProValidations
 		return false;
 	}
 	
-	function ipaddress($param,$extra=null,$data=null)
+	public static function ipaddress($param,$extra=null,$data=null)
 	{
 		return preg_match('#\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b#', $param, $match);
 	}
 	
-	function validurl($param,$extra=null,$data=null)
+	public static function validurl($param,$extra=null,$data=null)
 	{
 		$format = 
 		'/^(https?):\/\/'.                                         // protocol
@@ -188,9 +202,20 @@ class RSFormProValidations
 		return preg_match($format, $param, $match);
 	}
 	
-	function regex($value,$pattern=null,$data=null)
-	{
+	public static function regex($value,$pattern=null,$data=null) {
 		return preg_match($pattern, $value);
 	}
+	
+	public static function sameas($value, $secondField, $data) {
+		$valid 	= false;
+		$form 	= JRequest::getVar('form');
+		if (isset($form[$secondField])) {
+			$secondValue = is_array($form[$secondField]) ? implode('', $form[$secondField]) : $form[$secondField];
+			if ($value == $secondValue) {
+				$valid = true;
+			}
+		}
+		
+		return $valid;
+	}
 }
-?>

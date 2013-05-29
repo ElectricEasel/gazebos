@@ -18,8 +18,15 @@ $parts = explode('/', JUri::getInstance()->getPath());
 switch ($parts[1])
 {
 	case 'gazebos':
-		$parentName = 'Gazebos';
-		$tagline = 'Simple, quiet comfort can be yours with<br/>your own handcrafted gazebo';
+		if ($parts[2] == 'wood')
+		{
+			$parentName = 'Wood Gazebos';	
+			$tagline = 'Simple, quiet comfort can be yours with<br/>your own handcrafted wood gazebo';
+		} else
+		{
+			$parentName = 'Gazebos';
+			$tagline = 'Simple, quiet comfort can be yours with<br/>your own handcrafted gazebo';
+		}		
 		break;
 	case 'pergolas':
 		$parentName = 'Pergolas';

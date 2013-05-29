@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class RSFormModelSubmissions extends JModel
+class RSFormModelSubmissions extends JModelLegacy
 {
 	var $_form = null;
 	var $_data = array();
@@ -27,7 +27,7 @@ class RSFormModelSubmissions extends JModel
 	{
 		parent::__construct();
 		
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option    =  JRequest::getVar('option', 'com_rsform');
 		
 		$this->_db = JFactory::getDBO();
@@ -36,7 +36,7 @@ class RSFormModelSubmissions extends JModel
 		
 		if (!$this->params->get('enable_submissions', 0))
 		{
-			JError::raiseWarning(500, JText::_('ALERTNOTAUTH'));
+			JError::raiseWarning(500, JText::_('JERROR_ALERTNOAUTHOR'));
 			$mainframe->redirect(JURI::root());
 			return;
 		}
@@ -73,7 +73,7 @@ class RSFormModelSubmissions extends JModel
 		$query .= " LEFT JOIN #__rsform_submission_values sv ON (s.SubmissionId=sv.SubmissionId)";
 		$query .= " WHERE s.FormId='".$this->formId."'";
 		
-		$filter = $this->_db->getEscaped($this->getFilter());
+		$filter = $this->_db->escape($this->getFilter());
 		
 		$confirmed = $this->params->get('show_confirmed', 0);
 		if ($confirmed)
@@ -81,12 +81,13 @@ class RSFormModelSubmissions extends JModel
 		
 		$lang = $this->params->get('lang', '');
 		if ($lang)
-			$query .= " AND s.Lang='".$this->_db->getEscaped($lang)."'";
+			$query .= " AND s.Lang='".$this->_db->escape($lang)."'";
 		
 		if ($filter != '')
 		{
 			$query .= " AND (sv.FieldValue LIKE '%".$filter."%'";
-			$query .= " OR s.DateSubmitted LIKE '%".$filter."%'";
+			if (!preg_match('#([^0-9\-: ])#', $filter))
+				$query .= " OR s.DateSubmitted LIKE '%".$filter."%'";
 			$query .= " OR s.Username LIKE '%".$filter."%'";
 			$query .= " OR s.UserIp LIKE '%".$filter."%')";
 		}
@@ -94,7 +95,7 @@ class RSFormModelSubmissions extends JModel
 		$userId = $this->params->def('userId', 0);
 		if ($userId == 'login')
 		{
-			$user =& JFactory::getUser();
+			$user = JFactory::getUser();
 			if ($user->get('guest'))
 				$query .= " AND 1>2";
 			
@@ -142,7 +143,7 @@ class RSFormModelSubmissions extends JModel
 			$this->getComponents();
 
 			$this->_db->setQuery("SET SQL_BIG_SELECTS=1");
-			$this->_db->query();
+			$this->_db->execute();
 			
 			$submissionIds = array();
 			
@@ -155,7 +156,7 @@ class RSFormModelSubmissions extends JModel
 				$submissionIds[] = $result->SubmissionId;
 				
 				$this->_data[$result->SubmissionId]['FormId'] = $result->FormId;
-				$this->_data[$result->SubmissionId]['DateSubmitted'] = $result->DateSubmitted;
+				$this->_data[$result->SubmissionId]['DateSubmitted'] = RSFormProHelper::getDate($result->DateSubmitted);
 				$this->_data[$result->SubmissionId]['UserIp'] = $result->UserIp;
 				$this->_data[$result->SubmissionId]['Username'] = $result->Username;
 				$this->_data[$result->SubmissionId]['UserId'] = $result->UserId;
@@ -172,7 +173,7 @@ class RSFormModelSubmissions extends JModel
 				$results = $this->_db->loadObjectList();
 				
 				$config = JFactory::getConfig();
-				$secret = $config->getValue('config.secret');
+				$secret = $config->get('secret');
 				foreach ($results as $result)
 				{
 					// Check if this is an upload field
@@ -191,7 +192,7 @@ class RSFormModelSubmissions extends JModel
 					if (in_array($result->FieldName, $this->uploadFields) && !empty($result->FieldValue))
 					{
 						$filepath = $result->FilePath;
-						$filepath = str_replace(JPATH_SITE.DS, JURI::root(), $filepath);
+						$filepath = str_replace(JPATH_SITE.DIRECTORY_SEPARATOR, JURI::root(), $filepath);
 						$filepath = str_replace(array('\\', '\\/', '//\\'), '/', $filepath);
 						
 						$this->_data[$result->SubmissionId]['SubmissionValues'][$result->FieldName]['Path'] = $filepath;
@@ -209,7 +210,7 @@ class RSFormModelSubmissions extends JModel
 		$config  = JFactory::getConfig();
 		$user    = JFactory::getUser((int) $user_id);
 		$replace = array('{global:sitename}', '{global:siteurl}', '{global:userip}', '{global:userid}', '{global:username}', '{global:email}', '{/details}', '{/detailspdf}');
-		$with 	 = array($config->getValue('config.sitename'), JURI::root(), isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '', $user->get('id'), $user->get('username'), $user->get('email'), '</a>', '</a>');
+		$with 	 = array($config->get('sitename'), JURI::root(), isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '', $user->get('id'), $user->get('username'), $user->get('email'), '</a>', '</a>');
 			
 		$this->replacements = array($replace, $with);
 		
@@ -247,7 +248,7 @@ class RSFormModelSubmissions extends JModel
 		if (!empty($this->textareaFields))
 		{
 			$this->_db->setQuery("SELECT p.PropertyValue FROM #__rsform_components c LEFT JOIN #__rsform_properties p ON (c.ComponentId=p.ComponentId) WHERE c.ComponentId IN (".implode(',', $this->textareaFields).")");
-			$this->textareaFields = $this->_db->loadResultArray();
+			$this->textareaFields = $this->_db->loadColumn();
 		}
 	}
 	
@@ -259,14 +260,14 @@ class RSFormModelSubmissions extends JModel
 		$query .= " WHERE c.FormId='".$this->formId."' AND c.Published='1'";
 		
 		$this->_db->setQuery($query);
-		$headers = $this->_db->loadResultArray();
+		$headers = $this->_db->loadColumn();
 		
 		return $headers;
 	}
 	
 	function getTemplate()
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		
 		$Itemid = '';
 		if ($Itemid = JRequest::getInt('Itemid'))
@@ -297,9 +298,10 @@ class RSFormModelSubmissions extends JModel
 					$pdf_link .= strpos($pdf_link, '?') === false ? '?' : '&';
 					$pdf_link .= 'format=pdf';
 				}
+				$details_link = JRoute::_('index.php?option=com_rsform&view=submissions&layout=view&cid='.$SubmissionId.$Itemid);
 				
-				$replace = array_merge($replace, array('{global:date_added}', '{global:submission_id}', '{global:counter}', '{details}', '{detailspdf}','{global:confirmed}'));
-				$with 	 = array_merge($with, array($submission['DateSubmitted'], $SubmissionId, $pagination->getRowOffset($i), '<a href="'.JRoute::_('index.php?option=com_rsform&view=submissions&layout=view&cid='.$SubmissionId.$Itemid).'">', '<a href="'.$pdf_link.'">',$submission['confirmed']));
+				$replace = array_merge($replace, array('{global:date_added}', '{global:submissionid}', '{global:submission_id}', '{global:counter}', '{details}', '{detailspdf}', '{global:confirmed}', '{details_link}', '{detailspdf_link}'));
+				$with 	 = array_merge($with, array($submission['DateSubmitted'], $SubmissionId, $SubmissionId, $pagination->getRowOffset($i), '<a href="'.$details_link.'">', '<a href="'.$pdf_link.'">', $submission['confirmed'], $details_link, $pdf_link));
 				
 				$replace[] = '{_STATUS:value}';
 				$with[] = isset($submission['SubmissionValues']['_STATUS']) ? JText::_('RSFP_PAYPAL_STATUS_'.$submission['SubmissionValues']['_STATUS']['Value']) : '';
@@ -309,8 +311,8 @@ class RSFormModelSubmissions extends JModel
 					if (!isset($submission['SubmissionValues'][$header]['Value']))
 						$submission['SubmissionValues'][$header]['Value'] = '';
 						
-					$replace[] = '{'.$header.':value}';
-					$with[] = $submission['SubmissionValues'][$header]['Value'];
+					/* $replace[] = '{'.$header.':value}';
+					$with[] = $submission['SubmissionValues'][$header]['Value']; */
 					
 					if (!empty($submission['SubmissionValues'][$header]['Path']))
 					{
@@ -318,6 +320,10 @@ class RSFormModelSubmissions extends JModel
 						$with[] = $submission['SubmissionValues'][$header]['Path'];
 					}
 				}
+				
+				list($replace2, $with2) = RSFormProHelper::getReplacements($SubmissionId, true);
+				$replace	= array_merge($replace, $replace2);
+				$with		= array_merge($with, $with2);
 				
 				$formdata .= str_replace($replace, $with, $template_formdatarow);
 				
@@ -329,7 +335,7 @@ class RSFormModelSubmissions extends JModel
 		else
 		{
 			$cid 	= JRequest::getInt('cid');
-			$user   =& JFactory::getUser();
+			$user   = JFactory::getUser();
 			$userId = $this->params->def('userId', 0);
 			if ($userId != 'login' && $userId != 0)
 			{
@@ -341,6 +347,12 @@ class RSFormModelSubmissions extends JModel
 			$submission = $this->_db->loadObject();
 			
 			if (!$submission || ($submission->FormId != $this->params->get('formId')) || ($userId == 'login' && $submission->UserId != $user->get('id')) || (is_array($userId) && !in_array($user->get('id'), $userId)))
+			{
+				JError::raiseWarning(500, JText::_('ALERTNOTAUTH'));
+				$mainframe->redirect(JURI::root());
+				return;
+			}
+			if ($this->params->get('show_confirmed', 0) && !$submission->confirmed)
 			{
 				JError::raiseWarning(500, JText::_('ALERTNOTAUTH'));
 				$mainframe->redirect(JURI::root());
@@ -359,8 +371,8 @@ class RSFormModelSubmissions extends JModel
 			$confirmed = $submission->confirmed ? JText::_('RSFP_YES') : JText::_('RSFP_NO');
 			list($replace, $with) = RSFormProHelper::getReplacements($cid, true);
 			list($replace2, $with2) = $this->getReplacements($submission->UserId);
-			$replace = array_merge($replace, $replace2, array('{global:date_added}', '{global:submission_id}', '{detailspdf}','{global:confirmed}'));
-			$with 	 = array_merge($with, $with2, array($submission->DateSubmitted, $cid, '<a href="'.$pdf_link.'">',$confirmed));
+			$replace = array_merge($replace, $replace2, array('{global:date_added}', '{global:submissionid}', '{global:submission_id}', '{detailspdf}','{global:confirmed}', '{detailspdf_link}'));
+			$with 	 = array_merge($with, $with2, array(RSFormProHelper::getDate($submission->DateSubmitted), $cid, $cid, '<a href="'.$pdf_link.'">', $confirmed, $pdf_link));
 			
 			if ($format == 'pdf' && preg_match_all('#{detailspdf}(.*?){\/detailspdf}#is', $template_formdetail, $matches))
 				foreach ($matches[0] as $fullmatch)
@@ -373,8 +385,8 @@ class RSFormModelSubmissions extends JModel
 	}
 	
 	function getFilter()
-	{		
-		$mainframe =& JFactory::getApplication();
+	{
+		$mainframe = JFactory::getApplication();
 		$formId = $this->params->get('formId',0);
 		
 		return $mainframe->getUserStateFromRequest('com_rsform.submissions.form'.$formId.'.filter', 'filter', '');
@@ -387,4 +399,3 @@ class RSFormModelSubmissions extends JModel
 		return !empty($itemid) ? '&Itemid='.$itemid : '';
 	}
 }
-?>

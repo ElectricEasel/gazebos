@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php } ?>
 </table>
 <p class="rsfp_error" id="rsformerror0" style="display:none;"></p>
-<p><input type="button" value="<?php echo $this->componentId ? JText::_('Update') : JText::_('Save'); ?>" name="componentSaveButton" onclick="processComponent('<?php echo $this->type_id; ?>')" class="rsform_btn" /></p>
+<p><input type="button" value="<?php echo $this->componentId ? JText::_('Update') : JText::_('Save'); ?>" name="componentSaveButton" onclick="processComponent('<?php echo $this->type_id; ?>')" class="rs_button" /></p>
 <?php } ?>
 {rsfsep}
 <?php if (!empty($this->fields['validations'])) { ?>
@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php } ?>
 </table>
 <p class="rsfp_error" id="rsformerror1" style="display:none;"></p>
-<p><input type="button" value="<?php echo $this->componentId ? JText::_('Update') : JText::_('Save'); ?>" name="componentSaveButton" onclick="processComponent('<?php echo $this->type_id; ?>')" class="rsform_btn" /></p>
+<p><input type="button" value="<?php echo $this->componentId ? JText::_('Update') : JText::_('Save'); ?>" name="componentSaveButton" onclick="processComponent('<?php echo $this->type_id; ?>')" class="rs_button" /></p>
 <?php } ?>
 {rsfsep}
 <?php if (!empty($this->fields['attributes'])) { ?>
@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<?php if ($field->name == 'FILESIZE' && is_callable('ini_get')) { ?>
 	<tr id="idFILESIZEDIAGNOSE1">
-		<td><button type="button" onclick="document.getElementById('idFILESIZEDIAGNOSE2').style.display = ''; document.getElementById('idFILESIZEDIAGNOSE1').style.display = 'none';"><?php echo JText::_('RSFP_COMP_FIELD_FILESIZEDIAGNOSE'); ?></button></td>
+		<td><button type="button" class="rs_button" onclick="document.getElementById('idFILESIZEDIAGNOSE2').style.display = ''; document.getElementById('idFILESIZEDIAGNOSE1').style.display = 'none';"><?php echo JText::_('RSFP_COMP_FIELD_FILESIZEDIAGNOSE'); ?></button></td>
 	</tr>
 	<tr id="idFILESIZEDIAGNOSE2" style="display: none;">
 		<td><?php echo JText::sprintf('RSFP_COMP_FIELD_FILESIZEDIAGNOSE_MSG',
@@ -57,5 +57,5 @@ defined('_JEXEC') or die('Restricted access');
 <?php } ?>
 </table>
 <p class="rsfp_error" id="rsformerror2" style="display:none;"></p>
-<p><input type="button" value="<?php echo $this->componentId ? JText::_('Update') : JText::_('Save'); ?>" name="componentSaveButton" onclick="processComponent('<?php echo $this->type_id; ?>')" class="rsform_btn" /></p>
+<p><input type="button" value="<?php echo $this->componentId ? JText::_('Update') : JText::_('Save'); ?>" name="componentSaveButton" onclick="processComponent('<?php echo $this->type_id; ?>')" class="rs_button" /></p>
 <?php } ?>

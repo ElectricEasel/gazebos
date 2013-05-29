@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <form action="index.php" method="post" name="adminForm">
 	<p><?php JText::sprintf('RSFP_ADD_TO_MENU', $this->formTitle); ?></p>
-	<table class="adminlist">
+	<table class="adminlist table table-striped" id="articleList">
 	<thead>
 		<tr>
 			<th width="20"><?php echo JText::_('#'); ?></th>

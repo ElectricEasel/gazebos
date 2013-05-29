@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-class RSFormModelFormAjax extends JModel
+class RSFormModelFormAjax extends JModelLegacy
 {	
 	function __construct()
 	{
@@ -214,9 +214,9 @@ class RSFormModelFormAjax extends JModel
 			if (in_array($result->FieldName, $translatable) && $result->FieldType != 'hiddenparam' && $result->FieldType != 'hidden')
 				$field->body = RSFormProHelper::translateIcon().' '.$field->body;
 			
-			if (in_array($field->name,$general) || $result->FieldType == 'hidden' || $result->FieldType == 'hiddenparam')
+			if (in_array($field->name, $general) || $result->FieldType == 'hidden' || $result->FieldType == 'hiddenparam')
 				$return['general'][] = $field;
-			elseif (in_array($field->name,$validations))
+			elseif (in_array($field->name, $validations) || strpos($field->name, 'VALIDATION') !== false)
 				$return['validations'][] = $field;
 			else
 				$return['attributes'][] = $field;
@@ -246,8 +246,10 @@ class RSFormModelFormAjax extends JModel
 		$cid = JRequest::getInt('componentId');
 		
 		$cids = JRequest::getVar('cid', array());
-		if (is_array($cids) && count($cids))
+		if (is_array($cids) && count($cids)) {
+			JArrayHelper::toInteger($cids);
 			$cid = $cids;
+		}
 		
 		return $cid;
 	}
@@ -264,6 +266,12 @@ class RSFormModelFormAjax extends JModel
 		$return = new stdClass();
 		$this->_db->setQuery("SELECT Published FROM #__rsform_components WHERE ComponentId='".$componentId."'");
 		$return->published = $this->_db->loadResult();
+		
+		// required?
+		$data = $this->getComponentData();
+		if (isset($data['REQUIRED'])) {
+			$return->required = $data['REQUIRED'] == 'YES';
+		}
 		
 		return $return;
 	}
@@ -282,6 +290,23 @@ class RSFormModelFormAjax extends JModel
 		else
 			$this->_db->setQuery("UPDATE #__rsform_components SET Published='".$published."' WHERE ComponentId='".$componentId."'");
 		
-		$this->_db->query();
+		$this->_db->execute();
+	}
+	
+	function componentsChangeRequired()
+	{
+		$componentId = $this->getComponentId();
+		
+		$task = strtolower(JRequest::getWord('task'));
+		$required = 'NO';
+		if ($task == 'componentssetrequired')
+			$required = 'YES';
+		
+		if (is_array($componentId))
+			$this->_db->setQuery("UPDATE #__rsform_properties SET PropertyValue='".$required."' WHERE PropertyName='REQUIRED' AND ComponentId IN (".implode(',', $componentId).")");
+		else
+			$this->_db->setQuery("UPDATE #__rsform_properties SET PropertyValue='".$required."' WHERE PropertyName='REQUIRED' AND ComponentId='".$componentId."'");
+		
+		$this->_db->execute();
 	}
 }

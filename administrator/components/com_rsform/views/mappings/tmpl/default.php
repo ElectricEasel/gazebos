@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -57,7 +57,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo $this->escape($this->mapping->host); ?>
 				<input type="hidden" name="host" value="<?php echo $this->escape($this->mapping->host); ?>" />
 				<?php } else { ?>
-				<input type="text" name="host" id="MappingHost" value="<?php echo $this->escape($this->mapping->host); ?>" size="50" />
+				<input type="text" class="rs_inp rs_50" name="host" id="MappingHost" value="<?php echo $this->escape($this->mapping->host); ?>" size="50" />
 				<?php } ?>
 			</span>
 			<span id="mpHostOff" style="display:none;"></span>
@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo ':'.$this->escape($this->mapping->port); ?>
 				<input type="hidden" name="port" value="<?php echo $this->escape($this->mapping->port); ?>" />
 				<?php } else { ?>
-				<?php echo JText::_('RSFP_FORM_MAPPINGS_PORT'); ?> : <input type="text" name="port" id="MappingPort" value="<?php echo $this->escape($this->mapping->port); ?>" size="5" />
+				<?php echo JText::_('RSFP_FORM_MAPPINGS_PORT'); ?> : <input type="text" class="rs_inp rs_10" name="port" id="MappingPort" value="<?php echo $this->escape($this->mapping->port); ?>" size="5" />
 				<?php } ?>
 			</span>
 		</td>
@@ -79,7 +79,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo $this->escape($this->mapping->username); ?>
 				<input type="hidden" name="username" value="<?php echo $this->escape($this->mapping->username); ?>" />
 				<?php } else { ?>
-				<input type="text" name="username" id="MappingUsername" value="<?php echo $this->escape($this->mapping->username); ?>" size="50" />
+				<input type="text" class="rs_inp rs_50" name="username" id="MappingUsername" value="<?php echo $this->escape($this->mapping->username); ?>" size="50" />
 				<?php } ?>
 			</span>
 			<span id="mpUsernameOff" style="display:none;"></span>
@@ -93,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo $this->escape($this->mapping->password); ?>
 				<input type="hidden" name="password" value="<?php echo $this->escape($this->mapping->password); ?>" />
 				<?php } else { ?>
-				<input type="password" name="password" id="MappingPassword" value="<?php echo $this->escape($this->mapping->password); ?>" size="50" />
+				<input type="password" class="rs_inp rs_50" name="password" id="MappingPassword" value="<?php echo $this->escape($this->mapping->password); ?>" size="50" />
 				<?php } ?>
 			</span>
 			<span id="mpPasswordOff" style="display:none;"></span>
@@ -107,7 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo $this->escape($this->mapping->database); ?>
 				<input type="hidden" name="database" value="<?php echo $this->escape($this->mapping->database); ?>" />
 				<?php } else { ?>
-				<input type="text" name="database" id="MappingDatabase" value="<?php echo $this->escape($this->mapping->database); ?>" size="50" />
+				<input type="text" class="rs_inp rs_50" name="database" id="MappingDatabase" value="<?php echo $this->escape($this->mapping->database); ?>" size="50" />
 				<?php } ?>
 			</span>
 			<span id="mpDatabaseOff" style="display:none;"></span>
@@ -118,7 +118,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td width="160" style="width: 160px;" align="right">&nbsp;</td>
 		<td>
-			<button type="button" id="connectBtn" onclick="javascript: mpConnect();"><?php echo JText::_('RSFP_FORM_MAPPINGS_CONNECT'); ?></button> 
+			<button class="rs_button" type="button" id="connectBtn" onclick="javascript: mpConnect();"><?php echo JText::_('RSFP_FORM_MAPPINGS_CONNECT'); ?></button> 
 			<img id="mappingloader" src="<?php echo JURI::root(); ?>administrator/components/com_rsform/assets/images/loading.gif" style="vertical-align: middle; display: none;" />
 		</td>
 	</tr>

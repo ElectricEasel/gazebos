@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -14,15 +14,11 @@ defined('_JEXEC') or die('Restricted access');
 <br />
 <div id="mappingcontent" style="overflow: auto;">
 <?php } ?>
-	<div class="button2-left">
-		<div class="blank">
-			<a rel="{handler: 'iframe', size: {x: 800, y: 600}}" href="index.php?option=com_rsform&amp;view=mappings&amp;formId=<?php echo $this->formId; ?>&amp;tmpl=component" class="modal"><?php echo JText::_('RSFP_FORM_MAPPINGS_NEW'); ?></a>
-		</div>
-	</div>
-
+	<button type="button" class="rs_button" onclick="openRSModal('<?php echo JRoute::_('index.php?option=com_rsform&view=mappings&formId='.$this->formId.'&tmpl=component'); ?>', 'Mappings', '800x600')"><?php echo JText::_('RSFP_FORM_MAPPINGS_NEW'); ?></button>
+	
 	<br /><br />
 
-	<table class="adminlist" id="mappingTable">
+	<table class="adminlist table table-striped" id="mappingTable">
 		<thead>
 			<tr>
 				<th width="1%" nowrap="nowrap"><?php echo JText::_('RSFP_FORM_MAPPINGS_DATABASE_TABLE'); ?></th>
@@ -49,14 +45,9 @@ defined('_JEXEC') or die('Restricted access');
 					<span><?php echo str_replace(array('cb'.$i,'listItemTask'),array('mp'.$i,'orderMapping'),$this->mpagination->orderDownIcon( $i, $n, true, 'orderdown', 'Move Down', 'ordering' )); ?></span>
 					<input type="text" name="mporder[]" size="5" value="<?php echo $row->ordering; ?>" disabled="disabled" class="text_area" style="text-align:center" />
 				</td>
-				<td align="center" width="1%" nowrap="nowrap">
-					<a rel="{handler: 'iframe', size: {x: 800, y: 600}}" href="index.php?option=com_rsform&amp;view=mappings&amp;formId=<?php echo $this->formId; ?>&amp;cid=<?php echo $row->id; ?>&amp;tmpl=component" class="modal">
-						<?php echo JText::_('EDIT'); ?>
-					</a> 
-					/ 
-					<a href="javascript: void(0)" onclick="mappingdelete(<?php echo $this->formId; ?>,<?php echo $row->id; ?>)">
-						<?php echo JText::_('DELETE'); ?>
-					</a>
+				<td align="center" width="20%" nowrap="nowrap">
+					<button type="button" class="rs_button rs_left" onclick="openRSModal('<?php echo JRoute::_('index.php?option=com_rsform&view=mappings&cid='.$row->id.'&tmpl=component&formId='.$this->formId.'&cid='.$row->id); ?>', 'Mappings', '800x600')"><?php echo JText::_('EDIT'); ?></button>
+					<button type="button" class="rs_button rs_left" onclick="mappingdelete(<?php echo $this->formId; ?>,<?php echo $row->id; ?>);"><?php echo JText::_('DELETE'); ?></button>
 				</td>
 			</tr>
 			<?php $k=1-$k; ?>

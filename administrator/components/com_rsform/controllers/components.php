@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -21,7 +21,10 @@ class RSFormControllerComponents extends RSFormController
 		$this->registerTask('publish',   'changestatus');
 		$this->registerTask('unpublish', 'changestatus');
 		
-		$this->_db =& JFactory::getDBO();
+		$this->registerTask('setrequired',   'changerequired');
+		$this->registerTask('unsetrequired', 'changerequired');
+		
+		$this->_db = JFactory::getDBO();
 	}
 	
 	function save()
@@ -34,7 +37,6 @@ class RSFormControllerComponents extends RSFormController
 		
 		$params = JRequest::getVar('param', array(), 'post', 'none', JREQUEST_ALLOWRAW);
 		$params['EMAILATTACH'] = !empty($params['EMAILATTACH']) ? implode(',',$params['EMAILATTACH']) : '';
-		array_walk($params, array('RSFormProHelper', 'escapeArray'));
 		
 		$just_added = false;
 		if ($componentIdToEdit < 1)
@@ -43,20 +45,56 @@ class RSFormControllerComponents extends RSFormController
 			$nextOrder = $db->loadResult();
 			
 			$db->setQuery("INSERT INTO #__rsform_components SET FormId='".$formId."', ComponentTypeId='".$componentType."', `Order`='".$nextOrder."'");
-			$db->query();
+			$db->execute();
 			$componentIdToEdit = $db->insertid();
 			$just_added = true;
 		}
 		
 		$model = $this->getModel('forms');
 		$lang  = $model->getLang();
+		
+		if (!$just_added && isset($params['ITEMS'])) {
+			$db->setQuery("SELECT cd.* FROM #__rsform_condition_details cd LEFT JOIN #__rsform_conditions c ON (cd.condition_id=c.id) WHERE cd.component_id='".$componentIdToEdit."' AND c.lang_code=".$db->quote($lang));
+			if ($conditions = $db->loadObjectList()) {
+				$data 		= RSFormProHelper::getComponentProperties($componentIdToEdit);
+				$oldvalues 	= RSFormProHelper::explode(RSFormProHelper::isCode($data['ITEMS']));
+				$newvalues 	= RSFormProHelper::explode(RSFormProHelper::isCode($params['ITEMS']));
+				
+				foreach ($oldvalues as $i => $oldvalue) {
+					$oldvalue = reset(explode('|', $oldvalue, 2));
+					$oldvalue = str_replace(array('[c]', '[g]'), '', $oldvalue);
+					
+					$oldvalues[$i] = $oldvalue;
+				}
+				
+				foreach ($newvalues as $i => $newvalue) {
+					$newvalue = reset(explode('|', $newvalue, 2));
+					$newvalue = str_replace(array('[c]', '[g]'), '', $newvalue);
+					
+					$newvalues[$i] = $newvalue;
+				}
+				
+				foreach ($conditions as $condition) {
+					$pos = array_search($condition->value, $oldvalues);
+					if ($pos !== false && isset($newvalues[$pos])) {
+						$newvalue = $newvalues[$pos];
+						if ($condition->value != $newvalue) {
+							$db->setQuery("UPDATE #__rsform_condition_details SET `value`=".$db->quote($newvalue)." WHERE id='".$condition->id."'");
+							$db->execute();
+						}
+					}
+				}
+			}
+		}
+		
+		array_walk($params, array('RSFormProHelper', 'escapeArray'));
 		if ($model->_form->Lang != $lang)
 			$model->saveFormPropertyTranslation($formId, $componentIdToEdit, $params, $lang, $just_added);
 		
 		if ($componentIdToEdit > 0)
 		{
 			$db->setQuery("SELECT PropertyName FROM #__rsform_properties WHERE ComponentId='".$componentIdToEdit."' AND PropertyName IN ('".implode("','", array_keys($params))."')");
-			$properties = $db->loadResultArray();
+			$properties = $db->loadColumn();
 			
 			foreach ($params as $key => $val)
 			{
@@ -65,11 +103,15 @@ class RSFormControllerComponents extends RSFormController
 				else
 					$db->setQuery("INSERT INTO #__rsform_properties SET PropertyValue='".$val."', PropertyName='".$key."', ComponentId='".$componentIdToEdit."'");
 				
-				$db->query();
+				$db->execute();
 			}
 		}
 		
-		$this->setRedirect('index.php?option=com_rsform&task=forms.edit&formId='.$formId);
+		$link = 'index.php?option=com_rsform&task=forms.edit&formId='.$formId;
+		if (JRequest::getVar('tmpl') == 'component')
+			$link .= '&tmpl=component';
+		
+		$this->setRedirect($link);
 	}
 	
 	function saveOrdering()
@@ -83,7 +125,7 @@ class RSFormControllerComponents extends RSFormController
 			if (empty($key)) continue;
 			
 			$db->setQuery("UPDATE #__rsform_components SET `Order`='".$val."' WHERE ComponentId='".$key."'");
-			$db->query();
+			$db->execute();
 		}
 		
 		echo 'Ok';
@@ -94,7 +136,7 @@ class RSFormControllerComponents extends RSFormController
 	function validateName()
 	{
 		$componentName = trim(JRequest::getVar('componentName', ''));
-		if (preg_match('#([^a-zA-Z0-9_ ])#', $componentName) || empty($componentName))
+		if (preg_match('#([^a-zA-Z0-9_ ])#', $componentName) || empty($componentName) || $componentName == 'elements')
 		{
 			echo '0|'.JText::_('RSFP_UNIQUE_NAME_MSG');
 			exit();
@@ -122,6 +164,8 @@ class RSFormControllerComponents extends RSFormController
 			}
 		}
 		
+		/*
+		no longer needed
 		if ($componentType == 6)
 		{
 			$mindate = JRequest::getVar('mindate');
@@ -132,6 +176,7 @@ class RSFormControllerComponents extends RSFormController
 				exit();
 			}
 		}
+		*/
 		
 		$currentComponentId = JRequest::getInt('currentComponentId');
 		$componentId		= JRequest::getInt('componentId');
@@ -146,13 +191,13 @@ class RSFormControllerComponents extends RSFormController
 		exit();
 	}
 	
-	function display()
+	function display($cachable = false, $urlparams = false)
 	{
 		JRequest::setVar('view', 	'formajax');
 		JRequest::setVar('layout', 	'component');
 		JRequest::setVar('format', 	'raw');
 		
-		parent::display();
+		parent::display($cachable, $urlparams);
 	}
 	
 	function copyProcess()
@@ -226,6 +271,19 @@ class RSFormControllerComponents extends RSFormController
 		}
 	}
 	
+	function changeRequired()
+	{
+		$model = $this->getModel('formajax');
+		$model->componentsChangeRequired();
+		$componentId = $model->getComponentId();
+		
+		JRequest::setVar('view', 'formajax');
+		JRequest::setVar('layout', 'component_required');
+		JRequest::setVar('format', 'raw');
+		
+		parent::display();
+	}
+	
 	function remove()
 	{
 		$formId = JRequest::getInt('formId');
@@ -237,13 +295,13 @@ class RSFormControllerComponents extends RSFormController
 		if (!empty($cids))
 		{
 			$db->setQuery("DELETE FROM #__rsform_components WHERE ComponentId IN (".implode(',', $cids).")");
-			$db->query();
+			$db->execute();
 			$db->setQuery("DELETE FROM #__rsform_properties WHERE ComponentId IN (".implode(',', $cids).")");
-			$db->query();
+			$db->execute();
 			foreach ($cids as $cid)
 			{
 				$db->setQuery("DELETE FROM #__rsform_translations WHERE reference_id LIKE '".$cid.".%'");
-				$db->query();
+				$db->execute();
 			}
 		}
 		
@@ -253,7 +311,7 @@ class RSFormControllerComponents extends RSFormController
 		foreach ($components as $r)
 		{
 			$db->setQuery("UPDATE #__rsform_components SET `Order`='".$i."' WHERE ComponentId='".$r['ComponentId']."'");
-			$db->query();
+			$db->execute();
 			$i++;
 		}
 		

@@ -2,43 +2,40 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-jimport('joomla.html.pane');
-
-class RSFormViewBackupRestore extends JView
+class RSFormViewBackupRestore extends JViewLegacy
 {
-	function display($tpl = null)
-	{
-		$mainframe =& JFactory::getApplication();
+	public function display($tpl = null) {
+		$this->addToolbar();
 		
-		JToolBarHelper::title('RSForm! Pro','rsform');
+		// tabs
+		$this->tabs		 = $this->get('RSTabs');
+		// fields
+		$this->field	 = $this->get('RSFieldset');
+		$this->sidebar 	 = $this->get('SideBar');
 		
-		if (RSFormProHelper::isJ16())
-		{
-			$lang =& JFactory::getLanguage();
-			$lang->load('com_rsform.sys', JPATH_ADMINISTRATOR);
-			
-			JSubMenuHelper::addEntry(JText::_('COM_RSFORM_MANAGE_FORMS'), 'index.php?option=com_rsform&task=forms.manage');
-			JSubMenuHelper::addEntry(JText::_('COM_RSFORM_MANAGE_SUBMISSIONS'), 'index.php?option=com_rsform&task=submissions.manage');
-			JSubMenuHelper::addEntry(JText::_('COM_RSFORM_CONFIGURATION'), 'index.php?option=com_rsform&task=configuration.edit');
-			JSubMenuHelper::addEntry(JText::_('COM_RSFORM_BACKUP_RESTORE'), 'index.php?option=com_rsform&task=backup.restore', true);
-			JSubMenuHelper::addEntry(JText::_('COM_RSFORM_UPDATES'), 'index.php?option=com_rsform&task=updates.manage');
-			JSubMenuHelper::addEntry(JText::_('COM_RSFORM_PLUGINS'), 'index.php?option=com_rsform&task=goto.plugins');
-		}
-		
-		$this->assign('writable', $this->get('isWritable'));
-		$this->assign('zlib', extension_loaded('zlib'));
-		$this->assignRef('forms', $this->get('forms'));
-		
-		$tabs =& JPane::getInstance('Tabs', array(), true);
-		$this->assignRef('tabs', $tabs);
+		$this->writable = $this->get('isWritable');
+		$this->forms	= $this->get('forms');
 		
 		parent::display($tpl);
+	}
+	
+	protected function addToolBar() {
+		// set title
+		JToolBarHelper::title('RSForm! Pro', 'rsform');
+		
+		$backupIcon  = RSFormProHelper::isJ('3.0') ? 'download' : 'archive';
+		$restoreIcon = RSFormProHelper::isJ('3.0') ? 'upload' : 'unarchive';
+		
+		JToolBarHelper::custom('backup.download', $backupIcon, $backupIcon, JText::_('RSFP_BACKUP_GENERATE'), false);
+		JToolBarHelper::custom('restore.process', $restoreIcon, $restoreIcon, JText::_('RSFP_RESTORE'), false);
+		
+		require_once JPATH_COMPONENT.'/helpers/toolbar.php';
+		RSFormProToolbarHelper::addToolbar('backuprestore');
 	}
 }

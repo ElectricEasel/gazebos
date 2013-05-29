@@ -2,15 +2,13 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controller');
-
-class RSFormController extends JController
+class RSFormController extends JControllerLegacy
 {
 	var $_db;
 	
@@ -20,17 +18,13 @@ class RSFormController extends JController
 		
 		$this->_db = JFactory::getDBO();
 		
-		$view = JRequest::getVar('view', 'rsform');
-		if ($view == 'rsform')
-			$this->registerDefaultTask('showForm');
-		
-		$doc =& JFactory::getDocument();
+		$doc = JFactory::getDocument();
 		$doc->addScript(JURI::root(true).'/components/com_rsform/assets/js/script.js');
 	}
 	
 	function captcha()
 	{
-		require_once(JPATH_SITE.DS.'components'.DS.'com_rsform'.DS.'helpers'.DS.'captcha.php');
+		require_once JPATH_SITE.'/components/com_rsform/helpers/captcha.php';
 		
 		$componentId = JRequest::getInt('componentId');
 		$captcha = new RSFormProCaptcha($componentId);
@@ -42,21 +36,14 @@ class RSFormController extends JController
 	
 	function plugin()
 	{
-		$mainframe =& JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$mainframe->triggerEvent('rsfp_f_onSwitchTasks');
 	}
 	
+	/* deprecated */
 	function showForm()
 	{
-		$mainframe =& JFactory::getApplication();
 		
-		if (!$formId = JRequest::getInt('formId', 0, 'get'))
-		{
-			$params = clone($mainframe->getParams('com_rsform'));
-			$formId = $params->get('formId');
-		}
-		
-		echo RSFormProHelper::displayForm($formId);
 	}
 	
 	function submissionsViewFile()
@@ -69,9 +56,9 @@ class RSFormController extends JController
 			return $this->setRedirect('index.php');
 		
 		$config = JFactory::getConfig();
-		$secret = $config->getValue('config.secret');
+		$secret = $config->get('secret');
 			
-		$this->_db->setQuery("SELECT * FROM #__rsform_submission_values WHERE MD5(CONCAT(SubmissionId,'".$this->_db->getEscaped($secret)."',FieldName)) = '".$hash."'");
+		$this->_db->setQuery("SELECT * FROM #__rsform_submission_values WHERE MD5(CONCAT(SubmissionId,'".$this->_db->escape($secret)."',FieldName)) = '".$hash."'");
 		$result = $this->_db->loadObject();
 		
 		// Not found
@@ -79,7 +66,7 @@ class RSFormController extends JController
 			return $this->setRedirect('index.php');
 		
 		// Not an upload field
-		$this->_db->setQuery("SELECT c.ComponentTypeId FROM #__rsform_properties p LEFT JOIN #__rsform_components c ON (p.ComponentId=c.ComponentId) WHERE p.PropertyName='NAME' AND p.PropertyValue='".$this->_db->getEscaped($result->FieldName)."'");
+		$this->_db->setQuery("SELECT c.ComponentTypeId FROM #__rsform_properties p LEFT JOIN #__rsform_components c ON (p.ComponentId=c.ComponentId) WHERE p.PropertyName='NAME' AND p.PropertyValue='".$this->_db->escape($result->FieldName)."'");
 		$type = $this->_db->loadResult();
 		if ($type != 9)
 			return $this->setRedirect('index.php', JText::_('RSFP_VIEW_FILE_NOT_UPLOAD'));
@@ -113,15 +100,12 @@ class RSFormController extends JController
 		}
 		
 		$removeUploads   = array();
-		$removeRecaptcha = array();
 		$formComponents  = array();
 		foreach ($components as $component)
 		{
 			$formComponents[] = $component->ComponentId;
 			if ($component->ComponentTypeId == 9)
 				$removeUploads[] = $component->ComponentId;
-			if ($component->ComponentTypeId == 24)
-				$removeRecaptcha[] = $component->ComponentId;
 		}
 		
 		echo implode(',', $formComponents);
@@ -129,10 +113,16 @@ class RSFormController extends JController
 		echo "\n";
 		
 		$invalid = RSFormProHelper::validateForm($formId);
+		
+		//Trigger Event - onBeforeFormValidation
+		$mainframe = JFactory::getApplication();
+		$post = JRequest::get('post', JREQUEST_ALLOWRAW);
+		$mainframe->triggerEvent('rsfp_f_onBeforeFormValidation', array(array('invalid'=>&$invalid, 'formId' => $formId, 'post' => &$post)));
+		
 		if (count($invalid))
 		{
 			foreach ($invalid as $i => $componentId)
-				if (in_array($componentId, $removeUploads) || in_array($componentId, $removeRecaptcha))
+				if (in_array($componentId, $removeUploads))
 					unset($invalid[$i]);
 			
 			$invalidComponents = array_intersect($formComponents, $invalid);
@@ -171,16 +161,16 @@ class RSFormController extends JController
 	
 	function confirm()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$hash = JRequest::getVar('hash');
 		
-		$db->setQuery("SELECT `SubmissionId` FROM `#__rsform_submissions` WHERE MD5(CONCAT(`SubmissionId`,`FormId`,`DateSubmitted`)) = '".$db->getEscaped($hash)."' ");
+		$db->setQuery("SELECT `SubmissionId` FROM `#__rsform_submissions` WHERE MD5(CONCAT(`SubmissionId`,`FormId`,`DateSubmitted`)) = '".$db->escape($hash)."' ");
 		$SubmissionId = $db->loadResult();
 		
 		if ($SubmissionId)
 		{
 			$db->setQuery("UPDATE `#__rsform_submissions` SET `confirmed` = 1 WHERE `SubmissionId` = '".$SubmissionId."' ");
-			$db->query();
+			$db->execute();
 			JError::raiseNotice('200',JText::_('RSFP_SUBMISSION_CONFIRMED'));
 		}
 		else
@@ -190,4 +180,3 @@ class RSFormController extends JController
 		}
 	}
 }
-?>

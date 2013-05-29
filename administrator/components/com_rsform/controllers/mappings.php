@@ -2,7 +2,7 @@
 /**
 * @version 1.4.0
 * @package RSform!Pro 1.4.0
-* @copyright (C) 2007-2011 www.rsjoomla.com
+* @copyright (C) 2007-2013 www.rsjoomla.com
 * @license GPL, http://www.gnu.org/copyleft/gpl.html
 */
 
@@ -63,14 +63,10 @@ class RSFormControllerMappings extends RSFormController
 		$row = $model->save();
 
 		$html  = '<script type="text/javascript">';
+		$html .= 'window.close();';
 		
-		if ($row === false)
-			$html .= RSFormProHelper::isJ16() ? 'window.parent.SqueezeBox.close();' : 'window.parent.document.getElementById(\'sbox-window\').close()';
-		else
-		{
-			$html .= 'window.parent.ShowMappings('.$row->formId.')'."\n";
-			$html .= RSFormProHelper::isJ16() ? 'window.parent.SqueezeBox.close();' : 'window.parent.document.getElementById(\'sbox-window\').close()';
-		}
+		if ($row !== false)
+			$html .= 'window.opener.ShowMappings('.$row->formId.')'."\n";
 		
 		$html .= '</script>';
 		
@@ -89,7 +85,7 @@ class RSFormControllerMappings extends RSFormController
 			if (empty($key)) continue;
 			
 			$db->setQuery("UPDATE #__rsform_mappings SET `ordering` = '".$val."' WHERE `id` = '".$key."'");
-			$db->query();
+			$db->execute();
 		}
 		
 		echo 'Ok';
@@ -125,4 +121,3 @@ class RSFormControllerMappings extends RSFormController
 	}
 	
 }
-?>
