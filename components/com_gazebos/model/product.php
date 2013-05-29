@@ -181,9 +181,14 @@ class GazebosModelProduct extends EEModelItem
 
 	public function getSizes()
 	{
-		$q = 'SELECT * FROM #__gazebos_sizes WHERE product_id = ' . $this->item->id;
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select('a.*')
+			->from('#__gazebos_sizes AS a')
+			->where('a.product_id = ' . (int) $this->item->id)
+			->order('a.size ASC');
 
-		return (array) $this->getDbo()->setQuery($q)->loadObjectList();
+		return (array) $db->setQuery($query)->loadObjectList();
 	}
 
 	/**
