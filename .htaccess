@@ -1,6 +1,3 @@
-# Set the server environment
-SetEnv EE_ENV production
-
 # Turn on Expires and set default to 0
 ExpiresActive On
 ExpiresDefault A0
