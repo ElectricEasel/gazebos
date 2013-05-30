@@ -12,11 +12,21 @@ defined('_JEXEC') or die;
 <div style="padding:10px;background:url(/templates/gazebos/images/bg_darkpattern.png) repeat 0 0 scroll transparent;">
 	<div class="quote-wrap">
 		<img src="/templates/gazebos/images/quote_logo.png" />
+		<br />
+		<div class="product-top" id="product-content">
+			<div id="price-box">
+				Starting at
+				<span>$<?php echo number_format($this->item->min_price, 0) ?></span>
+			</div>
+			<h1><?php echo ($this->item->size); ?> <?php echo rtrim($this->item->type_title, 's'); ?></h1>
+			<h2 class="product-title"><?php echo $this->item->title; ?></h2>
+		</div>
+
 		<div style="padding:0 20px">
-			<h3>GET A QUOTE</h3>
+			<!--<h3>QUICK QUOTE</h3>-->
 			<div id="quick-quote-widget">
 				<div class="widget-wrap">
-					<p>Please fill out the form below and a Gazebos.com consultant will contact you.</p>
+					<p style="margin:0">Please fill out the form below and a Gazebos.com consultant will contact you.</p>
 					<form id="custom-quote" action="<?php echo JRoute::_('index.php?option=com_gazebos&task=product.submit'); ?>" method="post">
 						<ul>
 							<li class="half">
@@ -47,7 +57,7 @@ defined('_JEXEC') or die;
 								<input id="submit" class="green-button" type="submit" value="Submit Request &rsaquo;"/>
 							</li>
 						</ul>
-						<?php echo $this->form->getInput('product_id'); ?>
+						<?php echo $this->form->getInput('size_interested_in'); ?>
 					</form>
 				</div>
 			</div>
