@@ -56,14 +56,17 @@ class GazebosModelProduct extends EEModelItem
 
 	protected function buildQuery()
 	{
-		return
-			'SELECT a.*, b.title AS type, c.title AS style, d.title AS shape, e.title AS material ' .
-			'FROM #__gazebos_products AS a ' .
-			'LEFT JOIN #__gazebos_types AS b ON b.id = a.type_id ' .
-			'LEFT JOIN #__gazebos_styles AS c ON c.id = a.style_id ' .
-			'LEFT JOIN #__gazebos_shapes AS d ON d.id = a.shape_id ' .
-			'LEFT JOIN #__gazebos_materials AS e ON e.id = a.material_id ' .
-			'WHERE a.state = 1 AND a.id = ' . $this->getState('product.id');
+		return $this
+			->getDbo()
+			->getQuery(true)
+			->select('a.*, b.title AS type, c.title AS style, d.title AS shape, e.title AS material')
+			->from('#__gazebos_products AS a')
+			->leftJoin('#__gazebos_types AS b ON b.id = a.type_id')
+			->leftJoin('#__gazebos_styles AS c ON c.id = a.style_id')
+			->leftJoin('#__gazebos_shapes AS d ON d.id = a.shape_id')
+			->leftJoin('#__gazebos_materials AS e ON e.id = a.material_id')
+			->where('a.state = 1')
+			->where('a.id = ' . (int) $this->getState('product.id'));
 	}
 
 	/**
@@ -80,13 +83,19 @@ class GazebosModelProduct extends EEModelItem
 			$item = $this->item;
 		}
 
-		$q = 'SELECT * FROM #__gazebos_gallery WHERE product_id = ' . $item->id . ' ORDER BY ordering ASC';
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select('*')
+			->from('#__gazebos_gallery')
+			->where('product_id = ' . (int) $item->id)
+			->order('ordering ASC');
 
-		$results = (array) $this->getDbo()->setQuery($q)->loadObjectList();
+		$results = (array) $db->setQuery($query)->loadObjectList();
 
 		foreach  ($results as $image)
 		{
 			$base = JPATH_BASE . "/media/com_gazebos/images/products/{$image->product_id}/";
+
 			if (!file_exists($base . "thumbs/300x300_{$image->path}"))
 			{
 				EEImageHelper::setThumbSizes(array(
@@ -115,6 +124,8 @@ class GazebosModelProduct extends EEModelItem
 	 */
 	public function getAttributes(&$item)
 	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
 		$fields = array(
 			'options',
 			'colors',
@@ -125,7 +136,6 @@ class GazebosModelProduct extends EEModelItem
 
 		foreach ($fields as $field)
 		{
-			$q       = $this->getDbo()->getQuery(true);
 			$ids     = array();
 			$results = array();
 			$attribs = json_decode($item->$field, true);
@@ -136,30 +146,31 @@ class GazebosModelProduct extends EEModelItem
 				{
 					foreach ($opts as $o)
 					{
-						$ids[] = $o;
+						$ids[] = (int) $o;
 					}
 				}
 	
 				$ids = implode(', ', $ids);
-				$q
+				$query
+					->clear()
 					->select('a.*, b.title AS category_title')
 					->from('#__gazebos_options AS a')
 					->leftJoin('#__gazebos_option_categories AS b ON b.id = a.option_category_id')
 					->where("a.id IN ({$ids})")
 					->order('b.ordering ASC, a.ordering ASC');
 	
-				$results = (array) $this->loadGroupedList($q, 'category_title');
+				$results = (array) $this->loadGroupedList($query, 'category_title');
 			}
 
 			$item->$field = $results;
 		}
 	}
 
-	public function loadGroupedList($q, $key)
+	public function loadGroupedList($query, $key)
 	{
 		$db = $this->getDbo();
 
-		$db->setQuery($q);
+		$db->setQuery($query);
 
 		// Initialise variables.
 		$array = array();
@@ -199,7 +210,7 @@ class GazebosModelProduct extends EEModelItem
 	{
 		JForm::addFormPath(JPATH_COMPONENT . '/model/forms');
 		JForm::addFieldPath(JPATH_COMPONENT . '/model/fields');
-		$form = JForm::getInstance('com_gazebos.sizequote', 'sizequote', array('control' => 'jform', 'loadData' => true));
+		$form = JForm::getInstance('com_gazebos.quote', 'quote', array('control' => 'jform', 'loadData' => true));
 		$data = $this->getItem();
 
 		$this->preprocessForm($form, $data);

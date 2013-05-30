@@ -38,9 +38,17 @@ defined('_JEXEC') or die;
 					<li>
 						<?php echo $this->form->getInput('project_timeframe'); ?>
 					</li>
+					<li>
+						<?php
+							$sizes = $this->item->sizes;
+							array_unshift($sizes, (object) array('size' => 'Size Interested In'));
+						
+							echo JHtmlSelect::genericlist($sizes, 'size_interested_in', array('class' => 'chosen'), 'size', 'size');
+						?>
+					</li>
 					<li class="clr">
 						<?php
-						$fieldset = strtolower(str_replace(' ', '_', $this->item->type_title));
+						$fieldset = strtolower(str_replace(' ', '_', $this->item->type));
 						if (!empty($fieldset)) :
 						foreach ($this->form->getFieldset($fieldset) as $field) : ?>
 						<div class="radios">
@@ -57,7 +65,6 @@ defined('_JEXEC') or die;
 						<input class="green-button" type="submit" value="Submit Request &rsaquo;"/>
 					</li>
 				</ul>
-				<?php echo $this->form->getInput('size_id'), $this->form->getInput('size_interested_in'); ?>
 			</form>
 		</div>
 	</div>

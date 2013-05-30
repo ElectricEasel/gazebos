@@ -2225,14 +2225,12 @@ body[class*="quote"] .fancy-heading + p {
     width: 100px;
 }
 /*** New Product Page ***/
-h2.product-title {
+#product-content h1.product-title {
 	background: url(../images/hr.png) repeat-x scroll center bottom transparent;
-	font-size: 27px;
-	font-weight: bold;
-	margin: 24px 0;
+	font-size: 32px;
+	margin: 0 0 12px 0;
+    color: #355016;
 	padding-bottom: 10px;
-	color: #463228;
-	text-shadow: 1px 1px 1px #fff;
 }
 .top-links {
 	position: absolute;
@@ -2242,14 +2240,6 @@ h2.product-title {
 .top-links a.green-button {
 	padding: 10px 35px;
 	margin-left: 15px;
-}
-body[class*="product"] h3 {
-	color: #355016;
-	font-size: 23px;
-	font-weight: bold;
-	text-transform: none;
-	font-family: 'PT Sans',sans-serif;
-	font-style: italic;
 }
 #product-size-chart {
 	width: 530px;
@@ -2307,6 +2297,7 @@ body[class*="product"] h3 {
 #product-tab-container .border {
 
 }
+#sizes-container,
 #product-tab-container {
 	background-color: #d6cfc5;
 	border-radius: 0 0 10px 10px;
@@ -2345,6 +2336,24 @@ ul.features-list li {
 	width: 152px;
 	margin: 0 17px 10px;
 	text-align: center;
+}
+
+#sizes-container ul {
+    list-style: none;
+    margin:0;
+    padding:0;
+}
+#sizes-container ul li {
+    height:auto;
+}
+#sizes-container ul li div {
+    display: inline-block;
+    width:32%;
+    text-align: center;
+}
+#sizes-container ul li .size-title {
+    text-align: left;
+    text-indent: 10px;
 }
 /*
 #features ul.features-list li {
@@ -2528,6 +2537,7 @@ body.oriental-wood-octagon-gazebo #banner {display: none;}
 #product-content .product-top {
 	min-height: inherit;
 }
+#sizes-tabs,
 #product-content #product-tabs {
 	background: url(../images/bg_tab_menu.jpg) repeat scroll 0 bottom transparent;
 	border-radius: 10px 10px 0 0;
@@ -2562,14 +2572,14 @@ form#quick-quote label {
 form#quick-quote select {
 	width: 275px;
 }
-form#quick-quote ul li {
+form#quick-quote > ul > li {
 	clear: both;
 	margin-bottom: 12px;
 }
-form#quick-quote ul li.submit {
+form#quick-quote > ul > li.submit {
 	text-align: center;
 }
-form#quick-quote ul li .green-button {
+form#quick-quote > ul > li .green-button {
 	border: medium none;
 }
 form#quick-quote > ul > li > div.radios {
