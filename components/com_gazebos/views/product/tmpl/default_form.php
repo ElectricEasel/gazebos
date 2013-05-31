@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
 	<div id="quick-quote-widget">
 		<div class="widget-wrap">
 			<p>Fill out the form below and we will contact you to discuss your <?php echo strtolower($this->item->type_title);?> options and provide you with a detailed quote.</p>
-			<form id="quick-quote" action="<?php echo JRoute::_('index.php?option=com_gazebos&task=size.submit'); ?>" method="post">
+			<form id="quick-quote" action="<?php echo JRoute::_('index.php?option=com_gazebos&task=product.submit'); ?>" method="post">
 				<ul>
 					<li>
 						<?php echo $this->form->getInput('first_name'); ?>
@@ -65,6 +65,7 @@ defined('_JEXEC') or die;
 						<input class="green-button" type="submit" value="Submit Request &rsaquo;"/>
 					</li>
 				</ul>
+				<?php echo $this->form->getInput('product_id'); ?>
 			</form>
 		</div>
 	</div>

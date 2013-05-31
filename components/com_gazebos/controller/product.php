@@ -21,7 +21,7 @@ class GazebosControllerProduct extends GazebosController
 
 		parent::submitForm('Product');
 		
-		$this->setRedirect('index.php?option=com_gazebos&view=product&layout=form&tmpl=component&id=' . $jform['product_id']);
+		$this->setRedirect('index.php?option=com_gazebos&view=product&id=' . $jform['product_id']);
 	}
 
 	public static function addFavorite()
@@ -36,7 +36,7 @@ class GazebosControllerProduct extends GazebosController
 		if (!isset($favs[$id]))
 		{
 			$type = 'success';
-			$tmp  =  new stdClass();
+			$tmp  =  new stdClass;
 			$tmp->id= $id;
 
 			$favs[$id]	= $tmp;
