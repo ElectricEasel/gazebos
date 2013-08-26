@@ -102,15 +102,17 @@ ul li.submit {
 
 #product-content h1 {
     color: #463228;
-    font-size: 46px;
+    font-size: 40px;
     font-weight: normal;
     line-height: 40px;
-    margin: 10px 0;
+    margin: 10px 0 0;
+    padding-left: 10px;
+    width: 410px;
 }
 #product-content h2 {
     color: #355016;
     font-size: 23px;
-    margin: 10px 0;
+    margin: 0 0 10px;
     padding-bottom: 15px;
     padding-left:20px;
     font-weight: normal;

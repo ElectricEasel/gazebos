@@ -104,6 +104,8 @@ $galleryCount = count($this->item->gallery);
 		<div class="border"></div>
 		<div id="overview" class="panel clr">
 			<?php
+			echo $this->loadTemplate('sizes');
+			
 			if (!empty($this->item->series))
 			{
 				$Itemid = (int) $this->item->series;
@@ -119,9 +121,7 @@ $galleryCount = count($this->item->gallery);
 				}
 				echo '<a href="' . JRoute::_('index.php?Itemid=' . $Itemid) . '">'. EEHtml::asset($image, 'com_gazebos', array('class' => 'series-image')) . '</a>';
 			}
-
-			echo $this->item->description;
-			echo $this->loadTemplate('sizes'); ?>
+			echo $this->item->description; ?>
 				
 		</div>
 		<?php if (count($this->item->features)) : ?>
