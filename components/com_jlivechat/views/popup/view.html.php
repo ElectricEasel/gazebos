@@ -28,79 +28,79 @@ class JLiveChatViewPopup extends JView
 {
     function display($tpl = null)
     {
-		$mainframe =& JFactory::getApplication();
+	$mainframe =& JFactory::getApplication();
+
+	$popup =& JModel::getInstance('Popup', 'JLiveChatModel');
+	$routing =& JModel::getInstance('Routing', 'JLiveChatModel');
+	$operator =& JModel::getInstance('Operator', 'JLiveChatModel');
+	$settings =& JModel::getInstance('Setting', 'JLiveChatModel');
+	$session =& JFactory::getSession();
+	$user =& JFactory::getUser();
+	$uri =& JFactory::getURI();
+	$document =& JFactory::getDocument();
+	$lang =& JFactory::getLanguage();
 	
-		$popup =& JModel::getInstance('Popup', 'JLiveChatModel');
-		$routing =& JModel::getInstance('Routing', 'JLiveChatModel');
-		$operator =& JModel::getInstance('Operator', 'JLiveChatModel');
-		$settings =& JModel::getInstance('Setting', 'JLiveChatModel');
-		$session =& JFactory::getSession();
-		$user =& JFactory::getUser();
-		$uri =& JFactory::getURI();
-		$document =& JFactory::getDocument();
-		$lang =& JFactory::getLanguage();
-		
-		$document->setTitle($settings->getSetting('popup_page_title'));
+	$document->setTitle($settings->getSetting('popup_page_title'));
+
+	$currentLanguage = JRequest::getVar('lang', $lang->getTag(), 'get');
 	
-		$currentLanguage = JRequest::getVar('lang', $lang->getTag(), 'get');
-		
-		$this->assignRef('current_language', $currentLanguage);
+	$this->assignRef('current_language', $currentLanguage);
+
+	$specificOperators = trim(JRequest::getVar('operators', '', 'method'));
+	$specificDepartment = trim(JRequest::getVar('department', '', 'method'));
+	$specificRouteId = JRequest::getInt('routeid', '', 'method');
+
+	$this->assignRef('specific_operators', $specificOperators);
+	$this->assignRef('specific_department', $specificDepartment);
+	$this->assignRef('specific_route', $specificRouteId);
 	
-		$specificOperators = trim(JRequest::getVar('operators', '', 'method'));
-		$specificDepartment = trim(JRequest::getVar('department', '', 'method'));
-		$specificRouteId = JRequest::getInt('routeid', '', 'method');
+	$this->assign('scheme', $uri->toString(array('scheme')));
 	
-		$this->assignRef('specific_operators', $specificOperators);
-		$this->assignRef('specific_department', $specificDepartment);
-		$this->assignRef('specific_route', $specificRouteId);
-		
-		$this->assign('scheme', $uri->toString(array('scheme')));
-		
-		if($user->get('id') > 0)
-		{
-		    //	User is logged in
-		    $this->assign('default_name', $user->get('name'));
-		    $this->assign('default_email', $user->get('email'));
-		}
-		else
-		{
-		    $this->assign('default_name', JRequest::getVar('default_name', '', 'method'));
-		    $this->assign('default_email', JRequest::getVar('default_email', '', 'method'));
-		}
-		
-		$this->assignRef('popup', $popup);
-		$this->assignRef('settings', $settings);
-		$this->assignRef('session', $session);
+	if($user->get('id') > 0)
+	{
+	    //	User is logged in
+	    $this->assign('default_name', $user->get('name'));
+	    $this->assign('default_email', $user->get('email'));
+	}
+	else
+	{
+	    $this->assign('default_name', JRequest::getVar('default_name', '', 'method'));
+	    $this->assign('default_email', JRequest::getVar('default_email', '', 'method'));
+	}
 	
-		$isCurrentlyOnline = $routing->isOnline($specificOperators, $specificDepartment, $specificRouteId);
+	$this->assignRef('popup', $popup);
+	$this->assignRef('settings', $settings);
+	$this->assignRef('session', $session);
+
+	$isCurrentlyOnline = $routing->isOnline($specificOperators, $specificDepartment, $specificRouteId);
+
+	$this->assignRef('is_online', $isCurrentlyOnline);
+
+	$this->addCss();
+	$this->addJS($isCurrentlyOnline);
+
+	$this->assign('departments', $operator->getDepartments());
+	$this->assign('operators', $operator->getOperators());
 	
-		$this->assignRef('is_online', $isCurrentlyOnline);
+	require_once JPATH_COMPONENT.DS.'models'.DS.'jlcdate.php';
 	
-		$this->addCss();
-		$this->addJS($isCurrentlyOnline);
+	$date = new JLiveChatModelJLCDate();
+
+	$this->assign('current_timestamp', $date->toUnix());
+	$this->assign('online_timestamp', ($date->toUnix() - $popup->getOfflineSeconds()));
+
+	$this->assign('chat_session_active', false);
 	
-		$this->assign('departments', $operator->getDepartments());
-		$this->assign('operators', $operator->getOperators());
-		
-		require_once JPATH_COMPONENT.DS.'models'.DS.'jlcdate.php';
-		
-		$date = new JLiveChatModelJLCDate();
-	
-		$this->assign('current_timestamp', $date->toUnix());
-		$this->assign('online_timestamp', ($date->toUnix() - $popup->getOfflineSeconds()));
-	
-		$this->assign('chat_session_active', false);
-		
-		if($this->session->get('jlc_chat_session_id') > 0 && $this->session->get('jlc_chat_member_id') > 0) 
-		{
-		    // There is an existing chat session, check if active
-		    if($popup->isActive($this->session->get('jlc_chat_session_id'), $this->session->get('jlc_chat_member_id')))
-		    {
-			$this->assign('chat_session_active', true);
-		    }
-		}
-	
-		parent::display($tpl);
+	if($this->session->get('jlc_chat_session_id') > 0 && $this->session->get('jlc_chat_member_id') > 0) 
+	{
+	    // There is an existing chat session, check if active
+	    if($popup->isActive($this->session->get('jlc_chat_session_id'), $this->session->get('jlc_chat_member_id')))
+	    {
+		$this->assign('chat_session_active', true);
+	    }
+	}
+
+	parent::display($tpl);
     }
 
     function addCss()

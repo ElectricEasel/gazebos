@@ -1,0 +1,76 @@
+div#cpanel {
+	float: left;
+	width: 35%;
+}
+
+div#help {
+	float: right;
+	width: 65%;
+}
+
+div.slidercontents {
+	background-color: #FFF;
+	min-height: 150px;
+}
+
+div.slidercontents div {
+	text-align: left;
+}
+
+div.component_info {
+	padding: 5px;
+	font-size: 16px;
+	width: 70%;
+	margin-left: 10px;
+}
+
+div#seperator {
+	margin: 15px auto 15px auto;
+	height: 1px;
+	width: 80%;
+	background-color: #ccc;
+}
+
+div.status {
+	margin-left: 10px;
+	font-size: 14px;
+}
+
+img.statusimg {
+	margin-right: 5px;
+}
+
+label.infotitle {
+	min-width: 150px;
+	display: inline-block;
+	padding: 5px 0 5px 5px;
+	font-size: 14px;
+}
+
+div.container {
+	padding-top: 20px;
+}
+
+div.codeinfo input {
+	padding: 2px 0 2px 5px;
+}
+
+div.single_container {
+	padding-left: 10px;
+}
+
+div.codeinfo:last-child {
+	padding-bottom: 10px;
+}
+
+div.box {
+	background-color: #F16929;
+	float: left;
+	margin: 8px 8px 0 2px;
+	font-size: 14px;
+	padding: 5px;
+}
+
+.icon-48-data {
+	background-image: url(../images/icon-48-data.png);
+}

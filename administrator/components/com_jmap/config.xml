@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset name="preferences" label="SITEMAP_PREFERENCES" >
+	 	<field name="show_title" type="radio" default="1" label="SHOWMAINTITLE" description="SHOWMAINTITLE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	  	<field name="defaulttitle" size="40" type="text" default="" label="COMPONENTTITLE" description="COMPONENTTITLE_DESC" />
+		<field name="headerlevel" type="radio" default="1" label="HEADERLEVEL" description="HEADERLEVEL_DESC">
+			<option value="1">h1</option>
+			<option value="2">h2</option>
+			<option value="3">h3</option>
+			<option value="4">h4</option>
+			<option value="5">h5</option>
+		</field>
+	  	<field name="classdiv" type="text" default="sitemap" label="CLASSFORDIV" description="CLASSFORDIV_DESC" />
+	  	<field name="show_pagebreaks" type="radio" default="1" label="SHOW_CONTENT_PAGEBREAKS" description="SHOW_CONTENT_PAGEBREAKS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="includejquery" type="radio" default="1" label="INCLUDE_JQUERY" description="INCLUDE_JQUERY_DESC">
+			<option value="0">JNO</option>              
+			<option value="1">JYES</option>
+		</field>
+		<field name="opentarget" type="radio" default="_self" label="OPEN_TARGET" description="OPEN_TARGET_DESC">
+			<option value="_self">SELF_WINDOW</option>
+			<option value="_blank">BLANK_WINDOW</option>      
+			<option value="_parent">PARENT_WINDOW</option>        
+		</field>
+		<field name="include_external_links" type="radio" default="1" label="INCLUDE_EXTERNAL_LINKS" description="INCLUDE_EXTERNAL_LINKS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>              
+		</field>
+	</fieldset>
+  
+	<fieldset name="aspect" label="SITEMAP_ASPECT">
+	 	<field name="show_expanded" type="radio" default="0" label="SHOW_EXPANDED" description="SHOW_EXPANDED_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="expand_location" type="radio" default="location" label="EXPAND_CURRENT_MENU_FOLDER" description="EXPAND_CURRENT_MENU_FOLDER_DESC">
+			<option value="none">JNO</option>
+			<option value="location">JYES</option>
+		</field>
+	</fieldset>
+  
+	<fieldset name="permissions" label="PERMISSIONS">
+		<field name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			validate="rules"
+			filter="rules"
+			component="com_jmap"
+			section="component" />
+ 	</fieldset>
+</config>

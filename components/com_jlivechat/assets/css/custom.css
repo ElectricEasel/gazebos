@@ -42,12 +42,13 @@ background:url(/templates/gazebos/images/bg_content.png) repeat center center sc
 
 #send_message_button-button {margin-top:10px;}
 
+#send_msg_button-button,
 #send_message_button-button,
 #start_button-button {
 background:#284405;
 border-radius: 10px 10px 10px 10px;
 box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
-color: #FFFFFF;
+color: #FFFFFF !important;
 font-family:,sans-serif;
 font-size: 12px;
 font-weight: normal;
@@ -59,6 +60,10 @@ text-transform: uppercase;
 display:block;
 min-height:auto;
 line-height:1em;
+}
+#livechat_container {
+    height: 435px !important;
+min-height:435px !important;
 }
 #send_message_button-button:hover,
 #start_button-button:hover {background:#355A06}

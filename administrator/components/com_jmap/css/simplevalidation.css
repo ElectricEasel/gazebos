@@ -1,0 +1,37 @@
+ul.errorlist {
+	float: left;
+	margin: 0;
+}
+
+ul.errorlist li {
+	list-style-type: none;
+	color: #F00;
+	font-size: 13px;
+}
+
+.inputbox {
+	float: left;
+}
+
+.inputbox.error, .error {
+	border-color: #F00;
+}
+
+#sqlquerier {
+	position: relative;
+}
+
+#dialog_trigger {
+	position: absolute;
+	right:20px;
+	top: 20px; 
+	background-image: url(../images/icon-48-help_suggestions.png);
+	width: 48px;
+	height: 48px;
+	cursor: pointer;
+}
+
+#dialog_iframe {
+	width: 99%;
+	height: 98%;
+}
