@@ -69,14 +69,7 @@ $galleryCount = count($this->item->gallery);
 				echo '<span>Other Shapes Available:</span>';
 				foreach ($available_shapes as $shape)
 				{
-					echo '<div id="also_available">';
-					echo '<span>Other Shapes Available:</span>';
-					foreach ($available_shapes as $shape)
-					{
-						echo EEHtml::asset('shapes/' . $shape->image);
-					}
-					echo '<div class="clear"></div>';
-					echo '</div>';
+					echo EEHtml::asset('shapes/' . $shape->image);
 				}
 				echo '<div class="clear"></div>';
 				echo '</div></div>';
