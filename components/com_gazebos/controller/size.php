@@ -21,6 +21,6 @@ class GazebosControllerSize extends GazebosController
 
 		parent::submitForm('Size');
 		
-		$this->setRedirect('index.php?option=com_gazebos&view=size&id=' . $jform['size_id']);
+		$this->setRedirect('index.php?option=com_gazebos&view=size&layout=form&tmpl=component&id=' . $jform['size_id']);
 	}
 }

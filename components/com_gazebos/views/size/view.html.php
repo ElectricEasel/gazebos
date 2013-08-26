@@ -19,22 +19,26 @@ class GazebosViewSize extends EEViewItem
 
 	protected function prepareDocument()
 	{
-		$this->document
-			->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js')
-			->addScript('/templates/gazebos/js/jquery.cycle2.js')
-			->addScript('/templates/gazebos/js/jquery.cycle2.carousel.js')
-			->addScriptDeclaration('
-			// <![CDATA[
-			jQuery(document).ready(function ($) {
-				var slideshows = $(".cycle-slideshow").on("cycle-next cycle-prev", function (e, opts) {
-					slideshows.not(this).cycle("goto", opts.currSlide);
-				});
+		$title = !empty($this->item->seo_title) ? $this->item->seo_title : $this->item->title;
 
-				$("#cycle2 img").click(function () {
-					var index = $(this).data("slideindex");
-					$("#cycle1").cycle("goto", index);
+		if ($this->getLayout() === 'form')
+		{
+			EEHtml::asset('quoteform.css');
+			$this->document
+				->addStyleSheet('/templates/gazebos/css/chosen.css')
+				->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js')
+				->addScript('/templates/gazebos/js/jquery.placeheld.min.js')
+				->addScript('/templates/gazebos/js/chosen.jquery.min.js')
+				->addScript('/templates/gazebos/js/site.js')
+				->addScriptDeclaration('
+				// <![CDATA[
+				jQuery(document).ready(function ($) {
+					$("input[placeholder]").placeHeld();
+					
 				});
-			});
-			// ]]>');
+				
+				// ]]>
+				');
+		}
 	}
 }

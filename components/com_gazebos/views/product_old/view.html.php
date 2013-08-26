@@ -40,6 +40,17 @@ class GazebosViewProduct extends EEViewItem
 					var index = $(this).data("slideindex");
 					$("#cycle1").cycle("goto", index);
 				});
+
+				$("[rel^=fancybox]").each(function () {
+					var base = $(this);
+
+					base.fancybox({
+						width: 720,
+						height:700,
+						padding:0,
+						autoSize:false
+					});
+				});
 			});
 			// ]]>');
 

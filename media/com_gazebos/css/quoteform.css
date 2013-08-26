@@ -98,3 +98,42 @@ ul li.submit {
 	cursor: pointer;
 	margin:auto;
 }
+
+
+#product-content h1 {
+    color: #463228;
+    font-size: 46px;
+    font-weight: normal;
+    line-height: 40px;
+    margin: 10px 0;
+}
+#product-content h2 {
+    color: #355016;
+    font-size: 23px;
+    margin: 10px 0;
+    padding-bottom: 15px;
+    padding-left:20px;
+    font-weight: normal;
+    background:url(/templates/gazebos/images/hr.png) repeat-x bottom center scroll transparent;
+
+}
+#price-box {
+    color: #355016;
+    float: right;
+    font-family: 'PT Sans',sans-serif;
+    font-size: 20px;
+    font-style: italic;
+    font-weight: bold;
+    line-height: 32px;
+    padding: 5px 35px 8px 75px;
+    text-align: center;
+    text-indent: -100px;
+    position: absolute;
+    top:85px;
+    right:0;
+}
+#price-box span {
+	display: block;
+	font-size: 39px;
+	text-indent: 0;
+}

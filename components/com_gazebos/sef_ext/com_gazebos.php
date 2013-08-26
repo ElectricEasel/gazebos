@@ -170,6 +170,11 @@ switch ($view)
 		$title[] = strtolower(JFilterOutput::stringUrlSafe($r->shape));
 		$title[] = strtolower(JFilterOutput::stringUrlSafe($r->style));
 		$title[] = strtolower(JFilterOutput::stringUrlSafe($r->size));
+
+		if ($layout !== 'default')
+		{
+			$title[] = strtolower($layout);
+		}
 		break;
 	default:
 		$dosef = false;

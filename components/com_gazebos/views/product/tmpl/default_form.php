@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
 	<div id="quick-quote-widget">
 		<div class="widget-wrap">
 			<p>Fill out the form below and we will contact you to discuss your <?php echo strtolower($this->item->type_title);?> options and provide you with a detailed quote.</p>
-			<form id="quick-quote" action="<?php echo JRoute::_('index.php?option=com_gazebos&task=size.submit'); ?>" method="post">
+			<form id="quick-quote" action="<?php echo JRoute::_('index.php?option=com_gazebos&task=product.submit'); ?>" method="post">
 				<ul>
 					<li>
 						<?php echo $this->form->getInput('first_name'); ?>
@@ -38,9 +38,17 @@ defined('_JEXEC') or die;
 					<li>
 						<?php echo $this->form->getInput('project_timeframe'); ?>
 					</li>
+					<li>
+						<?php
+							$sizes = $this->item->sizes;
+							array_unshift($sizes, (object) array('size' => 'Size Interested In'));
+						
+							echo JHtmlSelect::genericlist($sizes, 'size_interested_in', array('class' => 'chosen'), 'size', 'size');
+						?>
+					</li>
 					<li class="clr">
 						<?php
-						$fieldset = strtolower(str_replace(' ', '_', $this->item->type_title));
+						$fieldset = strtolower(str_replace(' ', '_', $this->item->type));
 						if (!empty($fieldset)) :
 						foreach ($this->form->getFieldset($fieldset) as $field) : ?>
 						<div class="radios">
@@ -57,7 +65,7 @@ defined('_JEXEC') or die;
 						<input class="green-button" type="submit" value="Submit Request &rsaquo;"/>
 					</li>
 				</ul>
-				<?php echo $this->form->getInput('size_id'), $this->form->getInput('size_interested_in'); ?>
+				<?php echo $this->form->getInput('product_id'); ?>
 			</form>
 		</div>
 	</div>
