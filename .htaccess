@@ -137,6 +137,13 @@ RewriteRule .* index.php [L]
 #
 ## End - Joomla! core SEF Section.
 
+Redirect 301 /index.php?option=com_jlivechat&view=popup&tmpl=component&popup_mode=popup http://www.gazebos.com/
+Redirect 301 /dev.gazebos.com/traditionalvinylpergolas.htm http://www.gazebos.com/pergolas/vinyl
+Redirect 301 /Gazebos/keeping-pests-from-your-gazebo-and-garden.html http://www.gazebos.com/blog
+Redirect 301 /Gazebos/what-is-your-gazebo-style.html http://www.gazebos.com/blog
+Redirect 301 /Gazebos/build-a-gazebo-kit-in-one-short-weekend.html http://www.gazebos.com/blog
+# Redirect 301 /Table/Blog/Gazebos/page-5.html http://www.gazebos.com/blog
+Redirect 301 /Gazebos/gazebo-lighting.html http://www.gazebos.com/blog
 
 Redirect 301 /warranty.htm http://www.gazebos.com/about-us/lifetime-warranty
 Redirect 301 /4reasonstobuyagazebo.html http://www.gazebos.com/resources/faq/
