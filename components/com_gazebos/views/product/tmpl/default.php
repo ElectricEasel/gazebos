@@ -11,9 +11,6 @@ defined('_JEXEC') or die;
 $type = GazebosHelper::getProductTypeTitle();
 $galleryCount = count($this->item->gallery);
 ?>
-<div class="top-quote">
-		<a class="green-button" rel="fancybox" data-fancybox-type="iframe" href="<?php echo JRoute::_('index.php?option=com_gazebos&view=product&amp;layout=form&tmpl=component&id=' . $this->item->id); ?>">Get A Quote</a>
-	</div>
 <h2 class="product-title"><?php echo $this->item->title; ?></h2>
 <div id="product-left">
 	<div id="product-slideshow" class="clr">
