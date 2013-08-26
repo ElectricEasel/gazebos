@@ -10,6 +10,29 @@ defined('_JEXEC') or die;
 
 class GazebosController extends EEController
 {
+	public function execute($task)
+	{
+		$app = JFactory::getApplication();
+		$view = $app->input->get('view');
+		$layout = $app->input->get('layout');
+		
+		if ($view === 'size' && $layout !== 'form')
+		{
+			$id = $app->input->getInt('id');
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select('a.product_id')
+				->from('#__gazebos_sizes AS a')
+				->where('a.id = ' . $id);
+	
+			$product_id = $db->setQuery($query)->loadResult();
+			
+			$app->redirect(JRoute::_('index.php?option=com_gazebos&view=product&id=' . $product_id), null, null, true);
+		}
+		
+		return parent::execute($task);
+	}
+	
 	/**
 	 * Handle the form submission from child classes
 	 *
