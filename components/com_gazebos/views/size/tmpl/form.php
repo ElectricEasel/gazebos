@@ -9,7 +9,7 @@
 defined('_JEXEC') or die;
 
 ?>
-<div style="padding:10px;background:url(/templates/gazebos/images/bg_darkpattern.png) repeat 0 0 scroll transparent;">
+<div style="padding:10px;background:url(/templates/gazebos/images/bg_darkpattern.png) repeat 0 0 scroll transparent;position:relative;">
 	<div class="quote-wrap">
 		<img src="/templates/gazebos/images/quote_logo.png" />
 		<br />
@@ -57,7 +57,7 @@ defined('_JEXEC') or die;
 								<input id="submit" class="green-button" type="submit" value="Submit Request &rsaquo;"/>
 							</li>
 						</ul>
-						<?php echo $this->form->getInput('size_interested_in'), $this->form->getInput('product_id'); ?>
+						<?php echo $this->form->getInput('size_interested_in'), $this->form->getInput('size_id'); ?>
 					</form>
 				</div>
 			</div>

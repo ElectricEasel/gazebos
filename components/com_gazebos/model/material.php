@@ -25,6 +25,9 @@ class GazebosModelMaterial extends EEModelItem
 
 		$material_id = $app->input->getInt('id');
 		$this->setState('material.id', $material_id);
+
+		$wood_type = $app->input->get('filter_wood_type', 'both');
+		$this->setState('filter.wood_type', $wood_type);
 	}
 
 
@@ -49,6 +52,7 @@ class GazebosModelMaterial extends EEModelItem
 			{
 				$this->item->shapes = $this->getShapes();
 				$this->item->products = $this->getProducts();
+				$this->item->wood_types = $this->getWoodTypes();
 			}
 		}
 
@@ -84,8 +88,8 @@ class GazebosModelMaterial extends EEModelItem
 			->where('a.state = 1')
 			->where('a.material_id = ' . $this->item->id);
 
-		$wood_type = (int) $this->getState('filter.wood_type');
-		if (!empty($wood_type))
+		$wood_type = $this->getState('filter.wood_type');
+		if (!empty($wood_type) && $wood_type !== 'both')
 		{
 			$q->where("a.options LIKE '%\"{$wood_type}\"%'");
 		}
@@ -125,7 +129,30 @@ class GazebosModelMaterial extends EEModelItem
 
 	public function getWoodTypes()
 	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
 		
+		$query
+			->select('a.id')
+			->from('#__gazebos_option_categories AS a')
+			->where('a.type_id = ' . (int) $this->item->type_id)
+			->where('a.title = "Wood Type"');
+			
+		$woodTypeCatId = $db->setQuery($query)->loadResult();
+		
+		if ($woodTypeCatId)
+		{
+			$query
+				->clear()
+				->select('a.id, a.title')
+				->from('#__gazebos_options AS a')
+				->where('a.option_category_id = ' . (int) $woodTypeCatId)
+				->order('a.title ASC');
+				
+			return $db->setQuery($query)->loadObjectList();
+		}
+		
+		return false;
 	}
 
 	public function getShapes()

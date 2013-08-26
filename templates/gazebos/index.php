@@ -19,7 +19,6 @@ $template = $this->baseurl . '/templates/' . $this->template;
 $this
 	// Add Stylesheets
 	->addStyleSheet('//fonts.googleapis.com/css?family=Quattrocento:400,700|Parisienne|PT+Sans:400,700italic,700,400italic')
-	
 	->addStyleSheet('/media/system/css/system.css')
 	->addStyleSheet($template . '/css/normalize.css')
 	->addStyleSheet($template . '/css/style.css')
@@ -27,7 +26,7 @@ $this
 	->addStyleSheet($template . '/css/jquery.fancybox.css')
 	
 	//->addStyleSheet($template . '/css/site.min.css')
-	//->addStyleSheet($template . '/css/print.min.css', $type = 'text/css', $media = 'print')
+	->addStyleSheet($template . '/css/print.min.css', $type = 'text/css', $media = 'print')
 	// Add Scripts
 	->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js')
 	

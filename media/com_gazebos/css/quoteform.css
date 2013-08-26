@@ -129,8 +129,8 @@ ul li.submit {
     text-align: center;
     text-indent: -100px;
     position: absolute;
-    top:110px;
-    right:30px;
+    top:85px;
+    right:0;
 }
 #price-box span {
 	display: block;

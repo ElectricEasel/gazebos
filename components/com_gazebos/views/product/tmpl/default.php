@@ -11,7 +11,11 @@ defined('_JEXEC') or die;
 $type = GazebosHelper::getProductTypeTitle();
 $galleryCount = count($this->item->gallery);
 ?>
-<div id="product-sidebar">
+<div class="top-quote">
+		<a class="green-button" rel="fancybox" data-fancybox-type="iframe" href="<?php echo JRoute::_('index.php?option=com_gazebos&view=product&amp;layout=form&tmpl=component&id=' . $this->item->id); ?>">Get A Quote</a>
+	</div>
+<h2 class="product-title"><?php echo $this->item->title; ?></h2>
+<div id="product-left">
 	<div id="product-slideshow" class="clr">
 		<div id="gallery-container">
 			<ul id="cycle1" class="cycle-slideshow"
@@ -53,19 +57,17 @@ $galleryCount = count($this->item->gallery);
 		</div>
 		<?php endif; ?> 
 	</div>
-	<?php echo $this->loadTemplate('form'); ?>
-</div>
-
-<div id="product-content">
-	<div class="product-top">
-		<h1 class="product-title"><?php echo $this->item->title; ?></h1>
-		<div id="product-description">
-			<?php
-			// Gazebos & Three Season Gazebos
-			if ($this->item->type_id == 1 || $this->item->type_id == 4)
+	<div id="shapes">
+		<?php
+		// Gazebos & Three Season Gazebos
+		if ($this->item->type_id == 1 || $this->item->type_id == 4)
+		{
+			$available_shapes = $this->item->options['Available Shapes in Wood'];
+			if (count($available_shapes))
 			{
-				$available_shapes = $this->item->options['Available Shapes in Wood'];
-				if (count($available_shapes))
+				echo '<div class="light-border"><div id="also_available">';
+				echo '<span>Other Shapes Available:</span>';
+				foreach ($available_shapes as $shape)
 				{
 					echo '<div id="also_available">';
 					echo '<span>Other Shapes Available:</span>';
@@ -76,28 +78,22 @@ $galleryCount = count($this->item->gallery);
 					echo '<div class="clear"></div>';
 					echo '</div>';
 				}
+				echo '<div class="clear"></div>';
+				echo '</div></div>';
 			}
-
-			if (!empty($this->item->series))
-			{
-				$Itemid = (int) $this->item->series;
-	
-				switch ($Itemid)
-				{
-					case 222:
-						$image = 'lake-wood.png';
-						break;
-					case 223:
-						$image = 'cedar-cove.png';
-						break;
-				}
-				echo '<a href="' . JRoute::_('index.php?Itemid=' . $Itemid) . '">'. EEHtml::asset($image, 'com_gazebos', array('class' => 'series-image')) . '</a>';
-			}
-			echo $this->item->description; ?>
+		}
+ ?>
+	</div>
+	<div class="sidebar-phone light-border">
+		<div>
+			<h2 class="fancy-heading"><span>Need Help?</span></h2>
+				<strong>1-888-4-GAZEBO</strong>
 		</div>
 	</div>
-	<?php echo $this->loadTemplate('sizes'); ?>
+</div>
+<div id="product-container">
 	<ul id="product-tabs" class="clr">
+		<li><a href="#overview">Overview</a></li>
 		<?php if (count($this->item->features)) : ?>
 		<li><a href="#features">Features</a></li>
 		<?php endif; ?>
@@ -116,6 +112,28 @@ $galleryCount = count($this->item->gallery);
 	</ul>
 	<div id="product-tab-container">
 		<div class="border"></div>
+		<div id="overview" class="panel clr">
+			<?php
+			if (!empty($this->item->series))
+			{
+				$Itemid = (int) $this->item->series;
+	
+				switch ($Itemid)
+				{
+					case 222:
+						$image = 'lake-wood.png';
+						break;
+					case 223:
+						$image = 'cedar-cove.png';
+						break;
+				}
+				echo '<a href="' . JRoute::_('index.php?Itemid=' . $Itemid) . '">'. EEHtml::asset($image, 'com_gazebos', array('class' => 'series-image')) . '</a>';
+			}
+
+			echo $this->item->description;
+			echo $this->loadTemplate('sizes'); ?>
+				
+		</div>
 		<?php if (count($this->item->features)) : ?>
 		<div id="features" class="panel clr">
 			<img class="left" src="/templates/gazebos/images/img-warranty-brown.png" alt=""/>
@@ -130,39 +148,44 @@ $galleryCount = count($this->item->gallery);
 	
 				<?php foreach ($this->item->features as $group => $items) : foreach ($items as $i) : ?>
 				<li>
-					<img width="128" height="130" src="/<?php echo $i->image; ?>" alt="<?php echo str_replace('"','', $i->title); ?>" />
+					<img width="128" height="130" src="/<?php echo $i->image; ?>" alt="<?php echo htmlentities($i->title); ?>" />
 					<span class="title"><?php echo $i->title; ?></span>
 				</li>
 				<?php endforeach; endforeach; ?>
 			</ul>
 		</div>
-		<?php endif; ?>
-		<?php if (count($this->item->options)) : ?>
+		<?php
+		endif;
+		if (count($this->item->options)) :
+		?>
 		<div id="options" class="panel">
 				<?php
 				foreach ($this->item->options as $group => $items) : if (strtolower($group) === 'wood type') continue;
 					echo '<h4>' . $group . '</h4>';
-					echo '<ul class="features-list clr">';
+					echo '<ul class="features-list clr ' . strtolower(str_replace(" ", "-", $group)) . '">';
+					
 					foreach ($items as $i) : ?>
 				<li>
-					<img src="/<?php echo $i->image; ?>" alt="<?php echo $i->title; ?>" />
+					<img src="/<?php echo $i->image; ?>" alt="<?php echo htmlentities($i->title); ?>" />
 					<span class="title"><?php echo $i->title; ?></span>
 				</li>
 				<?php endforeach;
 				echo '</ul>';
 				endforeach; ?>
 		</div>
-		<?php endif; ?>
-		<?php if (count($this->item->colors)) : ?>
+		<?php
+		endif;
+		if (count($this->item->colors)) :
+		?>
 		<div id="colors" class="panel">
 			<ul class="features-list clr">
 				<?php
 				foreach ($this->item->colors as $group => $items) :
 					echo '<h4>' . $group . '</h4>';
-					echo '<ul class="features-list clr">';
+					echo '<ul class="features-list clr ' . str_replace(" ", "-", strtolower($group)) . '">';
 					foreach ($items as $i) : ?>
 				<li>
-					<img width="104" height="38" src="/<?php echo $i->image; ?>" alt="<?php echo $i->title; ?>" />
+					<img width="104" height="38" src="/<?php echo $i->image; ?>" alt="<?php echo htmlentities($i->title); ?>" />
 					<span class="title"><?php echo $i->title; ?></span>
 				</li>
 				<?php endforeach;
@@ -170,32 +193,36 @@ $galleryCount = count($this->item->gallery);
 				endforeach; ?>
 			</ul>
 		</div>
-		<?php endif; ?>
-		<?php if (count($this->item->roofing)) : ?>
+		<?php
+		endif;
+		if (count($this->item->roofing)) :
+		?>
 		<div id="roofing" class="panel">
 				<?php
 				foreach ($this->item->roofing as $group => $items) :
 					echo '<h4>' . $group . '</h4>';
-					echo '<ul class="features-list clr">';
+					echo '<ul class="features-list clr ' . str_replace(" ", "-", strtolower($group)) . '">';
 					foreach ($items as $i) : ?>
 				<li>
-					<img width="78" height="78" src="/<?php echo $i->image; ?>" alt="<?php echo $i->title; ?>" />
+					<img width="78" height="78" src="/<?php echo $i->image; ?>" alt="<?php echo htmlentities($i->title); ?>" />
 					<span class="title"><?php echo $i->title; ?></span>
 				</li>
 				<?php endforeach;
 				echo '</ul>';
 				endforeach; ?>
 		</div>
-		<?php endif; ?>
-		<?php if (count($this->item->flooring)) : ?>
+		<?php
+		endif;
+		if (count($this->item->flooring)) :
+		?>
 		<div id="flooring" class="panel">
 				<?php
 				foreach ($this->item->flooring as $group => $items) :
 					echo '<h4>' . $group . '</h4>';
-					echo '<ul class="features-list clr">';
+					echo '<ul class="features-list clr ' . str_replace(" ", "-", strtolower($group)) . '">';
 					foreach ($items as $i) : ?>
 				<li>
-					<img width="78" height="78" src="/<?php echo $i->image; ?>" alt="<?php echo $i->title; ?>" />
+					<img width="78" height="78" src="/<?php echo $i->image; ?>" alt="<?php echo htmlentities($i->title); ?>" />
 					<span class="title"><?php echo $i->title; ?></span>
 				</li>
 				<?php endforeach;
