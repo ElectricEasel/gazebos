@@ -32,7 +32,7 @@ echo $this->loadTemplate('sidebar');
 			<span>Filter By:</span>&nbsp;&nbsp;
 			<?php
 			$options = array(
-				(object) array('value' => 'both', 'text' => 'Show all wood')
+				(object) array('value' => 'both', 'text' => 'Show all wood types')
 			);
 			
 			foreach ($this->item->wood_types as $type)
