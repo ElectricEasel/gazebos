@@ -47,7 +47,7 @@ $this
 
 			base.fancybox({
 				width: 720,
-				height:700,
+				height:780,
 				padding:0,
 				autoSize:false
 			});

@@ -8,6 +8,24 @@
 */
 defined('_JEXEC') or die;
 
+$type = $this->item->type_id;
+switch($type) {
+	case '1':
+	$type = "gazebos";
+	break;
+	case '2':
+	$type = "pergolas";
+	break;
+	case '3':
+	$type = "pavilions";
+	break;
+	case '4':
+	$type = "three_season_gazebos";
+	break;
+	default:
+	$type = '';
+}
+
 ?>
 <div style="padding:10px;background:url(/templates/gazebos/images/bg_darkpattern.png) repeat 0 0 scroll transparent;position:relative;">
 	<div class="quote-wrap">
@@ -50,9 +68,24 @@ defined('_JEXEC') or die;
 							<li class="half">
 								<?php echo $this->form->getInput('project_timeframe'); ?>
 							</li>
+							<li style="clear:both">
+								<h3 style="background:url(/templates/gazebos/images/hr.png) repeat-x scroll center bottom transparent;text-align:left;padding-bottom:5px;font-family:Times,serif;">Options</h3>
+							</li>
+						<?php
+						if (!empty($type)) :
+						foreach ($this->form->getFieldset($type) as $field) : ?>
+						<li class="half">
+						<div class="radios">
+							<span class="label"><?php echo (string) $field->element['label']; ?></span>
+							<?php echo $field->input; ?>
+						</div>
+						</li>
+						<?php endforeach;
+						endif; ?>
 							<li class="full">
 								<?php echo $this->form->getLabel('comments'), $this->form->getInput('comments'); ?>
 							</li>
+							
 							<li class="submit">
 								<input id="submit" class="green-button" type="submit" value="Submit Request &rsaquo;"/>
 							</li>
