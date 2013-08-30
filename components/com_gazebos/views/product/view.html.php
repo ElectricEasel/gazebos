@@ -40,6 +40,7 @@ class GazebosViewProduct extends EEViewItem
 					var index = $(this).data("slideindex");
 					$("#cycle1").cycle("goto", index);
 				});
+				
 			});
 			// ]]>');
 
@@ -56,7 +57,6 @@ class GazebosViewProduct extends EEViewItem
 				// <![CDATA[
 				jQuery(document).ready(function ($) {
 					$("input[placeholder]").placeHeld();
-					
 				});
 				
 				// ]]>

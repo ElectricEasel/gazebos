@@ -34,7 +34,15 @@ class GazebosViewSize extends EEViewItem
 				// <![CDATA[
 				jQuery(document).ready(function ($) {
 					$("input[placeholder]").placeHeld();
-					
+					$("[rel^=fancybox]").each(function () {
+					var base = $(this);
+
+					base.fancybox({
+						width: 720,
+						height:780,
+						padding:0,
+						autoSize:false
+					});
 				});
 				
 				// ]]>
