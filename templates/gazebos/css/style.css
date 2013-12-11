@@ -116,8 +116,62 @@ textarea {
     z-index: 500;
     display: none;
 }
+#nav li a.gazebo-menu + ul {
+	width: 889px;
+}
 #nav li:hover ul {
 	display: block;
+}
+.series-col {
+    border-right: 1px solid #C4BAAD;
+    box-shadow: 2px 0 0 #DFD8CE;
+    float: left;
+    margin-right: 10px;
+    padding-right: 10px;
+    width: 216px;
+}
+.series-col h4 {
+	color: #3C2B21;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 1em;
+    margin: 0;
+    padding: 0;
+}
+.series-col h4 a {
+	display: block;
+	min-height: 59px;
+	padding: 11px 40px 0 0;
+	text-decoration: none;
+}
+.series-col h4 a:hover,
+.series-col h4 a:hover span {color: #567630;}
+.series-col h4 a span {
+	color: #435c25;
+	display: block;
+	font-family: 'PT Sans',sans-serif;
+	font-style: italic;
+	font-weight: bold;
+	font-size: 13px;
+	line-height: 1em;
+	margin-top: 4px;
+}
+.mega-series-sub li.lake-wood h4 {
+	background: url(../images/th-lake-wood.png) no-repeat right top transparent;
+}
+.mega-series-sub li.cedar-cove h4 {
+	background: url(../images/th-cedar-cove.png) no-repeat right top transparent;
+}
+.mega-series-sub li.amish h4 {
+	background: url(../images/th-amish.png) no-repeat right top transparent;
+}
+.mega-series-sub li.three-season h4 {
+	background: url(../images/th-three-season-gazebo-wood.png) no-repeat right top transparent;
+}
+.mega-series-sub li {
+	background:url(../images/bg_pagination2.png) repeat-x center bottom scroll transparent;
+	min-height: 60px;
+	margin-bottom: 5px;
 }
 div[class*="mm-col"] {
     float: left;

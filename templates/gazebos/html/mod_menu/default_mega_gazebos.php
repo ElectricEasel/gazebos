@@ -10,6 +10,28 @@ $model->getItem();
 $shapes = $model->getShapes();
 
 ?>
+<div class="series-col">
+	<ul class="mega-series-sub">
+		<li class="lake-wood">
+			<h4><a href="/lake-wood">Lake Wood
+				<span>Starting at $8,000</span>
+			</a></h4>
+		</li>
+		<li class="cedar-cove">
+			<h4><a href="/cedar-cove">Lake Wood
+				<span>Starting at $6,000</span>
+			</a></h4>
+		</li>
+		<li class="amish">
+			<h4><a href="#">Amish Gazebos
+				<span>Starting at $4,000</span>
+			</a></h4>
+		</li>
+		<li class="three-season">
+			<h4><a href="/three-season-gazebos">Three Season<br/>Gazebos</a></h4>
+		</li>
+	</ul>
+</div>
 <div class="mm-col-left">
 	<img class="right" src="/templates/gazebos/images/th-gazebo-wood.png" alt="Wood Gazebos"/>
 	<h4><a href="<?php echo JRoute::_('index.php?option=com_gazebos&view=material&id=1'); ?>">Wood Gazebos</a></h4>
