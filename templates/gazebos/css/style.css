@@ -3457,6 +3457,7 @@ body.lake-wood #gallery-list li div {
 	background: url(../images/bg_darkpattern.png) repeat scroll 0 0 transparent;
     box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
     margin-right: 18px;
+    width: 212px;
 }
 #model-types ul li.first {
 	margin-right: 16px;
@@ -3471,27 +3472,41 @@ body.lake-wood #gallery-list li div {
 	display: block;
 }
 #model-types ul li div {
-	background: url(../images/spot-heading-bg.png) repeat-x scroll 0 0 #314914;
-	height: 45px;
+	background: url(../images/bg_darklines.png) 0 15px repeat-x,
+				url(../images/bg_green.png) 0 0 repeat #344e16;
+	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3) inset;
+	min-height: 52px;
 }
 #model-types ul li h3 {
     font-family: Quattrocento,serif;
-    font-size: 23px;
+    font-size: 21px;
     font-weight: normal;
-    line-height: 46px;
+    line-height: 1em;
     margin: 0;
-    padding: 0;
+    padding: 7px 0 0;
     text-align: center;
     text-transform: none;
 }
 #model-types ul li h3 a {
-    background: url(../images/spot-heading-piece.png) repeat-x scroll center 50% transparent;
-    color: #98AB83;
+    background: url(../images/bg_green.png) repeat scroll 0 0 transparent;
+    color: #fff;
+    display: inline-block;
     padding: 0 7px;
     text-decoration: none;
 }
 #model-types ul li h3 a:hover {
 	color: #b5cc9c;
+}
+#model-types ul li h3 a:hover span {
+	/* color: #cbe4af; */
+}
+#model-types ul li h3 a span {
+	display: block;
+	text-align: center;
+	color: #98ab83;
+	font-style: italic;
+	font-size: 13px;
+	font-family: 'Open Sans',sans-serif;
 }
 .special-offers {
 	list-style: none outside none;
