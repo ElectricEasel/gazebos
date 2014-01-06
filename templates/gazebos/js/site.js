@@ -19,6 +19,20 @@ jQuery(document).ready(function ($) {
 			return false;
 		});
 	})();
+	
+	(function(){
+		$(".panel").hide();
+		$("#series-sidebar .menu li:first").addClass("active").show();
+		$(".panel:first").show();
+		$("#series-sidebar .menu li").click(function() {
+		$("#series-sidebar .menu li").removeClass("active");
+		$(this).addClass("active");
+		$(".panel").hide();
+			var activeTab = jQuery(this).find("a").attr("href");
+			$(activeTab).fadeIn();
+			return false;
+		});
+	})();
 
 	var advSlide = $('#slides');
 	// Setup for Cycle Plugin
