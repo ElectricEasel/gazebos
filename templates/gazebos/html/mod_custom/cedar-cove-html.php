@@ -80,7 +80,7 @@ $gallery = $model->getItems();
 				<li>Built by a team of craftsmen with numerous years of combined experience</li>
 				<li>Craftsmanship and materials backed by a limited lifetime warranty</li>
 			</ul>
-			<ul class="features-list clr">
+			<ul class="features-list main clr">
 				<li>
 					<img width="128" height="130" alt="4&quot;x4&quot; Interlocking Post" src="/images/com_gazebos/features/4x4interlocking-post.jpg">
 					<span class="title">4"x4" Interlocking Post</span>
