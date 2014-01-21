@@ -175,7 +175,7 @@ class GazebosModelSize extends EEModelItem
 			->addRecipient(GazebosHelper::getParam('contact_email', 'info@gazebos.com'))
 			->addBcc('gazebos@electriceasel.com')
 			->setSubject('Gazebos.com Quote Form')
-			->setBody(EEHelper::formatDataForEmail($data, $this->getForm()))
+			->setBody(GazebosHelper::formatDataForEmail($data, $this->getForm()))
 			->IsHTML(true);
 
 		return $mailer->Send();
