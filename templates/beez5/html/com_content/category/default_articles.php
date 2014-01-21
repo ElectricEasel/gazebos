@@ -103,7 +103,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<?php if (in_array($article->access, $this->user->getAuthorisedViewLevels())) : ?>
 
 					<td class="list-title">
-						<a href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid)); ?>">
+						<a href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language)); ?>">
 							<?php echo $this->escape($article->title); ?></a>
 					</td>
 
@@ -114,7 +114,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					</td>
 					<?php endif; ?>
 
-					<<?php if ($this->params->get('list_show_author', 1)) : ?>
+					<?php if ($this->params->get('list_show_author', 1)) : ?>
 					<td class="list-author">
 						<?php if(!empty($article->author) || !empty($article->created_by_alias)) : ?>
 							<?php $author =  $article->author ?>
@@ -148,7 +148,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						$active		= $menu->getActive();
 						$itemId		= $active->id;
 						$link = JRoute::_('index.php?option=com_users&view=login&Itemid='.$itemId);
-						$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($article->slug));
+						$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language));
 						$fullURL = new JURI($link);
 						$fullURL->setVar('return', base64_encode(urlencode($returnURL)));
 					?>
