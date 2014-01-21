@@ -14,7 +14,9 @@ class EETable extends JTable
 			throw new Exception('You must define a $_tbl name in your table class: ' . get_class($this), 500);
 		}
 
-		parent::__construct($this->_tbl, 'id', JFactory::getDbo());
+		$dbo = JFactory::getDbo();
+
+		parent::__construct($this->_tbl, 'id', $dbo);
 	}
 
 	/**

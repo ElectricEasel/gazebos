@@ -10,7 +10,7 @@ class EEController extends JControllerLegacy
 	 *
 	 * @return  JController
 	 */
-	public static function getInstance($prefix, array $config = array())
+	public static function getInstance($prefix, $config = array())
 	{
 		if (!array_key_exists('model_path', $config))
 		{

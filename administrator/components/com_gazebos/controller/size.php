@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 class GazebosControllerSize extends EEControllerForm
 {
-	protected $view_list = 'sizes';
+	protected $view_list = 'size';
 
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
 	{
