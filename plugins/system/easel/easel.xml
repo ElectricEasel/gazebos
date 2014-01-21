@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="system">
+	<name>Easel Lib</name>
+	<author>Don Gilbert</author>
+	<creationDate>April 2013</creationDate>
+	<copyright>Copyright (C) 2013 Electric Easel, Inc. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>don@electriceasel.com</authorEmail>
+	<authorUrl>www.electriceasel.com/team-member/don-gilbert</authorUrl>
+	<version>2.5.0</version>
+	<description>Activates the Easel Lib for Joomla.</description>
+	<files>
+		<filename plugin="easel">easel.php</filename>
+		<filename>index.html</filename>
+	</files>
+</extension>
