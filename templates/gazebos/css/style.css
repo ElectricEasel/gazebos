@@ -84,7 +84,7 @@ textarea {
 }
 #header .top-contact {
 	float: right;
-	margin-top: 20px;
+	margin-top: 8px;
 }
 #header .sep {
 	font-size: 21px;
@@ -628,7 +628,7 @@ span.img.usa {
     width: 214px;
     margin: 0 9px;
 
-    
+
 /*
     margin: 0 9px;
     width: 220px;
@@ -792,7 +792,7 @@ span[class*="pagingarrow"] {
 	list-style: none outside none;
 	font-family: 'Quattrocento', serif;
 	padding: 0 10px;
-	
+
 }
 #why-gazebos ul li {
 	margin-bottom: 12px;
@@ -1061,6 +1061,9 @@ body.content-category-blog .row-4 .item-separator {
 	font-size: 22px;
 	font-style: italic;
 	text-transform: uppercase;
+	display: inline-block;
+	position: relative;
+	top:-15px;
 }
 #newsletter-signup input[type="email"] {
     background: none repeat scroll 0 0 #FFFFFF;
@@ -1413,7 +1416,7 @@ body[class*="warranty"] ul.arrow-list + p {
 ul.arrow-list {
 	list-style: none outside none;
 	padding-left: 15px;
-	
+
 }
 ul.arrow-list > li {
 	margin-bottom: 12px;
@@ -1863,7 +1866,7 @@ h3.faq[id*="q"] a:hover {
 .fancy-heading h2 span {
 	font-family: 'Parisienne',cursive;
 	color: #463228;
-	font-size: 40px;	
+	font-size: 40px;
 }
 .fancy-heading h2 {
     background: url(../images/bg_content.png) repeat scroll 0 0 #DBD6CF;
@@ -1880,7 +1883,7 @@ h3.faq[id*="q"] a:hover {
 .fancy-heading h2 span {
 	font-family: 'Parisienne',cursive;
 	color: #463228;
-	font-size: 40px;	
+	font-size: 40px;
 }
 .fancy-heading + p {
 	font-weight: bold;
@@ -2427,7 +2430,7 @@ h2.product-title {
 ul.features-list {
 	list-style: none outside none;
 	margin: 0 0 20px 0;
-	padding: 0;	
+	padding: 0;
 }
 ul.features-list li {
 	float: left;
@@ -2490,7 +2493,7 @@ ul.features-list li span {
 #product-slideshow ul {
 	list-style: none outside none;
 	margin: 0;
-	padding: 0;	
+	padding: 0;
 }
 #gallery-container #cycle1 {
     height: 312px;
@@ -2670,7 +2673,7 @@ form#quick-quote > ul > li > div.radios:nth-child(odd) {
 }
 form#quick-quote > ul > li > div.radios:nth-child(even) {
 	width: 52%;
-} 
+}
 #quick-quote-widget {
 	width: 299px;
 	margin: 0 auto;
@@ -3931,7 +3934,7 @@ body.lake-wood #product-description {
     right: -1.2em;
     position: absolute;
     top: 8px;
-    width: 1.4em;	
+    width: 1.4em;
 }
 .sidebar-widget.why {
 	background: url(../images/widget-whyus.png) no-repeat scroll 0 100% rgba(195, 186, 171, 0.4);

@@ -205,4 +205,83 @@ abstract class GazebosHelper extends EEHelper
 			return JHtml::_('content.prepare', '{loadposition ' . $pos . '}');
 		}
 	}
+
+	/**
+	 * Method to format submitted form data in a nice way
+	 * for emails.
+	 *
+	 * @param   array   $data  Array of data to format
+	 * @param   object  $form  JForm associated with the data
+	 *
+	 * @return  string  Form data formatted in email friendly format
+	 */
+	public static function formatDataForEmail($data, JForm $form)
+	{
+		if (is_object($data))
+		{
+			$data = get_object_vars($data);
+		}
+
+		if (!is_array($data))
+		{
+			return false;
+		}
+
+		$msg = array();
+
+		$msg[] = '<table width="99%" border="0" cellpadding="1" bgcolor="#EAEAEA"><tbody><tr><td>';
+		$msg[] = '<table width="100%" border="0" cellpadding="5" bgcolor="#FFFFFF"><tbody>';
+
+		unset($data['antispam']);
+		unset($data['spamcheck']);
+		
+		if (isset($data['size_id']))
+		{
+			$data['size_id'] = self::getProductForSize($data['size_id']);
+		}
+
+		foreach ($data as $key => $value)
+		{
+			// Get the element associated with this submitted field.
+			$label = $form->getLabel($key);
+
+			if (!$label)
+			{
+				$field = $form->getField($key);
+				$label = (string) $field->element['label'];
+			}
+
+			if (!empty($value))
+			{
+				$msg[] = '<tr bgcolor="#EAF2FA"><td colspan="2"><font style="font-family:verdana;font-size:12px;"><strong>';
+				$msg[] = $label;
+				$msg[] = '</strong></font></td></tr><tr bgcolor="#FFFFFF"><td width="20"></td><td><font style="font-family:verdana;font-size:12px;">';
+				$msg[] = $value;
+				$msg[] = '</font></td></tr>';
+			}
+		}
+
+		$msg[] = '</tbody></td></tr></tbody></table>';
+
+		return implode($msg);
+	}
+	
+	public static function getProductForSize($id)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('a.title')
+			->from('#__gazebos_products AS a')
+			->leftJoin('#__gazebos_sizes AS b ON b.product_id = a.id')
+			->where('b.id = ' . (int) $id);
+			
+		$result = $db->setQuery($query)->loadResult();
+		
+		if ($result)
+		{
+			return $result;
+		}
+		
+		return $id;
+	}
 }
