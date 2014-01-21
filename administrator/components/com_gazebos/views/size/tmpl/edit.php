@@ -21,7 +21,7 @@ $product_id = $this->form->getValue('product_id');
 			<label>Add New Size / Price Range</label>
 		</div>
 		<div class="fltrt">
-			<button type="button" onclick="Joomla.submitbutton('size.apply');">Add Size</button>
+			<button type="button" onclick="Joomla.submitbutton('size.apply');">Save</button>
 		</div>
 	</fieldset>
 	<input type="hidden" name="tmpl" value="component" />
@@ -50,9 +50,9 @@ $product_id = $this->form->getValue('product_id');
 				</thead>
 				<tbody>
 				<?php
-				
+
 				$token = JSession::getFormToken();
-				
+
 				foreach($this->items as $item): ?>
 					<tr>
 						<td class="center">
@@ -66,6 +66,8 @@ $product_id = $this->form->getValue('product_id');
 						</td>
 						<td class="center">
 							<a href="index.php?option=com_gazebos&task=sizes.delete&tmpl=component&id=<?php echo $item->id; ?>&product_id=<?php echo $product_id; ?>&<?php echo $token; ?>=1">Delete</a>
+							&nbsp;&nbsp;
+							<a href="index.php?option=com_gazebos&view=size&layout=edit&tmpl=component&id=<?php echo $item->id; ?>&product_id=<?php echo $product_id; ?>">Edit</a>
 						</td>
 					</tr>
 				<?php endforeach; ?>
