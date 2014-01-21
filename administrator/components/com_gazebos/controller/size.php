@@ -18,7 +18,7 @@ class GazebosControllerSize extends EEControllerForm
 		$tmpl   = $app->input->get('tmpl');
 		$layout = $app->input->get('layout', 'edit');
 		$jform  = $app->input->get('jform', array(), null);
-		$id     = $app->input->getInt('id');
+		$task = $app->input->get('task');
 
 		if ($product_id = $app->input->get->getInt('product_id'))
 		{
@@ -38,7 +38,7 @@ class GazebosControllerSize extends EEControllerForm
 			$append .= '&layout=' . $layout;
 		}
 
-		if ($recordId && ($tmpl != 'component'))
+		if ($recordId && $task !== 'apply')
 		{
 			$append .= '&' . $urlVar . '=' . $recordId;
 		}
@@ -48,12 +48,12 @@ class GazebosControllerSize extends EEControllerForm
 			$append .= '&product_id=' . $jform['product_id'];
 		}
 
-		if (isset($id))
-		{
-			$append .= '&id=' . $id;
-		}
-
 		return $append;
+	}
+
+	public function getRedirectToListAppend()
+	{
+		return $this->getRedirectToItemAppend();
 	}
 
 }
