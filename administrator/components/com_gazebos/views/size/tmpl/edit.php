@@ -67,7 +67,7 @@ $product_id = $this->form->getValue('product_id');
 						<td class="center">
 							<a href="index.php?option=com_gazebos&task=sizes.delete&tmpl=component&id=<?php echo $item->id; ?>&product_id=<?php echo $product_id; ?>&<?php echo $token; ?>=1">Delete</a>
 							&nbsp;&nbsp;
-							<a href="index.php?option=com_gazebos&view=size&layout=edit&tmpl=component&id=<?php echo $item->id; ?>&product_id=<?php echo $product_id; ?>">Edit</a>
+							<a href="index.php?option=com_gazebos&task=size.edit&tmpl=component&id=<?php echo $item->id; ?>&product_id=<?php echo $product_id; ?>">Edit</a>
 						</td>
 					</tr>
 				<?php endforeach; ?>

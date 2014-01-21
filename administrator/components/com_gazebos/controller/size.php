@@ -18,6 +18,7 @@ class GazebosControllerSize extends EEControllerForm
 		$tmpl   = $app->input->get('tmpl');
 		$layout = $app->input->get('layout', 'edit');
 		$jform  = $app->input->get('jform', array(), null);
+		$id     = $app->input->getInt('id');
 
 		if ($product_id = $app->input->get->getInt('product_id'))
 		{
@@ -45,6 +46,11 @@ class GazebosControllerSize extends EEControllerForm
 		if (isset($jform['product_id']))
 		{
 			$append .= '&product_id=' . $jform['product_id'];
+		}
+
+		if (isset($id))
+		{
+			$append .= '&id=' . $id;
 		}
 
 		return $append;
