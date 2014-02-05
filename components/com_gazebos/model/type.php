@@ -114,7 +114,7 @@ class GazebosModelType extends EEModelItem
 	 */
 	public function getProducts()
 	{
-		$context = 'product' . $type;
+		$context = 'product' . $this->item->alias;
 
 		$q = 'SELECT a.*, (SELECT b.path FROM #__gazebos_gallery AS b WHERE b.product_id = a.id ' .
 			' ORDER BY b.ordering ASC LIMIT 1) AS image FROM #__gazebos_products AS a' .

@@ -13,7 +13,7 @@ abstract class EEHelper
 		'REMOTE_ADDR'
 	);
 
-	public function registerViewClasses($views, $prefix)
+	public static function registerViewClasses($views, $prefix)
 	{
 		foreach ($views as $view)
 		{

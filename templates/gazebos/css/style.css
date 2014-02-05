@@ -19,6 +19,11 @@ html {
 	content: "";
 	visibility: hidden;
 }
+.image-center {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
 a {
 	color: #2d4413;
 }
@@ -4001,4 +4006,68 @@ body.lake-wood #product-description {
 }
 #series-content #roofing ul.features-list li {
 	margin: 0 28px;
+}
+ul.shapes-list {
+	list-style: none outside none;
+	margin: 20px 0 0 0;
+	padding: 0;
+	width: 100%;
+}
+ul.shapes-list li {
+	float: left;
+	width: 33%;
+	margin-bottom: 30px;
+}
+.shape {
+	margin-left: auto;
+	margin-right: auto;
+	display: table;
+}
+.shape-title {
+	text-transform: uppercase;
+	text-align: center;
+	font-size: 13px;
+	font-family: 'PT Sans',sans-serif;
+	margin: 0;
+}
+.shape span {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+.shape.octagon {
+	background: url(../images/shapes/octagon.png) no-repeat scroll 0 0 transparent;
+	width: 113px;
+	height: 112px;
+	margin-bottom: 18px;
+}
+.shape.oblong {
+	background: url(../images/shapes/oblong.png) no-repeat scroll 0 0 transparent;
+	width: 142px;
+	height: 107px;
+	margin-bottom: 23px;
+}
+.shape.decagon {
+	background: url(../images/shapes/decagon.png) no-repeat scroll 0 0 transparent;
+	width: 123px;
+	height: 117px;
+	margin-bottom: 13px;
+}
+.shape.dodecagon {
+	background: url(../images/shapes/dodecagon.png) no-repeat scroll 0 0 transparent;
+	width: 121px;
+	height: 121px;
+	margin-bottom: 9px;
+}
+.shape.square {
+	background: url(../images/shapes/square.png) no-repeat scroll 0 0 transparent;
+	width: 115px;
+	height: 105px;
+	margin-bottom: 25px;
+}
+.shape.rectangle {
+	background: url(../images/shapes/rectangle.png) no-repeat scroll 0 0 transparent;
+	width: 166px;
+	height: 108px;
+	margin-bottom: 22px;
 }
