@@ -3,7 +3,7 @@
 EEComponentHelper::load('Gazebos');
 
 $model = new GazebosModelGallery(array('ignore_request' => true));
-$model->setState('filter.series', 222);
+$model->setState('filter.type', 4);
 
 $gallery = $model->getItems();
 
@@ -25,6 +25,7 @@ $gallery = $model->getItems();
 			<li><a href="#roof-options">Roof Options</a></li>
 			<li><a href="#construction">Construction</a></li>
 			<li><a href="#options">Custom Options</a></li>
+			<li><a href="#fireplace">Fireplace Options</a></li>
 			<li><a href="#gallery">Photo Gallery</a></li>
 		</ul>
 		<div class="sidebar-widget quote">
@@ -307,6 +308,9 @@ $gallery = $model->getItems();
 					<span class="title">Screen-Package</span>
 				</li>
 			</ul>
+		</div>
+		<div class="panel clr" id="fireplace">
+
 		</div>
 		<div class="panel clr" id="gallery">
 			<ul id="gallery-list">
