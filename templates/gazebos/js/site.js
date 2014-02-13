@@ -22,10 +22,10 @@ jQuery(document).ready(function ($) {
 	
 	(function(){
 		$(".panel").hide();
-		$("#series-sidebar .menu li:first").addClass("active").show();
+		$("#sidebar.series .menu li:first").addClass("active").show();
 		$(".panel:first").show();
-		$("#series-sidebar .menu li").click(function() {
-		$("#series-sidebar .menu li").removeClass("active");
+		$("#sidebar.series .menu li").click(function() {
+		$("#sidebar.series .menu li").removeClass("active");
 		$(this).addClass("active");
 		$(".panel").hide();
 			var activeTab = jQuery(this).find("a").attr("href");

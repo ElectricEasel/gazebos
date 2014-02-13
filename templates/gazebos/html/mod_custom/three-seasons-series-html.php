@@ -8,46 +8,59 @@ $model->setState('filter.type', 4);
 $gallery = $model->getItems();
 
 ?>
-<div class="fancy-heading alt">
-	<h2><span>Three Season Gazebos</span> Series</h2>
-</div>
-
 <div class="series-container clr">
-	<div class="border"></div>
-	<div id="series-sidebar">
-		<ul class="menu">
-			<li class="active"><a href="#series-overview">Overview</a></li>
-			<li><a href="#features">Features</a></li>
-			<li><a href="#shapes">Shapes &amp; Sizes</a></li>
-			<li><a href="#valance">Valance &amp; Baluster</a></li>
-			<li><a href="#colors">Colors &amp; Stains</a></li>
-			<li><a href="#roof-styles">Roof Styles</a></li>
-			<li><a href="#roof-options">Roof Options</a></li>
-			<li><a href="#construction">Construction</a></li>
-			<li><a href="#options">Custom Options</a></li>
-			<li><a href="#fireplace">Fireplace Options</a></li>
-			<li><a href="#gallery">Photo Gallery</a></li>
-		</ul>
-		<div class="sidebar-widget quote">
-			<a href="<?php echo JRoute::_('index.php?option=com_gazebos&view=series&layout=form&tmpl=component'); ?>" data-fancybox-type="iframe" rel="fancybox" class="brown-button">Request Quote &gt;</a>
-		</div>
-		<div class="sidebar-widget warranty">
-			<span>Limited Lifetime <span>Warranty</span></span>
-		</div>
-		<div class="sidebar-widget why" onclick="document.location='/about-us/the-gazebos-difference'">
-			<h5>Why Buy<br>From Us?</h5>
-			<a href="/about-us/the-gazebos-difference">See the Difference</a>
-		</div>
-		<div class="sidebar-widget call">
-			<div>
-				<h5>Need Help?</h5>
+
+	<div id="sidebar" class="series">
+		<div class="module side-menu">
+			<div class="sidebar-heading-wrap">
+				<h3>
+					<span>Three Season <span>Series</span></span>
+				</h3>
 			</div>
-			<span>1-888-4-GAZEBO</span>
+			<div class="menu-wrap">
+				<div class="module-content">
+					<ul class="menu">
+						<li class="active"><a href="#series-overview">Overview</a></li>
+						<li><a href="#features">Features</a></li>
+						<li><a href="#shapes">Shapes &amp; Sizes</a></li>
+						<li><a href="#valance">Valance &amp; Baluster</a></li>
+						<li><a href="#colors">Colors &amp; Stains</a></li>
+						<li><a href="#roof-styles">Roof Styles</a></li>
+						<li><a href="#roof-options">Roof Options</a></li>
+						<li><a href="#construction">Construction</a></li>
+						<li><a href="#options">Custom Options</a></li>
+						<li><a href="#fireplace">Fireplace Options</a></li>
+						<li><a href="#gallery">Photo Gallery</a></li>
+					</ul>
+				</div>
+				
+			</div>
+		</div>
+		
+		<div class="widget-contain">
+			<div class="widget" id="help">
+				<div><h5>Need Help?</h5></div>
+				<span>1-888-4-GAZEBO</span>
+			</div>
+		</div>
+		<div class="widget-contain">
+			<div class="widget" id="why-us" style="display:block" onclick="document.location = '/about-us/the-gazebos-difference'">
+				<h5>Why Buy<br>From Us?</h5>
+				<a href="/about-us/the-gazebos-difference">See the Difference</a>
+			</div>
+		</div>
+		<div class="widget-contain">
+			<div class="widget" id="warranty-widget" style="display:block" onclick="document.location = '/about-us/lifetime-warranty'">
+				<a href="/about-us/lifetime-warranty">
+					<span class="icon"></span><span class="text">Limited Lifetime<span class="upper">Warranty</span></span>
+				</a>
+			</div>
 		</div>
 	</div>
 	<div id="series-content">
 		<div id="series-overview" class="panel clr">
-			<img class="right clr" src="/templates/gazebos/images/series-lakewood-img.jpg" alt=""/>
+			<p class="intro">Lake Wood Series Gazebos are uniquely designed to compliment both the residential and commercial environment. They are available in a variety of sizes, shapes and styles, and range from 10’ to 28’. The Baluster, Valance and Roof styles are all interchangeable for style and versatility that creates a custom look.</p>
+			<p class="intro">Whether it’s a town square, an extension for a deck or patio, a gateway for a residential or commercial complex, a lake side retreat, or an employee break area, a Lake Wood Gazebo becomes the focal point that sets an impressive tone!</p>
 			<div class="two-col">
 				<h4>Lorem Ipsum Dolor Sit Amet</h4>
 				<p>Phasellus iaculis velit vel diam dapibus, eget laoreet sem rutrum. Integer bibendum at lacus dapibus condimentum. Pellentesque orci lectus, adipiscing quis massa id, sodales aliquet enim. Vivamus felis erat, mollis et tellus.</p>
