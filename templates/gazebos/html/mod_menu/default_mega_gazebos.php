@@ -13,41 +13,29 @@ $shapes = $model->getShapes();
 <div class="series-col">
 	<ul class="mega-series-sub">
 		<li class="lake-wood">
-			<h4><a href="/lake-wood">Lake Wood
+			<h4><a href="/lake-wood">Lake Wood Series
 				<span>Starting at $8,000</span>
 			</a></h4>
+            <a class= "view-button" href="#">View</a>
 		</li>
 		<li class="cedar-cove">
-			<h4><a href="/cedar-cove">Lake Wood
+			<h4><a href="/cedar-cove">Cedar Cove Series
 				<span>Starting at $6,000</span>
 			</a></h4>
+            <a class= "view-button" href="#">View</a>
 		</li>
 		<li class="amish">
-			<h4><a href="#">Amish Gazebos
+			<h4><a href="#">Amish Gazebos Series
 				<span>Starting at $4,000</span>
 			</a></h4>
+            <a class= "view-button" href="#">View</a>
 		</li>
 		<li class="three-season">
-			<h4><a href="/three-season-gazebos">Three Season<br/>Gazebos</a></h4>
+			<h4><a href="/three-season-gazebos">Three Season Gazebos
+                <span>Starting at $4,000</span>
+            </a></h4>
+            <a class= "view-button" href="#">View</a>
 		</li>
-	</ul>
-</div>
-<div class="mm-col-left">
-	<img class="right" src="/templates/gazebos/images/th-gazebo-wood.png" alt="Wood Gazebos"/>
-	<h4><a href="<?php echo JRoute::_('index.php?option=com_gazebos&view=material&id=1'); ?>">Wood Gazebos</a></h4>
-	<ul class="mega-sub">
-		<?php foreach ($shapes as $s) : ?>
-		<li class="wood-<?php echo strtolower($s->title); ?>"><a href="<?php echo JRoute::_('index.php?option=com_gazebos&view=shape&id=' . $s->id . '&material_id=1'); ?>">Wood <?php echo $s->title; ?> Gazebos</a></li>
-		<?php endforeach; ?>
-	</ul>
-</div>
-<div class="mm-col-mid">
-	<img class="right" src="/templates/gazebos/images/th-gazebo-vinyl.png" alt="Vinyl Gazebos"/>
-	<h4><a href="<?php echo JRoute::_('index.php?option=com_gazebos&view=material&id=2'); ?>">Vinyl Gazebos</a></h4>
-	<ul class="mega-sub">
-		<?php foreach ($shapes as $s) : if (strtolower($s->title) === 'decagon') continue; ?>
-		<li class="vinyl-<?php echo strtolower($s->title); ?>"><a href="<?php echo JRoute::_('index.php?option=com_gazebos&view=shape&id=' . $s->id . '&material_id=2'); ?>">Vinyl <?php echo $s->title; ?> Gazebos</a></li>
-		<?php endforeach; ?>
 	</ul>
 </div>
 <div class="mm-col-right">
