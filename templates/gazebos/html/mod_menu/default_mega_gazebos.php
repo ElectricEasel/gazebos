@@ -25,10 +25,10 @@ $shapes = $model->getShapes();
             <a class= "view-button" href="/cedar-cove">View</a>
 		</li>
 		<li class="amish">
-			<h4><a href="#">Amish Gazebos Series
+			<h4><a href="/amish-gazebos">Amish Gazebos Series
 				<span>Starting at $4,000</span>
 			</a></h4>
-            <a class= "view-button" href="#">View</a>
+            <a class= "view-button" href="/amish-gazebos">View</a>
 		</li>
 		<li class="three-season">
 			<h4><a href="/three-seasons-series-page">Three Season Gazebos
