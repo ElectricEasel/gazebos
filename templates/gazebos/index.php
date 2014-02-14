@@ -116,33 +116,34 @@ $javascript = EEHtml::extractScripts($this);
 		</div>
 		<div class="border"></div>
 		<jdoc:include type="modules" name="sub-head" />
-<?php if ($menu->getDefault() !== $menu->getActive()) : ?>
+		<?php if ($menu->getDefault() !== $menu->getActive()) : ?>
 		<div id="breadcrumbs">
 			<jdoc:include type="modules" name="breadcrumbs" />
 		</div>
-<?php endif; ?>
+		<?php endif; ?>
 		<div id="main">
 			<div class="wrap<?php echo (!$this->countModules('position-7 + position-5 + position-4')) ? ' fullwidth' : ''; ?>">
 
 				<jdoc:include type="message" />
-<?php if (JRequest::getCmd('view') !== 'product' && ($this->countModules('position-7') || $this->countModules('position-4') || $this->countModules('position-5'))) : ?>
+				<?php if (JRequest::getCmd('view') !== 'product' && ($this->countModules('position-7') || $this->countModules('position-4') || $this->countModules('position-5'))) : ?>
 				<div id="sidebar">
 					<jdoc:include type="modules" name="position-7" style="sidebar" />
 					<jdoc:include type="modules" name="position-4" style="sidebar" />
 					<jdoc:include type="modules" name="position-5" style="sidebar" />
 				</div>
-<?php endif; ?>
+				<?php endif; ?>
 				<div id="content">
 					<jdoc:include type="component" />
-<?php if ($this->countModules('home-spot-marketing')): ?>
+					<?php if ($this->countModules('home-spot-marketing')): ?>
 						<div id="spot-marketing" class="clr">
-							<jdoc:include type="modules" name="home-spot-marketing"   />
+							<jdoc:include type="modules" name="home-spot-marketing" />
 						</div>
 						<div class="clear"></div>
-<?php endif; ?>
+					<?php endif; ?>
 				</div>
 				<div class="clear"></div>
 			</div>
+			<jdoc:include type="modules" name="home-bottom" />
 		</div>
 		<div id="footer">
 			<div class="wrap">

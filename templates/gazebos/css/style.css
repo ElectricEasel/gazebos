@@ -4090,6 +4090,32 @@ p.intro {
 	width: 1200px;
 	margin-left: -120px;
 }
+.home-landscape {
+    background: url(../images/footer-landscape.png) repeat-x scroll center top rgba(0, 0, 0, 0);
+    color: #fff;
+}
+.home-landscape .wrap {
+	padding: 150px 0 30px;
+}
+.home-landscape h3 {
+	margin: 0 0 15px 0;
+	color: #fff;
+	font-size: 30px;
+	text-transform: none;
+}
+.home-landscape p {
+	font-style: italic;
+	line-height: 1.5em;
+	font-family: 'PT Sans',sans-serif;
+}
+.home-landscape .brown-button {
+	display: inline-block;
+	margin-right: 15px;
+	font-size: 14px;
+}
+body.home #content {
+	padding-bottom: 0;
+}
 ul.shapes-list {
 	list-style: none outside none;
 	margin: 20px 0 0 0;
