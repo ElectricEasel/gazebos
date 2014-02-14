@@ -16,13 +16,13 @@ $shapes = $model->getShapes();
 			<h4><a href="/lake-wood">Lake Wood Series
 				<span>Starting at $8,000</span>
 			</a></h4>
-            <a class= "view-button" href="#">View</a>
+            <a class= "view-button" href="/lake-wood">View</a>
 		</li>
 		<li class="cedar-cove">
 			<h4><a href="/cedar-cove">Cedar Cove Series
 				<span>Starting at $6,000</span>
 			</a></h4>
-            <a class= "view-button" href="#">View</a>
+            <a class= "view-button" href="/cedar-cove">View</a>
 		</li>
 		<li class="amish">
 			<h4><a href="#">Amish Gazebos Series
@@ -31,10 +31,10 @@ $shapes = $model->getShapes();
             <a class= "view-button" href="#">View</a>
 		</li>
 		<li class="three-season">
-			<h4><a href="/three-season-gazebos">Three Season Gazebos
+			<h4><a href="/three-seasons-series-page">Three Season Gazebos
                 <span>Starting at $4,000</span>
             </a></h4>
-            <a class= "view-button" href="#">View</a>
+            <a class= "view-button" href="/three-seasons-series-page">View</a>
 		</li>
 	</ul>
 </div>
