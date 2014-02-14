@@ -77,7 +77,7 @@ $gallery = $model->getItems();
 				<p>Phasellus iaculis velit vel diam dapibus, eget laoreet sem rutrum. Integer bibendum at lacus dapibus condimentum. Pellentesque orci lectus, adipiscing quis massa id, sodales aliquet enim. Vivamus felis erat, mollis et tellus.</p>
 			</div>
 		</div>
-		<div class="panel clr" id="features">
+		<div class="panel clr" id="features" style="display:none">
 			<img alt="" src="/templates/gazebos/images/img-warranty-brown.png" class="left">
 			<h4>Timeless Designs and Quality Craftsmanship</h4>
 			<ul class="list">
@@ -121,7 +121,7 @@ $gallery = $model->getItems();
 				</li>
 			</ul>
 		</div>
-		<div id="shapes" class="panel clr">
+		<div id="shapes" class="panel clr" style="display:none">
 			<ul class="shapes-list">
 				<li>
 					<div class="shape octagon">
@@ -165,11 +165,11 @@ $gallery = $model->getItems();
 				</li>
 			</ul>
 		</div>
-		<div id="valance" class="panel clr">
+		<div id="valance" class="panel clr" style="display:none">
 		</div>
-		<div id="colors" class="panel clr">
+		<div id="colors" class="panel clr" style="display:none">
 		</div>
-		<div id="roof-styles" class="panel clr">
+		<div id="roof-styles" class="panel clr" style="display:none">
 			<ul class="features-list clr roof-style">
 				<li>
 					<img alt="Straight" src="/images/com_gazebos/roof-styles/straight.png">
@@ -189,9 +189,9 @@ $gallery = $model->getItems();
 				</li>
 			</ul>
 		</div>
-		<div id="roof-options" class="panel clr">
+		<div id="roof-options" class="panel clr" style="display:none">
 		</div>
-		<div class="panel clr" id="roofing">
+		<div class="panel clr" id="roofing" style="display:none">
 			<h4>Asphalt Shingles</h4>
 			<ul class="features-list clr asphalt-shingles">			<li>
 				<img width="78" height="78" alt="Aged Redwood" src="/images/com_gazebos/shingles/r-aged-redwood.jpg">
@@ -307,10 +307,10 @@ $gallery = $model->getItems();
 			</li>
 			</ul>
 		</div>
-		<div class="panel clr" id="construction">
+		<div class="panel clr" id="construction" style="display:none">
 			<img class="image-center" src="/templates/gazebos/images/series/three-season-construction.png" alt=""/>
 		</div>
-		<div class="panel clr" id="options">			
+		<div class="panel clr" id="options" style="display:none">			
 			<h4>Gazebo Options</h4>
 			<ul class="features-list clr gazebo-options">
 				<li>
@@ -323,10 +323,10 @@ $gallery = $model->getItems();
 				</li>
 			</ul>
 		</div>
-		<div class="panel clr" id="fireplace">
+		<div class="panel clr" id="fireplace" style="display:none">
 
 		</div>
-		<div class="panel clr" id="gallery">
+		<div class="panel clr" id="gallery" style="display:none">
 			<ul id="gallery-list">
 				<?php foreach ($gallery as $item) : ?>
 				<li>
