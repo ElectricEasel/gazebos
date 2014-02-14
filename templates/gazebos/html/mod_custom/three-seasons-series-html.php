@@ -3,7 +3,8 @@
 EEComponentHelper::load('Gazebos');
 
 $model = new GazebosModelGallery(array('ignore_request' => true));
-$model->setState('filter.type', 4);
+$model->setState('filter.type_id', 4);
+
 
 $gallery = $model->getItems();
 

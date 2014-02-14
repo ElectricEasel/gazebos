@@ -8,65 +8,72 @@ $model->setState('filter.series', 222);
 $gallery = $model->getItems();
 
 ?>
-<div class="fancy-heading alt">
-	<h2><span>Gazebos</span> Lake Wood Series</h2>
-</div>
 
 <div class="series-container clr">
-	<div class="border"></div>
-	<div id="series-sidebar">
-		<ul class="menu">
-			<li class="active"><a href="#series-overview">Overview</a></li>
-			<li><a href="#gallery">Gallery</a></li>
-			<li><a href="#features">Features</a></li>
-			<li><a href="#options">Options</a></li>
-			<li><a href="#roofing">Roofing</a></li>
-			<li><a href="#flooring">Flooring</a></li>
-		</ul>
-		<div class="sidebar-widget quote">
-			<a href="<?php echo JRoute::_('index.php?option=com_gazebos&view=series&layout=form&tmpl=component'); ?>" data-fancybox-type="iframe" rel="fancybox" class="brown-button">Request Quote &gt;</a>
-		</div>
-		<div class="sidebar-widget warranty">
-			<span>Limited Lifetime <span>Warranty</span></span>
-		</div>
-		<div class="sidebar-widget why" onclick="document.location='/about-us/the-gazebos-difference'">
-			<h5>Why Buy<br>From Us?</h5>
-			<a href="/about-us/the-gazebos-difference">See the Difference</a>
-		</div>
-		<div class="sidebar-widget call">
-			<div>
-				<h5>Need Help?</h5>
+
+	<div id="sidebar" class="series">
+		<div class="module side-menu">
+			<div class="sidebar-heading-wrap">
+				<h3>
+					<span>Lake Wood <span>Series</span></span>
+				</h3>
 			</div>
-			<span>1-888-4-GAZEBO</span>
+			<div class="menu-wrap">
+				<div class="module-content">
+					<ul class="menu">
+						<li class="active"><a href="#series-overview">Overview</a></li>
+						<li><a href="#features">Features</a></li>
+						<li><a href="#shapes">Shapes &amp; Sizes</a></li>
+						<li><a href="#valance">Valance &amp; Baluster</a></li>
+						<li><a href="#colors">Colors &amp; Stains</a></li>
+						<li><a href="#roof-styles">Roof Styles</a></li>
+						<li><a href="#roof-options">Roof Options</a></li>
+						<li><a href="#construction">Construction</a></li>
+						<li><a href="#options">Custom Options</a></li>
+						<li><a href="#gallery">Photo Gallery</a></li>
+					</ul>
+				</div>
+				
+			</div>
+		</div>
+		
+		<div class="widget-contain">
+			<div class="widget" id="help">
+				<div><h5>Need Help?</h5></div>
+				<span>1-888-4-GAZEBO</span>
+			</div>
+		</div>
+		<div class="widget-contain">
+			<div class="widget" id="why-us" style="display:block" onclick="document.location = '/about-us/the-gazebos-difference'">
+				<h5>Why Buy<br>From Us?</h5>
+				<a href="/about-us/the-gazebos-difference">See the Difference</a>
+			</div>
+		</div>
+		<div class="widget-contain">
+			<div class="widget" id="warranty-widget" style="display:block" onclick="document.location = '/about-us/lifetime-warranty'">
+				<a href="/about-us/lifetime-warranty">
+					<span class="icon"></span><span class="text">Limited Lifetime<span class="upper">Warranty</span></span>
+				</a>
+			</div>
 		</div>
 	</div>
 	<div id="series-content">
 		<div id="series-overview" class="panel clr">
-			<img class="right clr" src="/templates/gazebos/images/series-lakewood-img.jpg" alt=""/>
+			<p class="intro">Lake Wood Series Gazebos are uniquely designed to compliment both the residential and commercial environment. They are available in a variety of sizes, shapes and styles, and range from 10’ to 28’. The Baluster, Valance and Roof styles are all interchangeable for style and versatility that creates a custom look.</p>
+			<p class="intro">Whether it’s a town square, an extension for a deck or patio, a gateway for a residential or commercial complex, a lake side retreat, or an employee break area, a Lake Wood Gazebo becomes the focal point that sets an impressive tone!</p>
 			<div class="two-col">
+				<h4 style="padding-top:4em;">Lorem Ipsum Dolor Sit Amet</h4>
+				<p>Phasellus iaculis velit vel diam dapibus, eget laoreet sem rutrum. Integer bibendum at lacus dapibus condimentum. Pellentesque orci lectus, adipiscing quis massa id, sodales aliquet enim. Vivamus felis erat, mollis et tellus. Pellentesque orci lectus, adipiscing quis massa ids.</p>
 				<h4>Lorem Ipsum Dolor Sit Amet</h4>
 				<p>Phasellus iaculis velit vel diam dapibus, eget laoreet sem rutrum. Integer bibendum at lacus dapibus condimentum. Pellentesque orci lectus, adipiscing quis massa id, sodales aliquet enim. Vivamus felis erat, mollis et tellus.</p>
 				<h4>Lorem Ipsum Dolor Sit Amet</h4>
 				<p>Phasellus iaculis velit vel diam dapibus, eget laoreet sem rutrum. Integer bibendum at lacus dapibus condimentum. Pellentesque orci lectus, adipiscing quis massa id, sodales aliquet enim. Vivamus felis erat, mollis et tellus.</p>
-				<h4>Lorem Ipsum Dolor Sit Amet</h4>
-				<p>Phasellus iaculis velit vel diam dapibus, eget laoreet sem rutrum. Integer bibendum at lacus dapibus condimentum. Pellentesque orci lectus, adipiscing quis massa id, sodales aliquet enim. Vivamus felis erat, mollis et tellus.</p>
-				<h4>Lorem Ipsum Dolor Sit Amet</h4>
-				<p>Phasellus iaculis velit vel diam dapibus, eget laoreet sem rutrum. Integer bibendum at lacus dapibus condimentum. Pellentesque orci lectus, adipiscing quis massa id, sodales aliquet enim. Vivamus felis erat, mollis et tellus.</p>
+				<img alt="" src="/templates/gazebos/images/series-lakewood-img.jpg" class="">
 				<h4>Lorem Ipsum Dolor Sit Amet</h4>
 				<p>Phasellus iaculis velit vel diam dapibus, eget laoreet sem rutrum. Integer bibendum at lacus dapibus condimentum. Pellentesque orci lectus, adipiscing quis massa id, sodales aliquet enim. Vivamus felis erat, mollis et tellus.</p>
 				<h4>Lorem Ipsum Dolor Sit Amet</h4>
 				<p>Phasellus iaculis velit vel diam dapibus, eget laoreet sem rutrum. Integer bibendum at lacus dapibus condimentum. Pellentesque orci lectus, adipiscing quis massa id, sodales aliquet enim. Vivamus felis erat, mollis et tellus.</p>
 			</div>
-		</div>
-		<div class="panel clr" id="gallery">
-			<ul id="gallery-list">
-				<?php foreach ($gallery as $item) : ?>
-				<li>
-					<div class="overlay"><a href="<?php echo JRoute::_('index.php?option=com_gazebos&view=product&id=' . $item->id); ?>">View<br>Details</a></div>
-					<?php echo EEHtml::asset("products/{$item->id}/thumbs/150x150_{$item->image}", 'com_gazebos'); ?>
-				</li>
-				<?php endforeach; ?>
-			</ul>
 		</div>
 		<div class="panel clr" id="features">
 			<img alt="" src="/templates/gazebos/images/img-warranty-brown.png" class="left">
@@ -82,34 +89,85 @@ $gallery = $model->getItems();
 					<img width="128" height="130" alt="4&quot;x4&quot; Interlocking Post" src="/images/com_gazebos/features/4x4interlocking-post.jpg">
 					<span class="title">4"x4" Interlocking Post</span>
 				</li>
-							<li>
+				<li>
 					<img width="128" height="130" alt="Full 2&quot;x2&quot; Rails" src="/images/com_gazebos/features/full2x2-rails.jpg">
 					<span class="title">Full 2"x2" Rails</span>
 				</li>
-							<li>
+				<li>
 					<img width="128" height="130" alt="Select Tight Knot, Kiln Dried Western Red Cedar" src="/images/com_gazebos/features/western-red-cedar.jpg">
 					<span class="title">Select Tight Knot, Kiln Dried Western Red Cedar</span>
 				</li>
-							<li>
+				<li>
 					<img width="128" height="130" alt="Double 2&quot;x6&quot; Rafters" src="/images/com_gazebos/features/Double2x6RaftersW.gif">
 					<span class="title">Double 2"x6" Rafters</span>
 				</li>
-							<li>
-					<img width="128" height="130" alt="Exclusive Strength &amp; Stability Bracket" src="/images/com_gazebos/features/stability-bracket.jpg">
-					<span class="title">Exclusive Strength &amp; Stability Bracket</span>
-				</li>
-							<li>
+				<li>
 					<img width="128" height="130" alt="2&quot;x6&quot; Fascia &amp; Compression Ring" src="/images/com_gazebos/features/2x6-fascia.jpg">
 					<span class="title">2"x6" Fascia &amp; Compression Ring</span>
 				</li>
-							<li>
+				<li>
 					<img width="128" height="130" alt="Full 1&quot; Tongue &amp; Groove Roof Interior" src="/images/com_gazebos/features/1in-tongue-roof-int.jpg">
 					<span class="title">Full 1" Tongue &amp; Groove Roof Interior</span>
 				</li>
+				<li>
+					<img width="128" height="130" alt="Exclusive Drip Edge For Double Roof" src="/images/com_gazebos/features/drip-edge.jpg">
+					<span class="title">Exclusive Drip Edge For Double Roof</span>
+				</li>
+				<li>
+					<img width="128" height="130" alt="Exclusive Heavy Duty Aluminum Windows" src="/images/com_gazebos/features/heavy-duty-windows.jpg">
+					<span class="title">Exclusive Heavy Duty Aluminum Windows</span>
+				</li>
 			</ul>
 		</div>
-		<div class="panel clr" id="options">
-			<h4>Roof Style</h4>
+<div id="shapes" class="panel clr">
+			<ul class="shapes-list">
+				<li>
+					<div class="shape octagon">
+						<span>10',12',14'</span>
+					</div>
+					<p class="shape-title">Octagon</p>
+				</li>
+				<li>
+					<div class="shape oblong">
+						<span>10'x14'<br/>12'x16'</span>
+					</div>
+					<p class="shape-title">Oblong</p>
+				</li>
+				<li>
+					<div class="shape decagon">
+						<span>14',16'</span>
+					</div>
+					<p class="shape-title">Decagon</p>
+				</li>
+				<li>
+					<div class="shape dodecagon">
+						<span>18',20',<br/>23',26',28'</span>
+					</div>
+					<p class="shape-title">Dodecagon</p>
+				</li>
+				<li>
+					<div class="shape square">
+						<span>10'x10'<br/>
+							12'x12'
+						</span>
+					</div>
+					<p class="shape-title">Square</p>
+				</li>
+				<li>
+					<div class="shape rectangle">
+						<span>10'x15'<br/>
+							12'x16'
+						</span>
+					</div>
+					<p class="shape-title">Rectangle</p>
+				</li>
+			</ul>
+		</div>
+		<div id="valance" class="panel clr">
+		</div>
+		<div id="colors" class="panel clr">
+		</div>
+		<div id="roof-styles" class="panel clr">
 			<ul class="features-list clr roof-style">
 				<li>
 					<img alt="Straight" src="/images/com_gazebos/roof-styles/straight.png">
@@ -128,44 +186,8 @@ $gallery = $model->getItems();
 					<span class="title">Double Curved (Octagon &amp; Decagon Only)</span>
 				</li>
 			</ul>
-			<h4>Gazebo Options</h4>
-			<ul class="features-list clr gazebo-options">
-				<li>
-					<img alt="Bench-Package" src="/images/com_gazebos/bench_package.gif">
-					<span class="title">Bench-Package</span>
-				</li>
-				<li>
-					<img alt="Screen-Package" src="/images/com_gazebos/screen_package.gif">
-					<span class="title">Screen-Package</span>
-				</li>
-			</ul>
-			<h4>Available Shapes in Wood</h4>
-			<ul class="features-list clr available-shapes-in-wood">
-				<li>
-					<img alt="Octagon" src="/images/com_gazebos/wood_octagon.png">
-					<span class="title">Octagon</span>
-				</li>
-							<li>
-					<img alt="Rectangle" src="/images/com_gazebos/wood_rectangle.png">
-					<span class="title">Rectangle</span>
-				</li>
-							<li>
-					<img alt="Oblong" src="/images/com_gazebos/wood_oblong.png">
-					<span class="title">Oblong</span>
-				</li>
-							<li>
-					<img alt="Decagon" src="/images/com_gazebos/wood_decagon.png">
-					<span class="title">Decagon</span>
-				</li>
-							<li>
-					<img alt="Dodecagon" src="/images/com_gazebos/wood_dodecagon.png">
-					<span class="title">Dodecagon</span>
-				</li>
-							<li>
-					<img alt="Square" src="/images/com_gazebos/wood_square.png">
-					<span class="title">Square</span>
-				</li>
-			</ul>
+		</div>
+		<div id="roof-options" class="panel clr">
 		</div>
 		<div class="panel clr" id="roofing">
 			<h4>Asphalt Shingles</h4>
@@ -283,17 +305,31 @@ $gallery = $model->getItems();
 			</li>
 			</ul>
 		</div>
-		<div class="panel clr" id="flooring">
-			<h4>Flooring Packages</h4><ul class="features-list clr flooring-packages">			<li>
-				<img width="78" height="78" alt="Standard Floor Package" src="/images/com_gazebos/standard-1.gif">
-				<span class="title">Standard Floor Package</span>
-			</li>
-						<li>
-				<img width="78" height="78" alt="Tri-Floor Package" src="/images/com_gazebos/tri_floor-1.gif">
-				<span class="title">Tri-Floor Package (Octagon &amp; Decagon Only</span>
-			</li>
+		<div class="panel clr" id="construction">
+			<img class="image-center" src="/templates/gazebos/images/series/three-season-construction.png" alt=""/>
+		</div>
+		<div class="panel clr" id="options">			
+			<h4>Gazebo Options</h4>
+			<ul class="features-list clr gazebo-options">
+				<li>
+					<img alt="Bench-Package" src="/images/com_gazebos/bench_package.gif">
+					<span class="title">Bench-Package</span>
+				</li>
+				<li>
+					<img alt="Screen-Package" src="/images/com_gazebos/screen_package.gif">
+					<span class="title">Screen-Package</span>
+				</li>
+			</ul>
+		</div>
+		<div class="panel clr" id="gallery">
+			<ul id="gallery-list">
+				<?php foreach ($gallery as $item) : ?>
+				<li>
+					<div class="overlay"><a href="<?php echo JRoute::_('index.php?option=com_gazebos&view=product&id=' . $item->id); ?>">View<br>Details</a></div>
+					<?php echo EEHtml::asset("products/{$item->id}/thumbs/150x150_{$item->image}", 'com_gazebos'); ?>
+				</li>
+				<?php endforeach; ?>
 			</ul>
 		</div>
 	</div>
-	
 </div>

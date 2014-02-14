@@ -1277,6 +1277,10 @@ a.houzz:hover {
 	width: 205px;
 	float: left;
 	margin-right: 30px;
+	margin-top: 15px;
+}
+.series-container #sidebar {
+	margin-top: 0;
 }
 .module.side-menu {
 	background:url(../images/bg_darkpattern.png) repeat scroll 0 0 #AA9D8A;

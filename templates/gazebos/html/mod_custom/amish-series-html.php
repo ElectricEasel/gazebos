@@ -15,7 +15,7 @@ $gallery = $model->getItems();
 		<div class="module side-menu">
 			<div class="sidebar-heading-wrap">
 				<h3>
-					<span>Cedar Cove <span>Series</span></span>
+					<span>Amish Gazebo <span>Series</span></span>
 				</h3>
 			</div>
 			<div class="menu-wrap">
@@ -59,8 +59,8 @@ $gallery = $model->getItems();
 	</div>
 	<div id="series-content">
 		<div id="series-overview" class="panel clr">
-			<p class="intro">Cedar Cove Series Gazebos are uniquely designed to compliment both the residential and commercial environment. They are available in a variety of sizes, shapes and styles, and range from 10’ to 28’. The Baluster, Valance and Roof styles are all interchangeable for style and versatility that creates a custom look.</p>
-			<p class="intro">Whether it’s a town square, an extension for a deck or patio, a gateway for a residential or commercial complex, a lake side retreat, or an employee break area, a Cedar Cove Gazebo becomes the focal point that sets an impressive tone!</p>
+			<p class="intro">Amish Gazebo Series Gazebos are uniquely designed to compliment both the residential and commercial environment. They are available in a variety of sizes, shapes and styles, and range from 10’ to 28’. The Baluster, Valance and Roof styles are all interchangeable for style and versatility that creates a custom look.</p>
+			<p class="intro">Whether it’s a town square, an extension for a deck or patio, a gateway for a residential or commercial complex, a lake side retreat, or an employee break area, a Amish Gazebo Gazebo becomes the focal point that sets an impressive tone!</p>
 			<div class="two-col">
 				<h4 style="padding-top:4em;">Lorem Ipsum Dolor Sit Amet</h4>
 				<p>Phasellus iaculis velit vel diam dapibus, eget laoreet sem rutrum. Integer bibendum at lacus dapibus condimentum. Pellentesque orci lectus, adipiscing quis massa id, sodales aliquet enim. Vivamus felis erat, mollis et tellus. Pellentesque orci lectus, adipiscing quis massa ids.</p>
