@@ -1,6 +1,13 @@
 html {
 	font-family: 'PT Sans', sans-serif;
 }
+.clearfix:after {
+	display: table;
+	clear: both;
+	content: "";
+	visibility: hidden;
+	line-height: 0;
+}
 .actions {
 	display: none;
 }
@@ -98,6 +105,16 @@ textarea {
 	color: #7ca349;
 	text-transform: uppercase;
 	font-style: italic;
+}
+#header .phone {
+    display: block;
+    float: right;
+    padding-left: 10px;
+    padding-top: 13px;
+}
+.header-chat {
+	display: block;
+	float: left;
 }
 #header {
 	background:url(../images/bg_header.png) repeat-x 0 0 scroll #422f25;
@@ -1098,13 +1115,10 @@ body.content-category-blog .row-4 .item-separator {
 	margin: 0 10px;
 }
 .phone {
-	color: #73a336;
-	font-size: 22px;
-	text-transform: uppercase;
-	display: inline-block;
-	position: relative;
-	top:-15px;
-    left:-10px;
+    color: #9C8679;
+    font-size: 22px;
+    font-style: italic;
+    text-transform: uppercase;
 }
 #newsletter-signup input[type="email"] {
     background: none repeat scroll 0 0 #FFFFFF;

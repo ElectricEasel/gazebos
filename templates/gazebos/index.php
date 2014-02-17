@@ -98,9 +98,9 @@ $javascript = EEHtml::extractScripts($this);
 				<div class="navbar">
 					<jdoc:include type="modules" name="nav" />
 				</div>
-				<div class="top-contact">
-                    <span class="phone">1-888-4-gazebo</span>
+				<div class="top-contact clearfix">
 					<a class="header-chat" href="javascript:void(0);" onclick="requestLiveChat('/index.php?option=com_jlivechat&view=popup&tmpl=component&popup_mode=popup','popup');"><img src="/templates/gazebos/images/live-chat-button.png" alt="Live Chat"/></a>
+					<span class="phone">1-888-4-gazebo</span>
 				</div>
 			</div>
 		</div>
