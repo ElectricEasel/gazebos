@@ -44,6 +44,7 @@ class GazebosController extends EEController
         $query = $db->getQuery(true)
             ->select(array(
                     'f.title AS "Line"',
+                    'e.title AS "Material"',
                     'd.title AS "Model"',
                     'a.size AS "Size"',
                     'c.title AS "Shape"',
@@ -71,7 +72,7 @@ class GazebosController extends EEController
 
         foreach ($rows as $row)
         {
-            $materialType = $this->getMaterialType($row);
+            $materialType = ($row->Material === 'Wood') ? $this->getMaterialType($row) : $row->Material;
 
             $entry = array(
                 $row->Line,
