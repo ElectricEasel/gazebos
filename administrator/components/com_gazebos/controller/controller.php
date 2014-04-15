@@ -10,6 +10,13 @@ defined('_JEXEC') or die;
 
 class GazebosController extends EEController
 {
+    /**
+     * @var array Material Type Category ID's
+     */
+    protected $categories;
+
+    protected $types;
+
 	/**
 	 * Method to display a view.
 	 *
@@ -30,4 +37,92 @@ class GazebosController extends EEController
 		return $this;
 	}
 
+    public function salesforceExport()
+    {
+        $db = JFactory::getDbo();
+
+        $query = $db->getQuery(true)
+            ->select(array(
+                    'f.title AS "Line"',
+                    'd.title AS "Model"',
+                    'a.size AS "Size"',
+                    'c.title AS "Shape"',
+                    '"" AS "Option"',
+                    'a.min_price AS "MinPrice"',
+                    'a.max_price AS "MaxPrice"',
+                    'b.options'
+                ))
+            ->from('#__gazebos_sizes AS a')
+            ->leftJoin('#__gazebos_products AS b ON b.id = a.product_id')
+            ->leftJoin('#__gazebos_shapes AS c ON c.id = b.shape_id')
+            ->leftJoin('#__gazebos_styles AS d ON d.id = b.style_id')
+            ->leftJoin('#__gazebos_materials AS e ON e.id = b.material_id')
+            ->leftJoin('#__menu AS f ON f.id = b.series');
+
+        $rows = $db->setQuery($query)->loadObjectList();
+
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment;filename=SalesForceData-' . date('m-d-Y') . '.csv');
+        $output = fopen('php://output', 'w');
+
+        $headers = array('Line', 'Material', 'Model', 'Size', 'Shape', 'Option', 'Min Price', 'Max Price');
+
+        fputcsv($output, $headers);
+
+        foreach ($rows as $row)
+        {
+            $materialType = $this->getMaterialType($row);
+
+            $entry = array(
+                $row->Line,
+                $materialType,
+                $row->Model,
+                $row->Size,
+                $row->Shape,
+                $row->Option,
+                $row->MinPrice,
+                $row->MaxPrice
+            );
+
+            fputcsv($output, $entry);
+        }
+
+        fclose($output);
+
+        exit();
+    }
+
+    protected function getMaterialType($row)
+    {
+        if (is_null($this->types))
+        {
+            $db = JFactory::getDbo();
+            $query = $db->getQuery(true)
+                ->select('a.id')
+                ->from('#__gazebos_option_categories AS a')
+                ->where('a.title = "Wood Type"');
+
+            $this->categories = $db->setQuery($query)->loadColumn();
+
+            $query = $db->getQuery(true)
+                ->select('a.id, a.title')
+                ->from('#__gazebos_options AS a')
+                ->where('a.option_category_id IN (' . implode(',', $this->categories) . ')');
+
+            $this->types = $db->setQuery($query)->loadAssocList('id');
+        }
+
+        $options = @json_decode($row->options);
+
+        foreach ($this->categories as $id)
+        {
+            if (isset($options->$id))
+            {
+                $idArray = $options->$id;
+                return $this->types[(int)$idArray[0]]['title'];
+            }
+        }
+
+        return false;
+    }
 }

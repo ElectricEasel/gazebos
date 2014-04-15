@@ -88,5 +88,8 @@ class GazebosViewProducts extends EEViewAdminList
 		{
 			JToolBarHelper::preferences($this->componentName);
 		}
+
+        JToolBarHelper::divider();
+        JToolbarHelper::custom('salesforceExport', 'export.png', 'export_f2.png', 'Export', false);
 	}
 }
