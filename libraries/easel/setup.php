@@ -26,4 +26,4 @@ JForm::addFieldPath(EE_JPATH . '/form/field');
 JForm::addRulePath(EE_JPATH . '/form/rule');
 
 // Override jimported classes
-JLoader::register('JUri', EE_JPATH . '/uri/uri.php');
+JLoader::discover('J', EE_JPATH, true, true);

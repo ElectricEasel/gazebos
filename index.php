@@ -9,6 +9,9 @@
 define('_JEXEC', 1);
 define('DS', DIRECTORY_SEPARATOR);
 
+ini_set('log_errors', true);
+ini_set('error_reporting', E_ALL);
+
 if (file_exists(dirname(__FILE__) . '/defines.php')) {
 	include_once dirname(__FILE__) . '/defines.php';
 }

@@ -220,7 +220,7 @@ class GazebosModelProduct extends EEModelItem
 		return $form;
 	}
 
-	public function getTable()
+	public function getTable($name = '', $prefix = 'Table', $options = array())
 	{
 		return new GazebosTableLeads;
 	}

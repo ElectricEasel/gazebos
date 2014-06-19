@@ -31,13 +31,13 @@ define('JLC_APP_VERSION', '4.3.2');
 
 class JLiveChatModelSettingFactory
 {
-    function getAppRecord()
+    static function getAppRecord()
     {
 	static $jlcAppRecord;
 
 	if(!isset($jlcAppRecord))
 	{
-	    $db =& JFactory::getDBO();
+	    $db = JFactory::getDBO();
 
 	    $sql = "SELECT SQL_CACHE
 			app_id,
@@ -66,7 +66,7 @@ class JLiveChatModelSettingFactory
 	return $jlcAppRecord;
     }
 
-    function getAppId()
+    static function getAppId()
     {
 	static $jlcAppId;
 
@@ -87,7 +87,7 @@ class JLiveChatModelSettingFactory
 	return $jlcAppId;
     }
 
-    function getSettings()
+    static function getSettings()
     {
 	static $jlcSettings;
 
@@ -118,7 +118,7 @@ class JLiveChatModelSettingFactory
     function createDefaultSettings()
     {
 	// App record doesn't exist yet, create it
-	$db =& JFactory::getDBO();
+	$db = JFactory::getDBO();
 
 	// Settings should be an object
 	$defaultSettings = new stdClass();
@@ -187,7 +187,7 @@ class JLiveChatModelSetting extends JModel
     {
 	if(isset($this->_settings->$name)) return $this->_settings->$name;
 
-	$mainframe =& JFactory::getApplication();
+	$mainframe = JFactory::getApplication();
 
 	// Default Values
 	if($name == 'popup_mode') return 'popup';
@@ -226,7 +226,7 @@ class JLiveChatModelSetting extends JModel
 
 	if(!$siteName)
 	{
-	    $uri =& JFactory::getURI();
+	    $uri = JFactory::getURI();
 
 	    $hostedMode = $this->isHostedMode();
 

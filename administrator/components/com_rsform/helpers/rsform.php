@@ -2602,7 +2602,7 @@ class RSFormProHelper
 					$className .= ' rsform-error';
 				RSFormProHelper::addClass($data['ADDITIONALATTRIBUTES'], $className);
 				
-				$out .= '<select '.($data['MULTIPLE']=='YES' ? 'multiple="multiple"' : '').' name="form['.$data['NAME'].'][]" '.((int) $data['SIZE'] > 0 ? 'size="'.(int) $data['SIZE'].'"' : '').' id="'.$data['NAME'].'" '.$data['ADDITIONALATTRIBUTES'].' >';
+				$out .= '<select '.($data['MULTIPLE']=='YES' ? 'multiple="multiple"' : '').' name="form['.$data['NAME'].']'.($data['MULTIPLE']=='YES' ? '[]' : '').'" '.((int) $data['SIZE'] > 0 ? 'size="'.(int) $data['SIZE'].'"' : '').' id="'.$data['NAME'].'" '.$data['ADDITIONALATTRIBUTES'].' >';
 				
 				$items = RSFormProHelper::explode(RSFormProHelper::isCode($data['ITEMS']));
 				
@@ -2666,6 +2666,8 @@ class RSFormProHelper
 				
 				$special = array('[c]', '[d]');
 				
+				$count = count($items);
+				
 				foreach ($items as $item)
 				{
 					@list($val, $txt) = @explode('|', str_replace($special, '', $item), 2);
@@ -2682,7 +2684,7 @@ class RSFormProHelper
 					
 					if ($data['FLOW']=='VERTICAL' && $layoutName == 'responsive')
 						$out .= '<p class="rsformVerticalClear">';
-					$out .= '<input '.$additional.' name="form['.$data['NAME'].'][]" type="checkbox" value="'.RSFormProHelper::htmlEscape($val).'" id="'.$data['NAME'].$i.'" '.$data['ADDITIONALATTRIBUTES'].' /><label for="'.$data['NAME'].$i.'">'.$txt.'</label>';
+					$out .= '<input '.$additional.' name="form['.$data['NAME'].']'.($count > 1 ? '[]' : '').'" type="checkbox" value="'.RSFormProHelper::htmlEscape($val).'" id="'.$data['NAME'].$i.'" '.$data['ADDITIONALATTRIBUTES'].' /><label for="'.$data['NAME'].$i.'">'.$txt.'</label>';
 					if ($data['FLOW']=='VERTICAL')
 					{
 						if ($layoutName == 'responsive')

@@ -76,7 +76,7 @@ switch($type) {
 						foreach ($this->form->getFieldset($type) as $field) : ?>
 						<li class="half">
 						<div class="radios">
-							<span class="label"><?php echo (string) $field->element['label']; ?></span>
+							<span class="label"><?php echo (string) $field->label; ?></span>
 							<?php echo $field->input; ?>
 						</div>
 						</li>

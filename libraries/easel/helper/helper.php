@@ -13,7 +13,7 @@ abstract class EEHelper
 		'REMOTE_ADDR'
 	);
 
-	public function registerViewClasses($views, $prefix)
+	public static function registerViewClasses($views, $prefix)
 	{
 		foreach ($views as $view)
 		{
@@ -282,7 +282,7 @@ abstract class EEHelper
 			}
 		}
 
-		if (!in_array($active->alias, $bodyClasses))
+		if (is_object($active) && !in_array($active->alias, $bodyClasses))
 		{
 			array_push($bodyClasses, $active->alias);
 		}

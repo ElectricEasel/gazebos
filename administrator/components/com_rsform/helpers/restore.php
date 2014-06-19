@@ -64,7 +64,7 @@ class RSFormProRestore
 			return false;
 		}
 		
-		
+		libxml_use_internal_errors();
 		if (!$xml = simplexml_load_file($this->installFile))
 		{
 			$this->cleanUp();
@@ -77,7 +77,7 @@ class RSFormProRestore
 		$type = (string) $attr['type'];
 		
 		if ($name != 'rsinstall' || $type != 'rsformbackup')
-		{
+		{die('test2');
 			$this->cleanUp();
 			JError::raiseWarning(500, JText::_('RSFP_RESTORE_BADFILE'));
 			return false;

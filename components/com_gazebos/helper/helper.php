@@ -196,7 +196,7 @@ abstract class GazebosHelper extends EEHelper
 	 * @return  HTML for the loaded module position.
 	 *
 	 */
-	public static function loadPosition($pos = null)
+	public static function loadPosition($pos = null, $style = null)
 	{
 		if ($pos === null) return false;
 
