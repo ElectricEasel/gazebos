@@ -8,22 +8,25 @@
 */
 defined('_JEXEC') or die;
 
-$type = $this->item->type_id;
-switch($type) {
-	case '1':
-	$type = "gazebos";
-	break;
-	case '2':
-	$type = "pergolas";
-	break;
-	case '3':
-	$type = "pavilions";
-	break;
-	case '4':
-	$type = "three_season_gazebos";
-	break;
+$type = (int) $this->item->type_id;
+
+switch($type)
+{
+	case 1:
+	    $type = "gazebos";
+	    break;
+	case 2:
+	    $type = "pergolas";
+    	break;
+	case 3:
+	    $type = "pavilions";
+    	break;
+	case 4:
+	    $type = "three_season_gazebos";
+    	break;
 	default:
-	$type = '';
+	    $type = '';
+        break;
 }
 
 ?>
@@ -85,7 +88,7 @@ switch($type) {
 							<li class="full">
 								<?php echo $this->form->getLabel('comments'), $this->form->getInput('comments'); ?>
 							</li>
-							
+
 							<li class="submit">
 								<input id="submit" class="green-button" type="submit" value="Submit Request &rsaquo;"/>
 							</li>
